@@ -24,18 +24,19 @@ class NotificationEntity {
   final String appId;
   final String description;
   final bool read;
+  final String addresseeId;
   final ActionEntity action;
 
-  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.action, });
+  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.addresseeId, this.action, });
 
   NotificationEntity copyWith({Object timestamp, }) {
-    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, action: action, );
+    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, addresseeId: addresseeId, action: action, );
   }
-  List<Object> get props => [timestamp, appId, description, read, action, ];
+  List<Object> get props => [timestamp, appId, description, read, addresseeId, action, ];
 
   @override
   String toString() {
-    return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, action: $action}';
+    return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, addresseeId: $addresseeId, action: $action}';
   }
 
   static NotificationEntity fromMap(Map map) {
@@ -51,6 +52,7 @@ class NotificationEntity {
       appId: map['appId'], 
       description: map['description'], 
       read: map['read'], 
+      addresseeId: map['addresseeId'], 
       action: actionFromMap, 
     );
   }
@@ -68,6 +70,8 @@ class NotificationEntity {
       else theDocument["description"] = null;
     if (read != null) theDocument["read"] = read;
       else theDocument["read"] = null;
+    if (addresseeId != null) theDocument["addresseeId"] = addresseeId;
+      else theDocument["addresseeId"] = null;
     if (action != null) theDocument["action"] = actionMap;
       else theDocument["action"] = null;
     return theDocument;

@@ -143,6 +143,22 @@ class ReadNotificationFormError extends NotificationFormError {
 }
 
 
+class AddresseeNotificationFormError extends NotificationFormError { 
+  const AddresseeNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''AddresseeNotificationFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class ActionNotificationFormError extends NotificationFormError { 
   const ActionNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
 

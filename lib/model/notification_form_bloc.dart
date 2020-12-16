@@ -97,6 +97,23 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
 
         return;
       }
+      if (event is ChangedNotificationAddressee) {
+        if (event.value != null)
+          newValue = currentState.value.copyWith(addressee: await memberRepository(appId: appId).get(event.value));
+        else
+          newValue = new NotificationModel(
+                                 documentID: currentState.value.documentID,
+                                 timestamp: currentState.value.timestamp,
+                                 appId: currentState.value.appId,
+                                 description: currentState.value.description,
+                                 read: currentState.value.read,
+                                 addressee: null,
+                                 action: currentState.value.action,
+          );
+        yield SubmittableNotificationForm(value: newValue);
+
+        return;
+      }
       if (event is ChangedNotificationAction) {
         newValue = currentState.value.copyWith(action: event.value);
         yield SubmittableNotificationForm(value: newValue);

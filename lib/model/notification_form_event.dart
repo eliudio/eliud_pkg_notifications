@@ -118,6 +118,18 @@ class ChangedNotificationRead extends NotificationFormEvent {
   String toString() => 'ChangedNotificationRead{ value: $value }';
 }
 
+class ChangedNotificationAddressee extends NotificationFormEvent {
+  final String value;
+
+  ChangedNotificationAddressee({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedNotificationAddressee{ value: $value }';
+}
+
 class ChangedNotificationAction extends NotificationFormEvent {
   final ActionModel value;
 

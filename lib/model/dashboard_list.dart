@@ -41,14 +41,17 @@ import 'package:eliud_pkg_notifications/model/dashboard_model.dart';
 
 import 'package:eliud_core/model/app_model.dart';
 
+
 import 'dashboard_form.dart';
+
 class DashboardListWidget extends StatefulWidget with HasFab {
   bool readOnly;
   String form;
+  String listItemWidget;
   DashboardListWidgetState state;
   bool isEmbedded;
 
-  DashboardListWidget({ Key key, this.readOnly, this.form, this.isEmbedded }): super(key: key);
+  DashboardListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded }): super(key: key);
 
   @override
   DashboardListWidgetState createState() {
@@ -166,6 +169,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
+
           return DashboardListItem(
             value: value,
             app: accessState.app,
@@ -207,6 +211,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
       return null;
     }
   }
+  
   
 }
 

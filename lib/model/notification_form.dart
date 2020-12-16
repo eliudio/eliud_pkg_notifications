@@ -133,6 +133,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   final TextEditingController _appIdController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   bool _readSelection;
+  String _addressee;
 
 
   _MyNotificationFormState(this.formAction);
@@ -173,6 +174,10 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
         _readSelection = state.value.read;
         else
         _readSelection = false;
+        if (state.value.addressee != null)
+          _addressee= state.value.addressee.documentID;
+        else
+          _addressee= "";
       }
       if (state is NotificationFormInitialized) {
         List<Widget> children = List();
@@ -261,6 +266,11 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
+        children.add(
+
+                DropdownButtonComponentFactory().createNew(id: "members", value: _addressee, trigger: _onAddresseeSelected, optional: false),
+          );
+
 
         children.add(Container(height: 20.0));
         children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
@@ -281,6 +291,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                               appId: state.value.appId, 
                               description: state.value.description, 
                               read: state.value.read, 
+                              addressee: state.value.addressee, 
                               action: state.value.action, 
                         )));
                       } else {
@@ -291,6 +302,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                               appId: state.value.appId, 
                               description: state.value.description, 
                               read: state.value.read, 
+                              addressee: state.value.addressee, 
                               action: state.value.action, 
                           )));
                       }
@@ -346,6 +358,14 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     });
     _myFormBloc.add(ChangedNotificationRead(value: val));
   }
+
+  void _onAddresseeSelected(String val) {
+    setState(() {
+      _addressee = val;
+    });
+    _myFormBloc.add(ChangedNotificationAddressee(value: val));
+  }
+
 
   void _onActionChanged(value) {
     _myFormBloc.add(ChangedNotificationAction(value: value));

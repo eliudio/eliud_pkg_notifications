@@ -1,6 +1,7 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/widgets/alert_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/model/rgb_model.dart';
 import 'package:eliud_core/tools/component_constructor.dart';
 import 'package:eliud_core/tools/etc.dart';
@@ -35,7 +36,7 @@ class DashboardComponent extends AbstractDashboardComponent {
       NotificationListBloc(
         notificationRepository: AbstractRepositorySingleton.singleton.notificationRepository(AccessBloc.appId(context)),
       )..add(LoadNotificationList()),
-      child: NotificationListWidget(readOnly: true, listItemWidget: "MyNotificationListItem"),
+      child: NotificationListWidget(readOnly: true, listItemWidget: "MyNotificationListItem", listBackground: BackgroundModel(documentID: "transparent")),
     );
 
   }

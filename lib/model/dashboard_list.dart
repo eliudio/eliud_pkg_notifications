@@ -27,7 +27,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/tools/screen_size.dart';
-
+import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/tools/delete_snackbar.dart';
 import 'package:eliud_core/tools/router_builders.dart';
 import 'package:eliud_core/tools/etc.dart';
@@ -45,13 +45,14 @@ import 'package:eliud_core/model/app_model.dart';
 import 'dashboard_form.dart';
 
 class DashboardListWidget extends StatefulWidget with HasFab {
+  BackgroundModel listBackground;
   bool readOnly;
   String form;
   String listItemWidget;
   DashboardListWidgetState state;
   bool isEmbedded;
 
-  DashboardListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded }): super(key: key);
+  DashboardListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   DashboardListWidgetState createState() {
@@ -159,7 +160,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
   
   Widget theList(BuildContext context, values, AppLoaded accessState) {
     return Container(
-      decoration: BoxDecorationHelper.boxDecoration(accessState, accessState.app.listBackground),
+      decoration: widget.listBackground == null ? BoxDecorationHelper.boxDecoration(accessState, accessState.app.listBackground) : BoxDecorationHelper.boxDecoration(accessState, widget.listBackground),
       child: ListView.separated(
         separatorBuilder: (context, index) => Divider(
           color: RgbHelper.color(rgbo: accessState.app.dividerColor)

@@ -27,7 +27,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/tools/screen_size.dart';
-
+import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/tools/delete_snackbar.dart';
 import 'package:eliud_core/tools/router_builders.dart';
 import 'package:eliud_core/tools/etc.dart';
@@ -46,13 +46,14 @@ import 'notification_form.dart';
 
 import 'package:eliud_pkg_notifications/extensions/widgets/my_notification_list_item.dart';
 class NotificationListWidget extends StatefulWidget with HasFab {
+  BackgroundModel listBackground;
   bool readOnly;
   String form;
   String listItemWidget;
   NotificationListWidgetState state;
   bool isEmbedded;
 
-  NotificationListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded }): super(key: key);
+  NotificationListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   NotificationListWidgetState createState() {
@@ -160,7 +161,7 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
   
   Widget theList(BuildContext context, values, AppLoaded accessState) {
     return Container(
-      decoration: BoxDecorationHelper.boxDecoration(accessState, accessState.app.listBackground),
+      decoration: widget.listBackground == null ? BoxDecorationHelper.boxDecoration(accessState, accessState.app.listBackground) : BoxDecorationHelper.boxDecoration(accessState, widget.listBackground),
       child: ListView.separated(
         separatorBuilder: (context, index) => Divider(
           color: RgbHelper.color(rgbo: accessState.app.dividerColor)

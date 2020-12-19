@@ -36,7 +36,7 @@ class DashboardComponent extends AbstractDashboardComponent {
       NotificationListBloc(
         notificationRepository: AbstractRepositorySingleton.singleton.notificationRepository(AccessBloc.appId(context)),
       )..add(LoadNotificationList()),
-      child: NotificationListWidget(readOnly: true, listItemWidget: "MyNotificationListItem", listBackground: BackgroundModel(documentID: "transparent")),
+      child: NotificationListWidget(readOnly: true, listItemWidget: "MyNotificationListItem", listBackground: BackgroundModel(documentID: "`transparent")),
     );
 
   }

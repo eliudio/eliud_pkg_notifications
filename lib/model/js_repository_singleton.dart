@@ -14,6 +14,7 @@
 */
 
 import 'abstract_repository_singleton.dart';
+import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'dart:collection';
 import '../model/dashboard_js_firestore.dart';
 import '../model/dashboard_repository.dart';
@@ -29,11 +30,11 @@ class JsRepositorySingleton extends AbstractRepositorySingleton {
     var _notificationRepository = HashMap<String, NotificationRepository>();
 
     DashboardRepository dashboardRepository(String appId) {
-      if (_dashboardRepository[appId] == null) _dashboardRepository[appId] = DashboardCache(DashboardJsFirestore(appId));
+      if (_dashboardRepository[appId] == null) _dashboardRepository[appId] = DashboardCache(DashboardJsFirestore(appRepository().getSubCollection(appId, 'dashboard'), appId));
       return _dashboardRepository[appId];
     }
     NotificationRepository notificationRepository(String appId) {
-      if (_notificationRepository[appId] == null) _notificationRepository[appId] = NotificationCache(NotificationJsFirestore(appId));
+      if (_notificationRepository[appId] == null) _notificationRepository[appId] = NotificationCache(NotificationJsFirestore(appRepository().getSubCollection(appId, 'notification'), appId));
       return _notificationRepository[appId];
     }
 

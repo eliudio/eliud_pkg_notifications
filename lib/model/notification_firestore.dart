@@ -15,6 +15,7 @@
 
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 
+
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
@@ -62,7 +63,7 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
-  StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending}) {
+  StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel}) {
     Stream<List<NotificationModel>> stream;
     if (orderBy == null) {
        stream = NotificationCollection.snapshots().map((data) {
@@ -87,7 +88,7 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
-  StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending}) {
+  StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel}) {
     Stream<List<NotificationModel>> stream;
     if (orderBy == null) {
       stream = NotificationCollection.snapshots()
@@ -107,9 +108,9 @@ class NotificationFirestore implements NotificationRepository {
   }
 
 
-  Stream<List<NotificationModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc }) {
+  Stream<List<NotificationModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
     DocumentSnapshot lastDoc;
-    Stream<List<NotificationModel>> _values = getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit).snapshots().map((snapshot) {
+    Stream<List<NotificationModel>> _values = getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().map((snapshot) {
       return snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
@@ -118,9 +119,9 @@ class NotificationFirestore implements NotificationRepository {
     return _values;
   }
 
-  Stream<List<NotificationModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc }) {
+  Stream<List<NotificationModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
     DocumentSnapshot lastDoc;
-    Stream<List<NotificationModel>> _values = getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit).snapshots().asyncMap((snapshot) {
+    Stream<List<NotificationModel>> _values = getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, appId: appId).snapshots().asyncMap((snapshot) {
       return Future.wait(snapshot.documents.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
@@ -130,9 +131,9 @@ class NotificationFirestore implements NotificationRepository {
     return _values;
   }
 
-  Future<List<NotificationModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc }) async {
+  Future<List<NotificationModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
     DocumentSnapshot lastDoc;
-    List<NotificationModel> _values = await getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit).getDocuments().then((value) {
+    List<NotificationModel> _values = await getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return list.map((doc) { 
         lastDoc = doc;
@@ -143,9 +144,9 @@ class NotificationFirestore implements NotificationRepository {
     return _values;
   }
 
-  Future<List<NotificationModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc }) async {
+  Future<List<NotificationModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
     DocumentSnapshot lastDoc;
-    List<NotificationModel> _values = await getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit).getDocuments().then((value) {
+    List<NotificationModel> _values = await getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).getDocuments().then((value) {
       var list = value.documents;
       return Future.wait(list.map((doc) {
         lastDoc = doc;
@@ -166,10 +167,14 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  dynamic getSubCollection(String documentId, String name) {
+    return NotificationCollection.document(documentId).collection(name);
+  }
+
 
   final String appId;
-  final CollectionReference NotificationCollection;
+  NotificationFirestore(this.NotificationCollection, this.appId);
 
-  NotificationFirestore(this.appId) : NotificationCollection = Firestore.instance.collection('Notification-${appId}');
+  final CollectionReference NotificationCollection;
 }
 

@@ -15,7 +15,7 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/types.dart';
+import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/model/entity_export.dart';
 import 'package:eliud_core/tools/action_entity.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';

@@ -20,13 +20,17 @@ import 'package:meta/meta.dart';
 import 'package:eliud_pkg_notifications/model/dashboard_repository.dart';
 import 'package:eliud_pkg_notifications/model/dashboard_list_event.dart';
 import 'package:eliud_pkg_notifications/model/dashboard_list_state.dart';
+import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/core/access/bloc/access_state.dart';
 
 
 class DashboardListBloc extends Bloc<DashboardListEvent, DashboardListState> {
   final DashboardRepository _dashboardRepository;
   StreamSubscription _dashboardsListSubscription;
+  final AccessBloc accessBloc;
 
-  DashboardListBloc({ @required DashboardRepository dashboardRepository })
+  DashboardListBloc(this.accessBloc,{ @required DashboardRepository dashboardRepository })
       : assert(dashboardRepository != null),
       _dashboardRepository = dashboardRepository,
       super(DashboardListLoading());

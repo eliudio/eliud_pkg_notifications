@@ -20,13 +20,17 @@ import 'package:meta/meta.dart';
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_state.dart';
+import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/core/access/bloc/access_state.dart';
 
 
 class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListState> {
   final NotificationRepository _notificationRepository;
   StreamSubscription _notificationsListSubscription;
+  final AccessBloc accessBloc;
 
-  NotificationListBloc({ @required NotificationRepository notificationRepository })
+  NotificationListBloc(this.accessBloc,{ @required NotificationRepository notificationRepository })
       : assert(notificationRepository != null),
       _notificationRepository = notificationRepository,
       super(NotificationListLoading());

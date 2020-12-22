@@ -1,10 +1,7 @@
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/widgets/alert_widget.dart';
-import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/background_model.dart';
-import 'package:eliud_core/model/rgb_model.dart';
 import 'package:eliud_core/tools/component_constructor.dart';
-import 'package:eliud_core/tools/etc.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_notifications/model/dashboard_component.dart';
 import 'package:eliud_pkg_notifications/model/dashboard_model.dart';
@@ -32,13 +29,16 @@ class DashboardComponent extends AbstractDashboardComponent {
   @override
   Widget yourWidget(BuildContext context, DashboardModel DashboardModel) {
     return BlocProvider<NotificationListBloc>(
-      create: (context) =>
-      NotificationListBloc(
-        notificationRepository: AbstractRepositorySingleton.singleton.notificationRepository(AccessBloc.appId(context)),
+      create: (context) => NotificationListBloc(
+        AccessBloc.getBloc(context),
+        notificationRepository:
+            notificationRepository(appId: AccessBloc.appId(context)),
       )..add(LoadNotificationList()),
-      child: NotificationListWidget(readOnly: true, listItemWidget: "MyNotificationListItem", listBackground: BackgroundModel(documentID: "`transparent")),
+      child: NotificationListWidget(
+          readOnly: true,
+          listItemWidget: "MyNotificationListItem",
+          listBackground: BackgroundModel(documentID: "`transparent")),
     );
-
   }
 
   @override

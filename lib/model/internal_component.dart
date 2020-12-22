@@ -122,7 +122,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<DashboardListBloc>(
           create: (context) => DashboardListBloc(
-            
+            BlocProvider.of<AccessBloc>(context), 
             dashboardRepository: dashboardRepository(appId: AccessBloc.appId(context)),
           )..add(LoadDashboardList()),
         )
@@ -136,7 +136,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
-            
+            BlocProvider.of<AccessBloc>(context), 
             notificationRepository: notificationRepository(appId: AccessBloc.appId(context)),
           )..add(LoadNotificationList()),
         )
@@ -172,7 +172,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<DashboardListBloc>(
           create: (context) => DashboardListBloc(
-            
+            BlocProvider.of<AccessBloc>(context), 
             dashboardRepository: dashboardRepository(appId: AccessBloc.appId(context)),
           )..add(LoadDashboardList()),
         )
@@ -186,7 +186,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
-            
+            BlocProvider.of<AccessBloc>(context), 
             notificationRepository: notificationRepository(appId: AccessBloc.appId(context)),
           )..add(LoadNotificationList()),
         )

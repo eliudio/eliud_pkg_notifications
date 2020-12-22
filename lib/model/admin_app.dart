@@ -16,7 +16,8 @@
 
 import 'package:eliud_core/tools/admin_app_base.dart';
 import 'package:eliud_core/tools/action_model.dart';
-import 'package:eliud_core/tools/types.dart';
+import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/common_tools.dart';
 
 import 'package:eliud_core/model/menu_def_model.dart';
 import 'package:eliud_core/model/page_model.dart';
@@ -56,8 +57,8 @@ class AdminApp extends AdminAppInstallerBase {
     components.add(BodyComponentModel(
       documentID: "internalWidget-dashboards", componentName: "eliud_pkg_notifications_internalWidgets", componentId: "dashboards"));
     PageModel page = PageModel(
-        readCondition: ReadCondition.AsSpecifiedInPrivilegeLevelRequired,
-        privilegeLevelRequired: 99999,
+        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
+        privilegeLevelRequired: OWNER_PRIVILEGES,
         appId: appId,
         documentID: "eliud_pkg_notifications_dashboards_page",
         title: "Dashboards",
@@ -77,8 +78,8 @@ class AdminApp extends AdminAppInstallerBase {
     components.add(BodyComponentModel(
       documentID: "internalWidget-notifications", componentName: "eliud_pkg_notifications_internalWidgets", componentId: "notifications"));
     PageModel page = PageModel(
-        readCondition: ReadCondition.AsSpecifiedInPrivilegeLevelRequired,
-        privilegeLevelRequired: 99999,
+        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
+        privilegeLevelRequired: OWNER_PRIVILEGES,
         appId: appId,
         documentID: "eliud_pkg_notifications_notifications_page",
         title: "Notifications",
@@ -151,8 +152,6 @@ class AdminAppWiper extends AdminAppWiperBase {
 
   @override
   Future<void> deleteAll(String appId) async {
-    await dashboardRepository(appId: appId).deleteAll();
-    await notificationRepository(appId: appId).deleteAll();
     ;
   }
 

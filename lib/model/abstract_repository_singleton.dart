@@ -16,7 +16,8 @@
 import '../model/dashboard_repository.dart';
 import '../model/notification_repository.dart';
 import 'package:eliud_core/core/access/bloc/user_repository.dart';
-import 'package:eliud_core/tools/types.dart';
+import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 
 DashboardRepository dashboardRepository({ String appId }) => AbstractRepositorySingleton.singleton.dashboardRepository(appId);
 NotificationRepository notificationRepository({ String appId }) => AbstractRepositorySingleton.singleton.notificationRepository(appId);
@@ -28,7 +29,5 @@ abstract class AbstractRepositorySingleton {
   NotificationRepository notificationRepository(String appId);
 
   void flush(String appId) {
-    dashboardRepository(appId).flush();
-    notificationRepository(appId).flush();
   }
 }

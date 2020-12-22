@@ -13,7 +13,21 @@
 
 */
 
-import 'package:eliud_pkg_notifications/model/notification_model.dart';
+import 'package:eliud_pkg_notifications/model/notification_repository.dart';
+
+
+import 'package:eliud_core/model/repository_export.dart';
+import 'package:eliud_core/model/abstract_repository_singleton.dart';
+import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
+import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_notifications/model/repository_export.dart';
+import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core/tools/action_model.dart';
+import 'package:eliud_pkg_notifications/model/model_export.dart';
+import 'package:eliud_core/model/entity_export.dart';
+import 'package:eliud_core/tools/action_entity.dart';
+import 'package:eliud_pkg_notifications/model/entity_export.dart';
+
 
 import 'dart:async';
 import 'package:eliud_core/tools/firestore_tools.dart';
@@ -27,14 +41,16 @@ abstract class NotificationRepository {
   Future<NotificationModel> get(String id);
   Future<NotificationModel> update(NotificationModel value);
 
-  Stream<List<NotificationModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc});
-  Stream<List<NotificationModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc});
-  Future<List<NotificationModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc});
-  Future<List<NotificationModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc});
+  Stream<List<NotificationModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
+  Stream<List<NotificationModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
+  Future<List<NotificationModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
+  Future<List<NotificationModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
 
-  StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending});
-  StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending});
+  StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   void flush();
+
+  dynamic getSubCollection(String documentId, String name);
 
   Future<void> deleteAll();
 }

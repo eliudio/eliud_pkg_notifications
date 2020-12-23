@@ -188,7 +188,9 @@ class DashboardJsFirestore implements DashboardRepository {
   final String appId;
   DashboardJsFirestore(this.dashboardCollection, this.appId);
 
-  CollectionReference getCollection() => dashboardCollection;
+  // In flutterweb, it seems we require to re-retrieve the collection. If not then subscribing / listening to it a second time fails.
+  // CollectionReference getCollection() => dashboardCollection;
+  CollectionReference getCollection() => appRepository().getSubCollection(appId, 'dashboard');
   final CollectionReference dashboardCollection;
 }
 

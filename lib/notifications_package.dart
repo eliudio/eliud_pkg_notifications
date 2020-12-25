@@ -14,7 +14,7 @@ abstract class NotificationsPackage extends Package {
   BlocProvider createMainBloc(NavigatorBloc navigatorBloc, AccessBloc accessBloc) => null;
 
   @override
-  Future<bool> isConditionOk(String pluginCondition, AppModel app, MemberModel member, bool isOwner) async {
+  Future<bool> isConditionOk(String pluginCondition, AppModel app, MemberModel member, bool isOwner, int privilegeLevel) async {
     if (pluginCondition == CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
       // find notifications for this member. If unread notifications found: return true;
       // for now we return true, just to make this functionality available
@@ -24,6 +24,11 @@ abstract class NotificationsPackage extends Package {
   }
 
   @override
+  List<String> retrieveAllPackageConditions() {
+    return [ CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS ];
+  }
+
+ @override
   void init() {
     ComponentRegistry().init();
   }

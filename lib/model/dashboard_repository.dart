@@ -49,6 +49,8 @@ abstract class DashboardRepository {
   StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   void flush();
+  
+  String timeStampToString(dynamic timeStamp);
 
   dynamic getSubCollection(String documentId, String name);
 

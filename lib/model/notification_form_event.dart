@@ -72,7 +72,7 @@ class ChangedNotificationDocumentID extends NotificationFormEvent {
 }
 
 class ChangedNotificationTimestamp extends NotificationFormEvent {
-  final DateTime value;
+  final String value;
 
   ChangedNotificationTimestamp({this.value});
 

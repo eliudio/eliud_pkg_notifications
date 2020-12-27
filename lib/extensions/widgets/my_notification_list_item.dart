@@ -28,7 +28,7 @@ class MyNotificationListItem extends StatelessWidget {
       },
       child: ListTile(
         onTap: () {},
-        trailing: Text(getVerboseDateTimeRepresentation(value.timestamp), style: style),
+        trailing: Text(value.timestamp, style: style),
         title: Text(value.description, style: style,))
       );
   }

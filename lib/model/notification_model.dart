@@ -37,7 +37,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class NotificationModel {
   String documentID;
-  DateTime timestamp;
+  String timestamp;
 
   // This is the identifier of the app to which this feed belongs
   String appId;
@@ -52,7 +52,7 @@ class NotificationModel {
     assert(documentID != null);
   }
 
-  NotificationModel copyWith({String documentID, DateTime timestamp, String appId, String description, bool read, MemberModel addressee, ActionModel action, }) {
+  NotificationModel copyWith({String documentID, String timestamp, String appId, String description, bool read, MemberModel addressee, ActionModel action, }) {
     return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, addressee: addressee ?? this.addressee, action: action ?? this.action, );
   }
 

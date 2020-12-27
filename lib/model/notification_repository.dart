@@ -49,6 +49,8 @@ abstract class NotificationRepository {
   StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   void flush();
+  
+  String timeStampToString(dynamic timeStamp);
 
   dynamic getSubCollection(String documentId, String name);
 

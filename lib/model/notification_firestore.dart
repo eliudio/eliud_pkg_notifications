@@ -171,6 +171,9 @@ class NotificationFirestore implements NotificationRepository {
     return NotificationCollection.document(documentId).collection(name);
   }
 
+  String timeStampToString(dynamic timeStamp) {
+    return firestoreTimeStampToString(timeStamp);
+  } 
 
   final String appId;
   NotificationFirestore(this.NotificationCollection, this.appId);

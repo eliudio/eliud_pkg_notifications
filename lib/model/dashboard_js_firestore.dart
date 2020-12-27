@@ -185,6 +185,9 @@ class DashboardJsFirestore implements DashboardRepository {
     return dashboardCollection.doc(documentId).collection(name);
   }
 
+  String timeStampToString(dynamic timeStamp) {
+    return firestoreTimeStampToString(timeStamp);
+  } 
   final String appId;
   DashboardJsFirestore(this.dashboardCollection, this.appId);
 

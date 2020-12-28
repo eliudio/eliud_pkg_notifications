@@ -30,7 +30,7 @@ import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 
 import 'dart:async';
-import 'package:eliud_core/tools/firestore_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 typedef DashboardModelTrigger(List<DashboardModel> list);
@@ -42,13 +42,13 @@ abstract class DashboardRepository {
   Future<DashboardModel> get(String id);
   Future<DashboardModel> update(DashboardModel value);
 
-  Stream<List<DashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
-  Stream<List<DashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
-  Future<List<DashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
-  Future<List<DashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel});
+  Stream<List<DashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Stream<List<DashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Future<List<DashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Future<List<DashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
 
-  StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
-  StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
+  StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery });
   StreamSubscription<DashboardModel> listenTo(String documentId, DashboardChanged changed);
   void flush();
   

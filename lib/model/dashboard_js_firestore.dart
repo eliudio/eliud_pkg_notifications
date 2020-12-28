@@ -33,7 +33,8 @@ import 'package:eliud_pkg_notifications/model/entity_export.dart';
 import 'dart:async';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart';
-import 'package:eliud_core/tools/js_firestore_tools.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core/tools/firestore/js_firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class DashboardJsFirestore implements DashboardRepository {
@@ -72,7 +73,7 @@ class DashboardJsFirestore implements DashboardRepository {
   }
 
   @override
-  StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
     if (orderBy == null) {
       stream = getCollection().onSnapshot
@@ -98,7 +99,7 @@ class DashboardJsFirestore implements DashboardRepository {
     });
   }
 
-  StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     var stream;
     if (orderBy == null) {
       // If we use dashboardCollection here, then the second subscription fails
@@ -130,9 +131,9 @@ class DashboardJsFirestore implements DashboardRepository {
     });
   }
 
-  Stream<List<DashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<DashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<DashboardModel>> _values = getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId)
+    Stream<List<DashboardModel>> _values = getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)
       .onSnapshot
       .map((data) { 
         return data.docs.map((doc) {
@@ -143,9 +144,9 @@ class DashboardJsFirestore implements DashboardRepository {
     return _values;
   }
 
-  Stream<List<DashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
+  Stream<List<DashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
-    Stream<List<DashboardModel>> _values = getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId)
+    Stream<List<DashboardModel>> _values = getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)
       .onSnapshot
       .asyncMap((data) {
         return Future.wait(data.docs.map((doc) { 
@@ -158,9 +159,9 @@ class DashboardJsFirestore implements DashboardRepository {
   }
 
   @override
-  Future<List<DashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<DashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<DashboardModel> _values = await getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).get().then((value) {
+    List<DashboardModel> _values = await getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
       var list = value.docs;
       return list.map((doc) { 
         lastDoc = doc;
@@ -172,9 +173,9 @@ class DashboardJsFirestore implements DashboardRepository {
   }
 
   @override
-  Future<List<DashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) async {
+  Future<List<DashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<DashboardModel> _values = await getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, appId: appId).get().then((value) {
+    List<DashboardModel> _values = await getQuery(dashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
       var list = value.docs;
       return Future.wait(list.map((doc) {  
         lastDoc = doc;

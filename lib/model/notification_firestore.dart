@@ -64,44 +64,26 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
-  StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<NotificationModel>> stream;
-    if (orderBy == null) {
-       stream = NotificationCollection.snapshots().map((data) {
-        Iterable<NotificationModel> notifications  = data.documents.map((doc) {
-          NotificationModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return notifications;
-      });
-    } else {
-      stream = NotificationCollection.orderBy(orderBy, descending: descending).snapshots().map((data) {
-        Iterable<NotificationModel> notifications  = data.documents.map((doc) {
-          NotificationModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return notifications;
-      });
-  
-    }
+    stream = getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
+      Iterable<NotificationModel> notifications  = data.documents.map((doc) {
+        NotificationModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return notifications;
+    });
     return stream.listen((listOfNotificationModels) {
       trigger(listOfNotificationModels);
     });
   }
 
-  StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<NotificationModel>> stream;
-    if (orderBy == null) {
-      stream = NotificationCollection.snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      stream = NotificationCollection.orderBy(orderBy, descending: descending).snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    stream = getQuery(NotificationCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
+        .asyncMap((data) async {
+      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
 
     return stream.listen((listOfNotificationModels) {
       trigger(listOfNotificationModels);

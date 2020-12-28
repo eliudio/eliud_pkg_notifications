@@ -64,44 +64,26 @@ class DashboardFirestore implements DashboardRepository {
     });
   }
 
-  StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<DashboardModel>> stream;
-    if (orderBy == null) {
-       stream = DashboardCollection.snapshots().map((data) {
-        Iterable<DashboardModel> dashboards  = data.documents.map((doc) {
-          DashboardModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return dashboards;
-      });
-    } else {
-      stream = DashboardCollection.orderBy(orderBy, descending: descending).snapshots().map((data) {
-        Iterable<DashboardModel> dashboards  = data.documents.map((doc) {
-          DashboardModel value = _populateDoc(doc);
-          return value;
-        }).toList();
-        return dashboards;
-      });
-  
-    }
+    stream = getQuery(DashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
+      Iterable<DashboardModel> dashboards  = data.documents.map((doc) {
+        DashboardModel value = _populateDoc(doc);
+        return value;
+      }).toList();
+      return dashboards;
+    });
     return stream.listen((listOfDashboardModels) {
       trigger(listOfDashboardModels);
     });
   }
 
-  StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<DashboardModel>> stream;
-    if (orderBy == null) {
-      stream = DashboardCollection.snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    } else {
-      stream = DashboardCollection.orderBy(orderBy, descending: descending).snapshots()
-          .asyncMap((data) async {
-        return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
-      });
-    }
+    stream = getQuery(DashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
+        .asyncMap((data) async {
+      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+    });
 
     return stream.listen((listOfDashboardModels) {
       trigger(listOfDashboardModels);

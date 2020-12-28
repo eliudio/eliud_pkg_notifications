@@ -107,6 +107,17 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  @override
+  StreamSubscription<NotificationModel> listenTo(String documentId, NotificationChanged changed) {
+    var stream = NotificationCollection.document(documentId)
+        .snapshots()
+        .asyncMap((data) {
+      return _populateDocPlus(data);
+    });
+    return stream.listen((value) {
+      changed(value);
+    });
+  }
 
   Stream<List<NotificationModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel }) {
     DocumentSnapshot lastDoc;

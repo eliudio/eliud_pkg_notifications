@@ -34,6 +34,7 @@ import 'package:eliud_core/tools/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 typedef NotificationModelTrigger(List<NotificationModel> list);
+typedef NotificationChanged(NotificationModel value);
 
 abstract class NotificationRepository {
   Future<NotificationModel> add(NotificationModel value);
@@ -48,6 +49,7 @@ abstract class NotificationRepository {
 
   StreamSubscription<List<NotificationModel>> listen(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<NotificationModel>> listenWithDetails(NotificationModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<NotificationModel> listenTo(String documentId, NotificationChanged changed);
   void flush();
   
   String timeStampToString(dynamic timeStamp);

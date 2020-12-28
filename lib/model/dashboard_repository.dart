@@ -34,6 +34,7 @@ import 'package:eliud_core/tools/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 typedef DashboardModelTrigger(List<DashboardModel> list);
+typedef DashboardChanged(DashboardModel value);
 
 abstract class DashboardRepository {
   Future<DashboardModel> add(DashboardModel value);
@@ -48,6 +49,7 @@ abstract class DashboardRepository {
 
   StreamSubscription<List<DashboardModel>> listen(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
   StreamSubscription<List<DashboardModel>> listenWithDetails(DashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, int privilegeLevel});
+  StreamSubscription<DashboardModel> listenTo(String documentId, DashboardChanged changed);
   void flush();
   
   String timeStampToString(dynamic timeStamp);

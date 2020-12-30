@@ -22,6 +22,7 @@ import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_state.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 
 
@@ -29,15 +30,17 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
   final NotificationRepository _notificationRepository;
   StreamSubscription _notificationsListSubscription;
   final AccessBloc accessBloc;
+  final EliudQuery eliudQuery;
 
-  NotificationListBloc(this.accessBloc,{ @required NotificationRepository notificationRepository })
+
+  NotificationListBloc(this.accessBloc,{ this.eliudQuery, @required NotificationRepository notificationRepository })
       : assert(notificationRepository != null),
       _notificationRepository = notificationRepository,
       super(NotificationListLoading());
 
   Stream<NotificationListState> _mapLoadNotificationListToState({ String orderBy, bool descending }) async* {
     _notificationsListSubscription?.cancel();
-    _notificationsListSubscription = _notificationRepository.listen((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, );
+    _notificationsListSubscription = _notificationRepository.listen((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<NotificationListState> _mapLoadNotificationListWithDetailsToState() async* {

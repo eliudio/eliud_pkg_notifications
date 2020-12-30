@@ -22,6 +22,7 @@ import 'package:eliud_pkg_notifications/model/dashboard_list_event.dart';
 import 'package:eliud_pkg_notifications/model/dashboard_list_state.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_event.dart';
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/core/access/bloc/access_state.dart';
 
 
@@ -29,15 +30,17 @@ class DashboardListBloc extends Bloc<DashboardListEvent, DashboardListState> {
   final DashboardRepository _dashboardRepository;
   StreamSubscription _dashboardsListSubscription;
   final AccessBloc accessBloc;
+  final EliudQuery eliudQuery;
 
-  DashboardListBloc(this.accessBloc,{ @required DashboardRepository dashboardRepository })
+
+  DashboardListBloc(this.accessBloc,{ this.eliudQuery, @required DashboardRepository dashboardRepository })
       : assert(dashboardRepository != null),
       _dashboardRepository = dashboardRepository,
       super(DashboardListLoading());
 
   Stream<DashboardListState> _mapLoadDashboardListToState({ String orderBy, bool descending }) async* {
     _dashboardsListSubscription?.cancel();
-    _dashboardsListSubscription = _dashboardRepository.listen((list) => add(DashboardListUpdated(value: list)), orderBy: orderBy, descending: descending, );
+    _dashboardsListSubscription = _dashboardRepository.listen((list) => add(DashboardListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<DashboardListState> _mapLoadDashboardListWithDetailsToState() async* {

@@ -26,44 +26,35 @@ class NotificationEntity {
   final String appId;
   final String description;
   final bool read;
-  final String addresseeId;
-  final ActionEntity action;
+  final String fromId;
+  final String addresseeMemberId;
 
-  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.addresseeId, this.action, });
+  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.fromId, this.addresseeMemberId, });
 
   NotificationEntity copyWith({Object timestamp, }) {
-    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, addresseeId: addresseeId, action: action, );
+    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, fromId: fromId, addresseeMemberId: addresseeMemberId, );
   }
-  List<Object> get props => [timestamp, appId, description, read, addresseeId, action, ];
+  List<Object> get props => [timestamp, appId, description, read, fromId, addresseeMemberId, ];
 
   @override
   String toString() {
-    return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, addresseeId: $addresseeId, action: $action}';
+    return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, fromId: $fromId, addresseeMemberId: $addresseeMemberId}';
   }
 
   static NotificationEntity fromMap(Map map) {
     if (map == null) return null;
-
-    var actionFromMap;
-    actionFromMap = map['action'];
-    if (actionFromMap != null)
-      actionFromMap = ActionEntity.fromMap(actionFromMap);
 
     return NotificationEntity(
       timestamp: notificationRepository().timeStampToString(map['timestamp']), 
       appId: map['appId'], 
       description: map['description'], 
       read: map['read'], 
-      addresseeId: map['addresseeId'], 
-      action: actionFromMap, 
+      fromId: map['fromId'], 
+      addresseeMemberId: map['addresseeMemberId'], 
     );
   }
 
   Map<String, Object> toDocument() {
-    final Map<String, dynamic> actionMap = action != null 
-        ? action.toDocument()
-        : null;
-
     Map<String, Object> theDocument = HashMap();
     theDocument["timestamp"] = timestamp;
     if (appId != null) theDocument["appId"] = appId;
@@ -72,10 +63,10 @@ class NotificationEntity {
       else theDocument["description"] = null;
     if (read != null) theDocument["read"] = read;
       else theDocument["read"] = null;
-    if (addresseeId != null) theDocument["addresseeId"] = addresseeId;
-      else theDocument["addresseeId"] = null;
-    if (action != null) theDocument["action"] = actionMap;
-      else theDocument["action"] = null;
+    if (fromId != null) theDocument["fromId"] = fromId;
+      else theDocument["fromId"] = null;
+    if (addresseeMemberId != null) theDocument["addresseeMemberId"] = addresseeMemberId;
+      else theDocument["addresseeMemberId"] = null;
     return theDocument;
   }
 

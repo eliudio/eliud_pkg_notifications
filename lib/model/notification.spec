@@ -55,18 +55,17 @@
       "fieldType": "bool"
     },
     {
-      "fieldName": "addressee",
-      "displayName": "Addressee",
+      "fieldName": "from",
+      "displayName": "From",
       "fieldType": "Member",
       "association": true,
-      "group": "member"
+      "group": "from"
     },
     {
-      "fieldName": "action",
-      "group": "action",
-      "fieldType": "Action",
-      "bespokeFormField": "ActionField(AccessBloc.appId(context), state.value.action, _onActionChanged)",
-      "remark": "If  this results in some action, then specify here"
+      "fieldName": "addresseeMemberId",
+      "displayName": "Addressee MemberId",
+      "fieldType": "String",
+      "group": "addressee"
     }
   ],
   "groups": [
@@ -77,6 +76,14 @@
     {
         "group": "member",
         "description": "Member"
+    },
+    {
+        "group": "from",
+        "description": "From"
+    },
+    {
+        "group": "addressee",
+        "description": "To"
     }
  ],
   "listFields": {

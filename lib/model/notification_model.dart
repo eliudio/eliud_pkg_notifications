@@ -43,21 +43,19 @@ class NotificationModel {
   String appId;
   String description;
   bool read;
-  MemberModel addressee;
+  MemberModel from;
+  String addresseeMemberId;
 
-  // If  this results in some action, then specify here
-  ActionModel action;
-
-  NotificationModel({this.documentID, this.timestamp, this.appId, this.description, this.read, this.addressee, this.action, })  {
+  NotificationModel({this.documentID, this.timestamp, this.appId, this.description, this.read, this.from, this.addresseeMemberId, })  {
     assert(documentID != null);
   }
 
-  NotificationModel copyWith({String documentID, String timestamp, String appId, String description, bool read, MemberModel addressee, ActionModel action, }) {
-    return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, addressee: addressee ?? this.addressee, action: action ?? this.action, );
+  NotificationModel copyWith({String documentID, String timestamp, String appId, String description, bool read, MemberModel from, String addresseeMemberId, }) {
+    return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, from: from ?? this.from, addresseeMemberId: addresseeMemberId ?? this.addresseeMemberId, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ timestamp.hashCode ^ appId.hashCode ^ description.hashCode ^ read.hashCode ^ addressee.hashCode ^ action.hashCode;
+  int get hashCode => documentID.hashCode ^ timestamp.hashCode ^ appId.hashCode ^ description.hashCode ^ read.hashCode ^ from.hashCode ^ addresseeMemberId.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -69,12 +67,12 @@ class NotificationModel {
           appId == other.appId &&
           description == other.description &&
           read == other.read &&
-          addressee == other.addressee &&
-          action == other.action;
+          from == other.from &&
+          addresseeMemberId == other.addresseeMemberId;
 
   @override
   String toString() {
-    return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, addressee: $addressee, action: $action}';
+    return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, from: $from, addresseeMemberId: $addresseeMemberId}';
   }
 
   NotificationEntity toEntity({String appId}) {
@@ -82,8 +80,8 @@ class NotificationModel {
           timestamp: timestamp,           appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
           read: (read != null) ? read : null, 
-          addresseeId: (addressee != null) ? addressee.documentID : null, 
-          action: (action != null) ? action.toEntity(appId: appId) : null, 
+          fromId: (from != null) ? from.documentID : null, 
+          addresseeMemberId: (addresseeMemberId != null) ? addresseeMemberId : null, 
     );
   }
 
@@ -95,19 +93,18 @@ class NotificationModel {
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
-          action: 
-            ActionModel.fromEntity(entity.action), 
+          addresseeMemberId: entity.addresseeMemberId, 
     );
   }
 
   static Future<NotificationModel> fromEntityPlus(String documentID, NotificationEntity entity, { String appId}) async {
     if (entity == null) return null;
 
-    MemberModel addresseeHolder;
-    if (entity.addresseeId != null) {
+    MemberModel fromHolder;
+    if (entity.fromId != null) {
       try {
-        await memberRepository(appId: appId).get(entity.addresseeId).then((val) {
-          addresseeHolder = val;
+        await memberRepository(appId: appId).get(entity.fromId).then((val) {
+          fromHolder = val;
         }).catchError((error) {});
       } catch (_) {}
     }
@@ -118,9 +115,8 @@ class NotificationModel {
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
-          addressee: addresseeHolder, 
-          action: 
-            await ActionModel.fromEntityPlus(entity.action, appId: appId), 
+          from: fromHolder, 
+          addresseeMemberId: entity.addresseeMemberId, 
     );
   }
 

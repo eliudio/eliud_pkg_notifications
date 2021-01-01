@@ -55,6 +55,7 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
                                                documentID: "",
                                  appId: "",
                                  description: "",
+                                 addresseeMemberId: "",
 
         ));
         yield loaded;
@@ -97,9 +98,9 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
 
         return;
       }
-      if (event is ChangedNotificationAddressee) {
+      if (event is ChangedNotificationFrom) {
         if (event.value != null)
-          newValue = currentState.value.copyWith(addressee: await memberRepository(appId: appId).get(event.value));
+          newValue = currentState.value.copyWith(from: await memberRepository(appId: appId).get(event.value));
         else
           newValue = new NotificationModel(
                                  documentID: currentState.value.documentID,
@@ -107,15 +108,15 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
                                  appId: currentState.value.appId,
                                  description: currentState.value.description,
                                  read: currentState.value.read,
-                                 addressee: null,
-                                 action: currentState.value.action,
+                                 from: null,
+                                 addresseeMemberId: currentState.value.addresseeMemberId,
           );
         yield SubmittableNotificationForm(value: newValue);
 
         return;
       }
-      if (event is ChangedNotificationAction) {
-        newValue = currentState.value.copyWith(action: event.value);
+      if (event is ChangedNotificationAddresseeMemberId) {
+        newValue = currentState.value.copyWith(addresseeMemberId: event.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;

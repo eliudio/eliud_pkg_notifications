@@ -134,7 +134,8 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   final TextEditingController _appIdController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   bool _readSelection;
-  String _addressee;
+  String _from;
+  final TextEditingController _addresseeMemberIdController = TextEditingController();
 
 
   _MyNotificationFormState(this.formAction);
@@ -147,6 +148,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     _appIdController.addListener(_onAppIdChanged);
     _descriptionController.addListener(_onDescriptionChanged);
     _readSelection = false;
+    _addresseeMemberIdController.addListener(_onAddresseeMemberIdChanged);
   }
 
   @override
@@ -175,10 +177,14 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
         _readSelection = state.value.read;
         else
         _readSelection = false;
-        if (state.value.addressee != null)
-          _addressee= state.value.addressee.documentID;
+        if (state.value.from != null)
+          _from= state.value.from.documentID;
         else
-          _addressee= "";
+          _from= "";
+        if (state.value.addresseeMemberId != null)
+          _addresseeMemberIdController.text = state.value.addresseeMemberId.toString();
+        else
+          _addresseeMemberIdController.text = "";
       }
       if (state is NotificationFormInitialized) {
         List<Widget> children = List();
@@ -198,11 +204,6 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                     onChanged: _readOnly(accessState, state) ? null : (val) {
                       setSelectionRead(val);
                     }),
-          );
-
-        children.add(
-
-                ActionField(AccessBloc.appId(context), state.value.action, _onActionChanged)
           );
 
 
@@ -267,9 +268,53 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
+
+        children.add(Container(height: 20.0));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+
+
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Text('From',
+                      style: TextStyle(
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                ));
+
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "members", value: _addressee, trigger: _onAddresseeSelected, optional: false),
+                DropdownButtonComponentFactory().createNew(id: "members", value: _from, trigger: _onFromSelected, optional: false),
+          );
+
+
+        children.add(Container(height: 20.0));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+
+
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Text('To',
+                      style: TextStyle(
+                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                ));
+
+        children.add(
+
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _addresseeMemberIdController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Addressee MemberId',
+                  ),
+                  keyboardType: TextInputType.text,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is AddresseeMemberIdNotificationFormError ? state.message : null;
+                  },
+                ),
           );
 
 
@@ -292,8 +337,8 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                               appId: state.value.appId, 
                               description: state.value.description, 
                               read: state.value.read, 
-                              addressee: state.value.addressee, 
-                              action: state.value.action, 
+                              from: state.value.from, 
+                              addresseeMemberId: state.value.addresseeMemberId, 
                         )));
                       } else {
                         BlocProvider.of<NotificationListBloc>(context).add(
@@ -303,8 +348,8 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                               appId: state.value.appId, 
                               description: state.value.description, 
                               read: state.value.read, 
-                              addressee: state.value.addressee, 
-                              action: state.value.action, 
+                              from: state.value.from, 
+                              addresseeMemberId: state.value.addresseeMemberId, 
                           )));
                       }
                       if (widget.submitAction != null) {
@@ -360,17 +405,16 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     _myFormBloc.add(ChangedNotificationRead(value: val));
   }
 
-  void _onAddresseeSelected(String val) {
+  void _onFromSelected(String val) {
     setState(() {
-      _addressee = val;
+      _from = val;
     });
-    _myFormBloc.add(ChangedNotificationAddressee(value: val));
+    _myFormBloc.add(ChangedNotificationFrom(value: val));
   }
 
 
-  void _onActionChanged(value) {
-    _myFormBloc.add(ChangedNotificationAction(value: value));
-    
+  void _onAddresseeMemberIdChanged() {
+    _myFormBloc.add(ChangedNotificationAddresseeMemberId(value: _addresseeMemberIdController.text));
   }
 
 
@@ -380,6 +424,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     _documentIDController.dispose();
     _appIdController.dispose();
     _descriptionController.dispose();
+    _addresseeMemberIdController.dispose();
     super.dispose();
   }
 

@@ -33,6 +33,18 @@ import 'package:eliud_pkg_notifications/model/notification_entity.dart';
 
 import 'package:eliud_core/tools/random.dart';
 
+enum NotificationStatus {
+  Closed, Open, Unknown
+}
+
+
+NotificationStatus toNotificationStatus(int index) {
+  switch (index) {
+    case 0: return NotificationStatus.Closed;
+    case 1: return NotificationStatus.Open;
+  }
+  return NotificationStatus.Unknown;
+}
 
 
 class NotificationModel {
@@ -43,19 +55,20 @@ class NotificationModel {
   String appId;
   String description;
   bool read;
-  MemberModel from;
-  String addresseeMemberId;
+  String reporterId;
+  String assigneeId;
+  NotificationStatus status;
 
-  NotificationModel({this.documentID, this.timestamp, this.appId, this.description, this.read, this.from, this.addresseeMemberId, })  {
+  NotificationModel({this.documentID, this.timestamp, this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, })  {
     assert(documentID != null);
   }
 
-  NotificationModel copyWith({String documentID, String timestamp, String appId, String description, bool read, MemberModel from, String addresseeMemberId, }) {
-    return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, from: from ?? this.from, addresseeMemberId: addresseeMemberId ?? this.addresseeMemberId, );
+  NotificationModel copyWith({String documentID, String timestamp, String appId, String description, bool read, String reporterId, String assigneeId, NotificationStatus status, }) {
+    return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, reporterId: reporterId ?? this.reporterId, assigneeId: assigneeId ?? this.assigneeId, status: status ?? this.status, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ timestamp.hashCode ^ appId.hashCode ^ description.hashCode ^ read.hashCode ^ from.hashCode ^ addresseeMemberId.hashCode;
+  int get hashCode => documentID.hashCode ^ timestamp.hashCode ^ appId.hashCode ^ description.hashCode ^ read.hashCode ^ reporterId.hashCode ^ assigneeId.hashCode ^ status.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -67,12 +80,13 @@ class NotificationModel {
           appId == other.appId &&
           description == other.description &&
           read == other.read &&
-          from == other.from &&
-          addresseeMemberId == other.addresseeMemberId;
+          reporterId == other.reporterId &&
+          assigneeId == other.assigneeId &&
+          status == other.status;
 
   @override
   String toString() {
-    return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, from: $from, addresseeMemberId: $addresseeMemberId}';
+    return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
   NotificationEntity toEntity({String appId}) {
@@ -80,8 +94,9 @@ class NotificationModel {
           timestamp: timestamp,           appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
           read: (read != null) ? read : null, 
-          fromId: (from != null) ? from.documentID : null, 
-          addresseeMemberId: (addresseeMemberId != null) ? addresseeMemberId : null, 
+          reporterId: (reporterId != null) ? reporterId : null, 
+          assigneeId: (assigneeId != null) ? assigneeId : null, 
+          status: (status != null) ? status.index : null, 
     );
   }
 
@@ -93,21 +108,14 @@ class NotificationModel {
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
-          addresseeMemberId: entity.addresseeMemberId, 
+          reporterId: entity.reporterId, 
+          assigneeId: entity.assigneeId, 
+          status: toNotificationStatus(entity.status), 
     );
   }
 
   static Future<NotificationModel> fromEntityPlus(String documentID, NotificationEntity entity, { String appId}) async {
     if (entity == null) return null;
-
-    MemberModel fromHolder;
-    if (entity.fromId != null) {
-      try {
-        await memberRepository(appId: appId).get(entity.fromId).then((val) {
-          fromHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
-    }
 
     return NotificationModel(
           documentID: documentID, 
@@ -115,8 +123,9 @@ class NotificationModel {
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
-          from: fromHolder, 
-          addresseeMemberId: entity.addresseeMemberId, 
+          reporterId: entity.reporterId, 
+          assigneeId: entity.assigneeId, 
+          status: toNotificationStatus(entity.status), 
     );
   }
 

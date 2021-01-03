@@ -143,15 +143,15 @@ class ReadNotificationFormError extends NotificationFormError {
 }
 
 
-class FromNotificationFormError extends NotificationFormError { 
-  const FromNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
+class ReporterIdNotificationFormError extends NotificationFormError { 
+  const ReporterIdNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''FromNotificationFormError {
+    return '''ReporterIdNotificationFormError {
       value: $value,
       message: $message,
     }''';
@@ -159,15 +159,31 @@ class FromNotificationFormError extends NotificationFormError {
 }
 
 
-class AddresseeMemberIdNotificationFormError extends NotificationFormError { 
-  const AddresseeMemberIdNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
+class AssigneeIdNotificationFormError extends NotificationFormError { 
+  const AssigneeIdNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
 
   @override
   List<Object> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''AddresseeMemberIdNotificationFormError {
+    return '''AssigneeIdNotificationFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
+class StatusNotificationFormError extends NotificationFormError { 
+  const StatusNotificationFormError({ String message, NotificationModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''StatusNotificationFormError {
       value: $value,
       message: $message,
     }''';

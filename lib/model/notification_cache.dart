@@ -122,18 +122,7 @@ class NotificationCache implements NotificationRepository {
 
   static Future<NotificationModel> refreshRelations(NotificationModel model) async {
 
-    MemberModel fromHolder;
-    if (model.from != null) {
-      try {
-        await memberRepository().get(model.from.documentID).then((val) {
-          fromHolder = val;
-        }).catchError((error) {});
-      } catch (_) {}
-    }
-
     return model.copyWith(
-        from: fromHolder,
-
 
     );
   }

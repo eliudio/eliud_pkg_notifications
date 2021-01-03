@@ -26,19 +26,20 @@ class NotificationEntity {
   final String appId;
   final String description;
   final bool read;
-  final String fromId;
-  final String addresseeMemberId;
+  final String reporterId;
+  final String assigneeId;
+  final int status;
 
-  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.fromId, this.addresseeMemberId, });
+  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, });
 
   NotificationEntity copyWith({Object timestamp, }) {
-    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, fromId: fromId, addresseeMemberId: addresseeMemberId, );
+    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, reporterId: reporterId, assigneeId: assigneeId, status: status, );
   }
-  List<Object> get props => [timestamp, appId, description, read, fromId, addresseeMemberId, ];
+  List<Object> get props => [timestamp, appId, description, read, reporterId, assigneeId, status, ];
 
   @override
   String toString() {
-    return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, fromId: $fromId, addresseeMemberId: $addresseeMemberId}';
+    return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
   static NotificationEntity fromMap(Map map) {
@@ -49,8 +50,9 @@ class NotificationEntity {
       appId: map['appId'], 
       description: map['description'], 
       read: map['read'], 
-      fromId: map['fromId'], 
-      addresseeMemberId: map['addresseeMemberId'], 
+      reporterId: map['reporterId'], 
+      assigneeId: map['assigneeId'], 
+      status: map['status'], 
     );
   }
 
@@ -63,10 +65,12 @@ class NotificationEntity {
       else theDocument["description"] = null;
     if (read != null) theDocument["read"] = read;
       else theDocument["read"] = null;
-    if (fromId != null) theDocument["fromId"] = fromId;
-      else theDocument["fromId"] = null;
-    if (addresseeMemberId != null) theDocument["addresseeMemberId"] = addresseeMemberId;
-      else theDocument["addresseeMemberId"] = null;
+    if (reporterId != null) theDocument["reporterId"] = reporterId;
+      else theDocument["reporterId"] = null;
+    if (assigneeId != null) theDocument["assigneeId"] = assigneeId;
+      else theDocument["assigneeId"] = null;
+    if (status != null) theDocument["status"] = status;
+      else theDocument["status"] = null;
     return theDocument;
   }
 

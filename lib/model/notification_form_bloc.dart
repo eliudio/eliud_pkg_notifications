@@ -55,7 +55,8 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
                                                documentID: "",
                                  appId: "",
                                  description: "",
-                                 addresseeMemberId: "",
+                                 reporterId: "",
+                                 assigneeId: "",
 
         ));
         yield loaded;
@@ -98,25 +99,20 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
 
         return;
       }
-      if (event is ChangedNotificationFrom) {
-        if (event.value != null)
-          newValue = currentState.value.copyWith(from: await memberRepository(appId: appId).get(event.value));
-        else
-          newValue = new NotificationModel(
-                                 documentID: currentState.value.documentID,
-                                 timestamp: currentState.value.timestamp,
-                                 appId: currentState.value.appId,
-                                 description: currentState.value.description,
-                                 read: currentState.value.read,
-                                 from: null,
-                                 addresseeMemberId: currentState.value.addresseeMemberId,
-          );
+      if (event is ChangedNotificationReporterId) {
+        newValue = currentState.value.copyWith(reporterId: event.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;
       }
-      if (event is ChangedNotificationAddresseeMemberId) {
-        newValue = currentState.value.copyWith(addresseeMemberId: event.value);
+      if (event is ChangedNotificationAssigneeId) {
+        newValue = currentState.value.copyWith(assigneeId: event.value);
+        yield SubmittableNotificationForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedNotificationStatus) {
+        newValue = currentState.value.copyWith(status: event.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;

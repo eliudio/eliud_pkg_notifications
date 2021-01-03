@@ -55,17 +55,24 @@
       "fieldType": "bool"
     },
     {
-      "fieldName": "from",
-      "displayName": "From",
-      "fieldType": "Member",
-      "association": true,
-      "group": "from"
+      "fieldName": "reporterId",
+      "remarks": "The one who sent the message. This is a a string, not a Member to be able to receive messages from members this person has no access to",
+      "displayName": "Reporter",
+      "fieldType": "String",
+      "group": "Reporter"
     },
     {
-      "fieldName": "addresseeMemberId",
-      "displayName": "Addressee MemberId",
+      "fieldName": "assigneeId",
+      "remarks": "The one who assignment is assigned to. This is a a string, not a Member to be able to assign to a Member to which the currently logged in Member does not have access to",
+      "displayName": "Assignee",
       "fieldType": "String",
-      "group": "addressee"
+      "group": "Assignee"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "enum",
+      "enumName": "NotificationStatus",
+      "enumValues" : [ "Closed", "Open" ]
     }
   ],
   "groups": [
@@ -74,16 +81,12 @@
         "description": "General"
     },
     {
-        "group": "member",
-        "description": "Member"
+        "group": "Reporter",
+        "description": "Reporter"
     },
     {
-        "group": "from",
-        "description": "From"
-    },
-    {
-        "group": "addressee",
-        "description": "To"
+        "group": "Assignee",
+        "description": "Assignee"
     }
  ],
   "listFields": {

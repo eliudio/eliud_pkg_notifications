@@ -14,7 +14,7 @@ abstract class AbstractNotificationPlatform {
 
 class NotificationPlatform extends AbstractNotificationPlatform {
 
-  Future<void> sendMessage(BuildContext context, String addresseeMemberId, String message) async {
+  Future<void> sendMessage(BuildContext context, String assigneeId, String message) async {
     AccessState accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       await AbstractRepositorySingleton.singleton.notificationRepository(accessState.app.documentID).add(NotificationModel(
@@ -22,8 +22,9 @@ class NotificationPlatform extends AbstractNotificationPlatform {
         appId:  accessState.app.documentID,
         description: message,
         read: false,
-        addresseeMemberId: addresseeMemberId,
-        from: accessState.member
+        status: NotificationStatus.Open,
+        assigneeId: assigneeId,
+        reporterId: accessState.member.documentID
       ));
     }
   }

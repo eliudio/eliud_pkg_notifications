@@ -24,7 +24,7 @@ class MyNotificationListItem extends StatelessWidget {
       key: Key('__Notification_item_${value.documentID}'),
       onDismissed: (_) {
         BlocProvider.of<NotificationListBloc>(context)
-            .add(DeleteNotificationList(value: value));
+            .add(UpdateNotificationList(value: value.copyWith(status: NotificationStatus.Closed)));
       },
       child: ListTile(
         onTap: () {},

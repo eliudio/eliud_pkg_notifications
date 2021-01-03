@@ -23,7 +23,6 @@ import '../model/notification_js_firestore.dart';
 import '../model/notification_repository.dart';
 import '../model/notification_cache.dart';
 
-import '../model/notification_model.dart';
 
 class JsRepositorySingleton extends AbstractRepositorySingleton {
     var _dashboardRepository = HashMap<String, DashboardRepository>();

@@ -134,8 +134,9 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   final TextEditingController _appIdController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   bool _readSelection;
-  String _from;
-  final TextEditingController _addresseeMemberIdController = TextEditingController();
+  final TextEditingController _reporterIdController = TextEditingController();
+  final TextEditingController _assigneeIdController = TextEditingController();
+  int _statusSelectedRadioTile;
 
 
   _MyNotificationFormState(this.formAction);
@@ -148,7 +149,9 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     _appIdController.addListener(_onAppIdChanged);
     _descriptionController.addListener(_onDescriptionChanged);
     _readSelection = false;
-    _addresseeMemberIdController.addListener(_onAddresseeMemberIdChanged);
+    _reporterIdController.addListener(_onReporterIdChanged);
+    _assigneeIdController.addListener(_onAssigneeIdChanged);
+    _statusSelectedRadioTile = 0;
   }
 
   @override
@@ -177,14 +180,18 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
         _readSelection = state.value.read;
         else
         _readSelection = false;
-        if (state.value.from != null)
-          _from= state.value.from.documentID;
+        if (state.value.reporterId != null)
+          _reporterIdController.text = state.value.reporterId.toString();
         else
-          _from= "";
-        if (state.value.addresseeMemberId != null)
-          _addresseeMemberIdController.text = state.value.addresseeMemberId.toString();
+          _reporterIdController.text = "";
+        if (state.value.assigneeId != null)
+          _assigneeIdController.text = state.value.assigneeId.toString();
         else
-          _addresseeMemberIdController.text = "";
+          _assigneeIdController.text = "";
+        if (state.value.status != null)
+          _statusSelectedRadioTile = state.value.status.index;
+        else
+          _statusSelectedRadioTile = 0;
       }
       if (state is NotificationFormInitialized) {
         List<Widget> children = List();
@@ -204,6 +211,33 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                     onChanged: _readOnly(accessState, state) ? null : (val) {
                       setSelectionRead(val);
                     }),
+          );
+
+        children.add(
+
+                RadioListTile(
+                    value: 0,
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    groupValue: _statusSelectedRadioTile,
+                    title: Text("Closed", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Closed", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                      setSelectionStatus(val);
+                    },
+                ),
+          );
+        children.add(
+
+                RadioListTile(
+                    value: 1,
+                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    groupValue: _statusSelectedRadioTile,
+                    title: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    subtitle: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                      setSelectionStatus(val);
+                    },
+                ),
           );
 
 
@@ -263,27 +297,27 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Text('Member',
-                      style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
-                ));
-
-
-        children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
-
-
-         children.add(Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Text('From',
+                  child: Text('Reporter',
                       style: TextStyle(
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "members", value: _from, trigger: _onFromSelected, optional: false),
+                TextFormField(
+                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                  readOnly: _readOnly(accessState, state),
+                  controller: _reporterIdController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    labelText: 'Reporter',
+                  ),
+                  keyboardType: TextInputType.text,
+                  autovalidate: true,
+                  validator: (_) {
+                    return state is ReporterIdNotificationFormError ? state.message : null;
+                  },
+                ),
           );
 
 
@@ -294,7 +328,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Text('To',
+                  child: Text('Assignee',
                       style: TextStyle(
                           color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
@@ -304,15 +338,15 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                 TextFormField(
                 style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
-                  controller: _addresseeMemberIdController,
+                  controller: _assigneeIdController,
                   decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
-                    labelText: 'Addressee MemberId',
+                    labelText: 'Assignee',
                   ),
                   keyboardType: TextInputType.text,
                   autovalidate: true,
                   validator: (_) {
-                    return state is AddresseeMemberIdNotificationFormError ? state.message : null;
+                    return state is AssigneeIdNotificationFormError ? state.message : null;
                   },
                 ),
           );
@@ -337,8 +371,9 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                               appId: state.value.appId, 
                               description: state.value.description, 
                               read: state.value.read, 
-                              from: state.value.from, 
-                              addresseeMemberId: state.value.addresseeMemberId, 
+                              reporterId: state.value.reporterId, 
+                              assigneeId: state.value.assigneeId, 
+                              status: state.value.status, 
                         )));
                       } else {
                         BlocProvider.of<NotificationListBloc>(context).add(
@@ -348,8 +383,9 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                               appId: state.value.appId, 
                               description: state.value.description, 
                               read: state.value.read, 
-                              from: state.value.from, 
-                              addresseeMemberId: state.value.addresseeMemberId, 
+                              reporterId: state.value.reporterId, 
+                              assigneeId: state.value.assigneeId, 
+                              status: state.value.status, 
                           )));
                       }
                       if (widget.submitAction != null) {
@@ -405,16 +441,21 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     _myFormBloc.add(ChangedNotificationRead(value: val));
   }
 
-  void _onFromSelected(String val) {
-    setState(() {
-      _from = val;
-    });
-    _myFormBloc.add(ChangedNotificationFrom(value: val));
+  void _onReporterIdChanged() {
+    _myFormBloc.add(ChangedNotificationReporterId(value: _reporterIdController.text));
   }
 
 
-  void _onAddresseeMemberIdChanged() {
-    _myFormBloc.add(ChangedNotificationAddresseeMemberId(value: _addresseeMemberIdController.text));
+  void _onAssigneeIdChanged() {
+    _myFormBloc.add(ChangedNotificationAssigneeId(value: _assigneeIdController.text));
+  }
+
+
+  void setSelectionStatus(int val) {
+    setState(() {
+      _statusSelectedRadioTile = val;
+    });
+    _myFormBloc.add(ChangedNotificationStatus(value: toNotificationStatus(val)));
   }
 
 
@@ -424,7 +465,8 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
     _documentIDController.dispose();
     _appIdController.dispose();
     _descriptionController.dispose();
-    _addresseeMemberIdController.dispose();
+    _reporterIdController.dispose();
+    _assigneeIdController.dispose();
     super.dispose();
   }
 

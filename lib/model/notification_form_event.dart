@@ -119,27 +119,39 @@ class ChangedNotificationRead extends NotificationFormEvent {
   String toString() => 'ChangedNotificationRead{ value: $value }';
 }
 
-class ChangedNotificationFrom extends NotificationFormEvent {
+class ChangedNotificationReporterId extends NotificationFormEvent {
   final String value;
 
-  ChangedNotificationFrom({this.value});
+  ChangedNotificationReporterId({this.value});
 
   @override
   List<Object> get props => [ value ];
 
   @override
-  String toString() => 'ChangedNotificationFrom{ value: $value }';
+  String toString() => 'ChangedNotificationReporterId{ value: $value }';
 }
 
-class ChangedNotificationAddresseeMemberId extends NotificationFormEvent {
+class ChangedNotificationAssigneeId extends NotificationFormEvent {
   final String value;
 
-  ChangedNotificationAddresseeMemberId({this.value});
+  ChangedNotificationAssigneeId({this.value});
 
   @override
   List<Object> get props => [ value ];
 
   @override
-  String toString() => 'ChangedNotificationAddresseeMemberId{ value: $value }';
+  String toString() => 'ChangedNotificationAssigneeId{ value: $value }';
+}
+
+class ChangedNotificationStatus extends NotificationFormEvent {
+  final NotificationStatus value;
+
+  ChangedNotificationStatus({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedNotificationStatus{ value: $value }';
 }
 

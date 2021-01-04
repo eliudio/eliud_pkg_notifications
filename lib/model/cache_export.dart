@@ -13,5 +13,5 @@
 
 */
 
-export '../model/dashboard_cache.dart';
 export '../model/notification_cache.dart';
+export '../model/notification_dashboard_cache.dart';

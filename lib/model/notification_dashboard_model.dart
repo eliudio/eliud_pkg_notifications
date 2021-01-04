@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_model.dart
+ notification_dashboard_model.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -29,25 +29,25 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 
-import 'package:eliud_pkg_notifications/model/dashboard_entity.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_entity.dart';
 
 import 'package:eliud_core/tools/random.dart';
 
 
 
-class DashboardModel {
+class NotificationDashboardModel {
   String documentID;
 
   // This is the identifier of the app to which this feed belongs
   String appId;
   String description;
 
-  DashboardModel({this.documentID, this.appId, this.description, })  {
+  NotificationDashboardModel({this.documentID, this.appId, this.description, })  {
     assert(documentID != null);
   }
 
-  DashboardModel copyWith({String documentID, String appId, String description, }) {
-    return DashboardModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, );
+  NotificationDashboardModel copyWith({String documentID, String appId, String description, }) {
+    return NotificationDashboardModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, );
   }
 
   @override
@@ -56,7 +56,7 @@ class DashboardModel {
   @override
   bool operator ==(Object other) =>
           identical(this, other) ||
-          other is DashboardModel &&
+          other is NotificationDashboardModel &&
           runtimeType == other.runtimeType && 
           documentID == other.documentID &&
           appId == other.appId &&
@@ -64,29 +64,29 @@ class DashboardModel {
 
   @override
   String toString() {
-    return 'DashboardModel{documentID: $documentID, appId: $appId, description: $description}';
+    return 'NotificationDashboardModel{documentID: $documentID, appId: $appId, description: $description}';
   }
 
-  DashboardEntity toEntity({String appId}) {
-    return DashboardEntity(
+  NotificationDashboardEntity toEntity({String appId}) {
+    return NotificationDashboardEntity(
           appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
     );
   }
 
-  static DashboardModel fromEntity(String documentID, DashboardEntity entity) {
+  static NotificationDashboardModel fromEntity(String documentID, NotificationDashboardEntity entity) {
     if (entity == null) return null;
-    return DashboardModel(
+    return NotificationDashboardModel(
           documentID: documentID, 
           appId: entity.appId, 
           description: entity.description, 
     );
   }
 
-  static Future<DashboardModel> fromEntityPlus(String documentID, DashboardEntity entity, { String appId}) async {
+  static Future<NotificationDashboardModel> fromEntityPlus(String documentID, NotificationDashboardEntity entity, { String appId}) async {
     if (entity == null) return null;
 
-    return DashboardModel(
+    return NotificationDashboardModel(
           documentID: documentID, 
           appId: entity.appId, 
           description: entity.description, 

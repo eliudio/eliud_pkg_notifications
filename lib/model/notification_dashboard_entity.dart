@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_entity.dart
+ notification_dashboard_entity.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -21,24 +21,24 @@ import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
-class DashboardEntity {
+class NotificationDashboardEntity {
   final String appId;
   final String description;
 
-  DashboardEntity({this.appId, this.description, });
+  NotificationDashboardEntity({this.appId, this.description, });
 
 
   List<Object> get props => [appId, description, ];
 
   @override
   String toString() {
-    return 'DashboardEntity{appId: $appId, description: $description}';
+    return 'NotificationDashboardEntity{appId: $appId, description: $description}';
   }
 
-  static DashboardEntity fromMap(Map map) {
+  static NotificationDashboardEntity fromMap(Map map) {
     if (map == null) return null;
 
-    return DashboardEntity(
+    return NotificationDashboardEntity(
       appId: map['appId'], 
       description: map['description'], 
     );
@@ -53,7 +53,7 @@ class DashboardEntity {
     return theDocument;
   }
 
-  static DashboardEntity fromJsonString(String json) {
+  static NotificationDashboardEntity fromJsonString(String json) {
     Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }

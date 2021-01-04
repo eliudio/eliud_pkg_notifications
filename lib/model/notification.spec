@@ -93,13 +93,5 @@
     "title": "timestamp.toString()",
     "subTitle": "documentID"
   },
-  "depends": ["eliud_core"],
-  "extraImports": {
-    "alternative_list_widgets" : "import 'package:eliud_pkg_notifications/extensions/widgets/my_notification_list_item.dart';"
-  },
-  "alternativeListWidgets": [
-    {
-        "listItemWidget": "MyNotificationListItem"
-    }
-  ]
+  "depends": ["eliud_core"]
 }

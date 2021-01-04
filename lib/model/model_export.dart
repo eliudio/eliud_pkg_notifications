@@ -13,5 +13,5 @@
 
 */
 
-export '../model/dashboard_model.dart';
 export '../model/notification_model.dart';
+export '../model/notification_dashboard_model.dart';

@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_form_bloc.dart
+ notification_dashboard_form_bloc.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -37,21 +37,21 @@ import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
-import 'package:eliud_pkg_notifications/model/dashboard_form_event.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_form_state.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_repository.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_form_event.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_form_state.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
 
-class DashboardFormBloc extends Bloc<DashboardFormEvent, DashboardFormState> {
+class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent, NotificationDashboardFormState> {
   final FormAction formAction;
   final String appId;
 
-  DashboardFormBloc(this.appId, { this.formAction }): super(DashboardFormUninitialized());
+  NotificationDashboardFormBloc(this.appId, { this.formAction }): super(NotificationDashboardFormUninitialized());
   @override
-  Stream<DashboardFormState> mapEventToState(DashboardFormEvent event) async* {
+  Stream<NotificationDashboardFormState> mapEventToState(NotificationDashboardFormEvent event) async* {
     final currentState = state;
-    if (currentState is DashboardFormUninitialized) {
-      if (event is InitialiseNewDashboardFormEvent) {
-        DashboardFormLoaded loaded = DashboardFormLoaded(value: DashboardModel(
+    if (currentState is NotificationDashboardFormUninitialized) {
+      if (event is InitialiseNewNotificationDashboardFormEvent) {
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: NotificationDashboardModel(
                                                documentID: "",
                                  appId: "",
                                  description: "",
@@ -63,37 +63,37 @@ class DashboardFormBloc extends Bloc<DashboardFormEvent, DashboardFormState> {
       }
 
 
-      if (event is InitialiseDashboardFormEvent) {
+      if (event is InitialiseNotificationDashboardFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        DashboardFormLoaded loaded = DashboardFormLoaded(value: await dashboardRepository(appId: appId).get(event.value.documentID));
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId).get(event.value.documentID));
         yield loaded;
         return;
-      } else if (event is InitialiseDashboardFormNoLoadEvent) {
-        DashboardFormLoaded loaded = DashboardFormLoaded(value: event.value);
+      } else if (event is InitialiseNotificationDashboardFormNoLoadEvent) {
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event.value);
         yield loaded;
         return;
       }
-    } else if (currentState is DashboardFormInitialized) {
-      DashboardModel newValue = null;
-      if (event is ChangedDashboardDocumentID) {
+    } else if (currentState is NotificationDashboardFormInitialized) {
+      NotificationDashboardModel newValue = null;
+      if (event is ChangedNotificationDashboardDocumentID) {
         newValue = currentState.value.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
           yield* _isDocumentIDValid(event.value, newValue).asStream();
         } else {
-          yield SubmittableDashboardForm(value: newValue);
+          yield SubmittableNotificationDashboardForm(value: newValue);
         }
 
         return;
       }
-      if (event is ChangedDashboardAppId) {
+      if (event is ChangedNotificationDashboardAppId) {
         newValue = currentState.value.copyWith(appId: event.value);
-        yield SubmittableDashboardForm(value: newValue);
+        yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
       }
-      if (event is ChangedDashboardDescription) {
+      if (event is ChangedNotificationDashboardDescription) {
         newValue = currentState.value.copyWith(description: event.value);
-        yield SubmittableDashboardForm(value: newValue);
+        yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
       }
@@ -101,15 +101,15 @@ class DashboardFormBloc extends Bloc<DashboardFormEvent, DashboardFormState> {
   }
 
 
-  DocumentIDDashboardFormError error(String message, DashboardModel newValue) => DocumentIDDashboardFormError(message: message, value: newValue);
+  DocumentIDNotificationDashboardFormError error(String message, NotificationDashboardModel newValue) => DocumentIDNotificationDashboardFormError(message: message, value: newValue);
 
-  Future<DashboardFormState> _isDocumentIDValid(String value, DashboardModel newValue) async {
+  Future<NotificationDashboardFormState> _isDocumentIDValid(String value, NotificationDashboardModel newValue) async {
     if (value == null) return Future.value(error("Provide value for documentID", newValue));
     if (value.length == 0) return Future.value(error("Provide value for documentID", newValue));
-    Future<DashboardModel> findDocument = dashboardRepository(appId: appId).get(value);
+    Future<NotificationDashboardModel> findDocument = notificationDashboardRepository(appId: appId).get(value);
     return await findDocument.then((documentFound) {
       if (documentFound == null) {
-        return SubmittableDashboardForm(value: newValue);
+        return SubmittableNotificationDashboardForm(value: newValue);
       } else {
         return error("Invalid documentID: already exists", newValue);
       }

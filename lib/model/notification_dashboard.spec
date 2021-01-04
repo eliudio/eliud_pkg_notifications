@@ -1,5 +1,5 @@
 {
-  "id": "Dashboard",
+  "id": "NotificationDashboard",
   "packageName": "eliud_pkg_notifications",
   "isAppModel": true,
   "generate": {

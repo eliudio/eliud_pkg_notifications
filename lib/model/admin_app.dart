@@ -52,27 +52,6 @@ class AdminApp extends AdminAppInstallerBase {
   AdminApp(this.appId, this._drawer, this._endDrawer, this._appBar, this._homeMenu, this.menuItemColor, this.selectedMenuItemColor, this.backgroundColor);
 
 
-  PageModel _dashboardsPages() {
-    List<BodyComponentModel> components = List();
-    components.add(BodyComponentModel(
-      documentID: "internalWidget-dashboards", componentName: "eliud_pkg_notifications_internalWidgets", componentId: "dashboards"));
-    PageModel page = PageModel(
-        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
-        privilegeLevelRequired: OWNER_PRIVILEGES,
-        appId: appId,
-        documentID: "eliud_pkg_notifications_dashboards_page",
-        title: "Dashboards",
-        drawer: _drawer,
-        endDrawer: _endDrawer,
-        appBar: _appBar,
-        homeMenu: _homeMenu,
-        bodyComponents: components,
-        layout: PageLayout.OnlyTheFirstComponent
-    );
-    return page;
-  }
-
-
   PageModel _notificationsPages() {
     List<BodyComponentModel> components = List();
     components.add(BodyComponentModel(
@@ -94,11 +73,32 @@ class AdminApp extends AdminAppInstallerBase {
   }
 
 
+  PageModel _notificationDashboardsPages() {
+    List<BodyComponentModel> components = List();
+    components.add(BodyComponentModel(
+      documentID: "internalWidget-notificationDashboards", componentName: "eliud_pkg_notifications_internalWidgets", componentId: "notificationDashboards"));
+    PageModel page = PageModel(
+        readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
+        privilegeLevelRequired: OWNER_PRIVILEGES,
+        appId: appId,
+        documentID: "eliud_pkg_notifications_notificationdashboards_page",
+        title: "NotificationDashboards",
+        drawer: _drawer,
+        endDrawer: _endDrawer,
+        appBar: _appBar,
+        homeMenu: _homeMenu,
+        bodyComponents: components,
+        layout: PageLayout.OnlyTheFirstComponent
+    );
+    return page;
+  }
+
+
   Future<void> _setupAdminPages() {
 
-    return pageRepository(appId: appId).add(_dashboardsPages())
+    return pageRepository(appId: appId).add(_notificationsPages())
 
-        .then((_) => pageRepository(appId: appId).add(_notificationsPages()))
+        .then((_) => pageRepository(appId: appId).add(_notificationDashboardsPages()))
 
     ;
   }
@@ -118,21 +118,21 @@ class AdminMenu extends AdminAppMenuInstallerBase {
 
     menuItems.add(
       MenuItemModel(
-        documentID: "Dashboards",
-        text: "Dashboards",
-        description: "Dashboards",
-        icon: IconModel(codePoint: 0xe88a, fontFamily: "MaterialIcons"),
-        action: GotoPage(appId, pageID: "eliud_pkg_notifications_dashboards_page"))
-    );
-
-
-    menuItems.add(
-      MenuItemModel(
         documentID: "Notifications",
         text: "Notifications",
         description: "Notifications",
         icon: IconModel(codePoint: 0xe88a, fontFamily: "MaterialIcons"),
         action: GotoPage(appId, pageID: "eliud_pkg_notifications_notifications_page"))
+    );
+
+
+    menuItems.add(
+      MenuItemModel(
+        documentID: "NotificationDashboards",
+        text: "NotificationDashboards",
+        description: "NotificationDashboards",
+        icon: IconModel(codePoint: 0xe88a, fontFamily: "MaterialIcons"),
+        action: GotoPage(appId, pageID: "eliud_pkg_notifications_notificationdashboards_page"))
     );
 
 

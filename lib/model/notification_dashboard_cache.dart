@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_repository.dart
+ notification_dashboard_repository.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -16,8 +16,8 @@
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_model.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_repository.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
@@ -32,28 +32,28 @@ import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
-class DashboardCache implements DashboardRepository {
+class NotificationDashboardCache implements NotificationDashboardRepository {
 
-  final DashboardRepository reference;
-  final Map<String, DashboardModel> fullCache = Map();
+  final NotificationDashboardRepository reference;
+  final Map<String, NotificationDashboardModel> fullCache = Map();
 
-  DashboardCache(this.reference);
+  NotificationDashboardCache(this.reference);
 
-  Future<DashboardModel> add(DashboardModel value) {
+  Future<NotificationDashboardModel> add(NotificationDashboardModel value) {
     return reference.add(value).then((newValue) {
       fullCache[value.documentID] = newValue;
       return newValue;
     });
   }
 
-  Future<void> delete(DashboardModel value){
+  Future<void> delete(NotificationDashboardModel value){
     fullCache.remove(value.documentID);
     reference.delete(value);
     return Future.value();
   }
 
-  Future<DashboardModel> get(String id){
-    DashboardModel value = fullCache[id];
+  Future<NotificationDashboardModel> get(String id){
+    NotificationDashboardModel value = fullCache[id];
     if (value != null) return refreshRelations(value);
     return reference.get(id).then((value) {
       fullCache[id] = value;
@@ -61,7 +61,7 @@ class DashboardCache implements DashboardRepository {
     });
   }
 
-  Future<DashboardModel> update(DashboardModel value) {
+  Future<NotificationDashboardModel> update(NotificationDashboardModel value) {
     return reference.update(value).then((newValue) {
       fullCache[value.documentID] = newValue;
       return newValue;
@@ -69,22 +69,22 @@ class DashboardCache implements DashboardRepository {
   }
 
   @override
-  Stream<List<DashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+  Stream<List<NotificationDashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     return reference.values(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  Stream<List<DashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
+  Stream<List<NotificationDashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     return reference.valuesWithDetails(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  Future<List<DashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
+  Future<List<NotificationDashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     return await reference.valuesList(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
   
   @override
-  Future<List<DashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
+  Future<List<NotificationDashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     return await reference.valuesListWithDetails(currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, setLastDoc: setLastDoc, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
@@ -106,21 +106,21 @@ class DashboardCache implements DashboardRepository {
   }
 
   @override
-  StreamSubscription<List<DashboardModel>> listen(trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<NotificationDashboardModel>> listen(trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     return reference.listen(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  StreamSubscription<List<DashboardModel>> listenWithDetails(trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
+  StreamSubscription<List<NotificationDashboardModel>> listenWithDetails(trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     return reference.listenWithDetails(trigger, currentMember: currentMember, orderBy: orderBy, descending: descending, startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery);
   }
 
   @override
-  StreamSubscription<DashboardModel> listenTo(String documentId, changed) {
+  StreamSubscription<NotificationDashboardModel> listenTo(String documentId, changed) {
     reference.listenTo(documentId, changed);
   }
 
-  static Future<DashboardModel> refreshRelations(DashboardModel model) async {
+  static Future<NotificationDashboardModel> refreshRelations(NotificationDashboardModel model) async {
 
     return model.copyWith(
 

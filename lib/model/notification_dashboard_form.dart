@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_form.dart
+ notification_dashboard_form.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -53,94 +53,94 @@ import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
-import 'package:eliud_pkg_notifications/model/dashboard_list_bloc.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_list_event.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_model.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_form_bloc.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_form_event.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_form_state.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_bloc.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_event.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_form_bloc.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_form_event.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_form_state.dart';
 
 
-class DashboardForm extends StatelessWidget {
+class NotificationDashboardForm extends StatelessWidget {
   FormAction formAction;
-  DashboardModel value;
+  NotificationDashboardModel value;
   ActionModel submitAction;
 
-  DashboardForm({Key key, @required this.formAction, @required this.value, this.submitAction}) : super(key: key);
+  NotificationDashboardForm({Key key, @required this.formAction, @required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
     var app = AccessBloc.app(context);
     if (formAction == FormAction.ShowData) {
-      return BlocProvider<DashboardFormBloc >(
-            create: (context) => DashboardFormBloc(AccessBloc.appId(context),
+      return BlocProvider<NotificationDashboardFormBloc >(
+            create: (context) => NotificationDashboardFormBloc(AccessBloc.appId(context),
                                        formAction: formAction,
 
-                                                )..add(InitialiseDashboardFormEvent(value: value)),
+                                                )..add(InitialiseNotificationDashboardFormEvent(value: value)),
   
-        child: MyDashboardForm(submitAction: submitAction, formAction: formAction),
+        child: MyNotificationDashboardForm(submitAction: submitAction, formAction: formAction),
           );
     } if (formAction == FormAction.ShowPreloadedData) {
-      return BlocProvider<DashboardFormBloc >(
-            create: (context) => DashboardFormBloc(AccessBloc.appId(context),
+      return BlocProvider<NotificationDashboardFormBloc >(
+            create: (context) => NotificationDashboardFormBloc(AccessBloc.appId(context),
                                        formAction: formAction,
 
-                                                )..add(InitialiseDashboardFormNoLoadEvent(value: value)),
+                                                )..add(InitialiseNotificationDashboardFormNoLoadEvent(value: value)),
   
-        child: MyDashboardForm(submitAction: submitAction, formAction: formAction),
+        child: MyNotificationDashboardForm(submitAction: submitAction, formAction: formAction),
           );
     } else {
       return Scaffold(
         appBar: formAction == FormAction.UpdateAction ?
                 AppBar(
-                    title: Text("Update Dashboard", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Update NotificationDashboard", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
                     flexibleSpace: Container(
                         decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
                   ) :
                 AppBar(
-                    title: Text("Add Dashboard", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Add NotificationDashboard", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
                     flexibleSpace: Container(
                         decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
                 ),
-        body: BlocProvider<DashboardFormBloc >(
-            create: (context) => DashboardFormBloc(AccessBloc.appId(context),
+        body: BlocProvider<NotificationDashboardFormBloc >(
+            create: (context) => NotificationDashboardFormBloc(AccessBloc.appId(context),
                                        formAction: formAction,
 
-                                                )..add((formAction == FormAction.UpdateAction ? InitialiseDashboardFormEvent(value: value) : InitialiseNewDashboardFormEvent())),
+                                                )..add((formAction == FormAction.UpdateAction ? InitialiseNotificationDashboardFormEvent(value: value) : InitialiseNewNotificationDashboardFormEvent())),
   
-        child: MyDashboardForm(submitAction: submitAction, formAction: formAction),
+        child: MyNotificationDashboardForm(submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
 
-class MyDashboardForm extends StatefulWidget {
+class MyNotificationDashboardForm extends StatefulWidget {
   final FormAction formAction;
   final ActionModel submitAction;
 
-  MyDashboardForm({this.formAction, this.submitAction});
+  MyNotificationDashboardForm({this.formAction, this.submitAction});
 
-  _MyDashboardFormState createState() => _MyDashboardFormState(this.formAction);
+  _MyNotificationDashboardFormState createState() => _MyNotificationDashboardFormState(this.formAction);
 }
 
 
-class _MyDashboardFormState extends State<MyDashboardForm> {
+class _MyNotificationDashboardFormState extends State<MyNotificationDashboardForm> {
   final FormAction formAction;
-  DashboardFormBloc _myFormBloc;
+  NotificationDashboardFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _appIdController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
 
-  _MyDashboardFormState(this.formAction);
+  _MyNotificationDashboardFormState(this.formAction);
 
   @override
   void initState() {
     super.initState();
-    _myFormBloc = BlocProvider.of<DashboardFormBloc>(context);
+    _myFormBloc = BlocProvider.of<NotificationDashboardFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
     _appIdController.addListener(_onAppIdChanged);
     _descriptionController.addListener(_onDescriptionChanged);
@@ -150,12 +150,12 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
   Widget build(BuildContext context) {
     var app = AccessBloc.app(context);
     var accessState = AccessBloc.getState(context);
-    return BlocBuilder<DashboardFormBloc, DashboardFormState>(builder: (context, state) {
-      if (state is DashboardFormUninitialized) return Center(
+    return BlocBuilder<NotificationDashboardFormBloc, NotificationDashboardFormState>(builder: (context, state) {
+      if (state is NotificationDashboardFormUninitialized) return Center(
         child: DelayedCircularProgressIndicator(),
       );
 
-      if (state is DashboardFormLoaded) {
+      if (state is NotificationDashboardFormLoaded) {
         if (state.value.documentID != null)
           _documentIDController.text = state.value.documentID.toString();
         else
@@ -169,7 +169,7 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
         else
           _descriptionController.text = "";
       }
-      if (state is DashboardFormInitialized) {
+      if (state is NotificationDashboardFormInitialized) {
         List<Widget> children = List();
          children.add(Container(
                   alignment: Alignment.centerLeft,
@@ -192,7 +192,7 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
                   keyboardType: TextInputType.text,
                   autovalidate: true,
                   validator: (_) {
-                    return state is DocumentIDDashboardFormError ? state.message : null;
+                    return state is DocumentIDNotificationDashboardFormError ? state.message : null;
                   },
                 ),
           );
@@ -211,7 +211,7 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
                   keyboardType: TextInputType.text,
                   autovalidate: true,
                   validator: (_) {
-                    return state is AppIdDashboardFormError ? state.message : null;
+                    return state is AppIdNotificationDashboardFormError ? state.message : null;
                   },
                 ),
           );
@@ -229,7 +229,7 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
                   keyboardType: TextInputType.text,
                   autovalidate: true,
                   validator: (_) {
-                    return state is DescriptionDashboardFormError ? state.message : null;
+                    return state is DescriptionNotificationDashboardFormError ? state.message : null;
                   },
                 ),
           );
@@ -243,19 +243,19 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
           children.add(RaisedButton(
                   color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
                   onPressed: _readOnly(accessState, state) ? null : () {
-                    if (state is DashboardFormError) {
+                    if (state is NotificationDashboardFormError) {
                       return null;
                     } else {
                       if (formAction == FormAction.UpdateAction) {
-                        BlocProvider.of<DashboardListBloc>(context).add(
-                          UpdateDashboardList(value: state.value.copyWith(
+                        BlocProvider.of<NotificationDashboardListBloc>(context).add(
+                          UpdateNotificationDashboardList(value: state.value.copyWith(
                               documentID: state.value.documentID, 
                               appId: state.value.appId, 
                               description: state.value.description, 
                         )));
                       } else {
-                        BlocProvider.of<DashboardListBloc>(context).add(
-                          AddDashboardList(value: DashboardModel(
+                        BlocProvider.of<NotificationDashboardListBloc>(context).add(
+                          AddNotificationDashboardList(value: NotificationDashboardModel(
                               documentID: state.value.documentID, 
                               appId: state.value.appId, 
                               description: state.value.description, 
@@ -293,17 +293,17 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
   }
 
   void _onDocumentIDChanged() {
-    _myFormBloc.add(ChangedDashboardDocumentID(value: _documentIDController.text));
+    _myFormBloc.add(ChangedNotificationDashboardDocumentID(value: _documentIDController.text));
   }
 
 
   void _onAppIdChanged() {
-    _myFormBloc.add(ChangedDashboardAppId(value: _appIdController.text));
+    _myFormBloc.add(ChangedNotificationDashboardAppId(value: _appIdController.text));
   }
 
 
   void _onDescriptionChanged() {
-    _myFormBloc.add(ChangedDashboardDescription(value: _descriptionController.text));
+    _myFormBloc.add(ChangedNotificationDashboardDescription(value: _descriptionController.text));
   }
 
 
@@ -316,7 +316,7 @@ class _MyDashboardFormState extends State<MyDashboardForm> {
     super.dispose();
   }
 
-  bool _readOnly(AccessState accessState, DashboardFormInitialized state) {
+  bool _readOnly(AccessState accessState, NotificationDashboardFormInitialized state) {
     return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner());
   }
   

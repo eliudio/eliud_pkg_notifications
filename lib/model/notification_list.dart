@@ -44,16 +44,18 @@ import 'package:eliud_core/model/app_model.dart';
 
 import 'notification_form.dart';
 
-import 'package:eliud_pkg_notifications/extensions/widgets/my_notification_list_item.dart';
+
+typedef NotificationWidgetProvider(NotificationModel value);
+
 class NotificationListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
+  NotificationWidgetProvider widgetProvider;
   bool readOnly;
   String form;
-  String listItemWidget;
   NotificationListWidgetState state;
   bool isEmbedded;
 
-  NotificationListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
+  NotificationListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   NotificationListWidgetState createState() {
@@ -171,7 +173,8 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
-          if (widget.listItemWidget == "MyNotificationListItem") return MyNotificationListItem(value: value);
+          
+          if (widget.widgetProvider != null) return widget.widgetProvider(value);
 
           return NotificationListItem(
             value: value,

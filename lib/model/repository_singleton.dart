@@ -16,25 +16,25 @@
 import 'abstract_repository_singleton.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'dart:collection';
-import '../model/dashboard_firestore.dart';
-import '../model/dashboard_repository.dart';
-import '../model/dashboard_cache.dart';
 import '../model/notification_firestore.dart';
 import '../model/notification_repository.dart';
 import '../model/notification_cache.dart';
+import '../model/notification_dashboard_firestore.dart';
+import '../model/notification_dashboard_repository.dart';
+import '../model/notification_dashboard_cache.dart';
 
 
 class RepositorySingleton extends AbstractRepositorySingleton {
-    var _dashboardRepository = HashMap<String, DashboardRepository>();
     var _notificationRepository = HashMap<String, NotificationRepository>();
+    var _notificationDashboardRepository = HashMap<String, NotificationDashboardRepository>();
 
-    DashboardRepository dashboardRepository(String appId) {
-      if (_dashboardRepository[appId] == null) _dashboardRepository[appId] = DashboardCache(DashboardFirestore(appRepository().getSubCollection(appId, 'dashboard'), appId));
-      return _dashboardRepository[appId];
-    }
     NotificationRepository notificationRepository(String appId) {
       if (_notificationRepository[appId] == null) _notificationRepository[appId] = NotificationCache(NotificationFirestore(appRepository().getSubCollection(appId, 'notification'), appId));
       return _notificationRepository[appId];
+    }
+    NotificationDashboardRepository notificationDashboardRepository(String appId) {
+      if (_notificationDashboardRepository[appId] == null) _notificationDashboardRepository[appId] = NotificationDashboardCache(NotificationDashboardFirestore(appRepository().getSubCollection(appId, 'notificationdashboard'), appId));
+      return _notificationDashboardRepository[appId];
     }
 
 }

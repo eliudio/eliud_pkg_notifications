@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_list.dart
+ notification_dashboard_list.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -34,47 +34,50 @@ import 'package:eliud_core/tools/etc.dart';
 import 'package:eliud_core/tools/enums.dart';
 import 'package:eliud_core/eliud.dart';
 
-import 'package:eliud_pkg_notifications/model/dashboard_list_event.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_list_state.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_list_bloc.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_model.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_event.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_state.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_bloc.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
 
 import 'package:eliud_core/model/app_model.dart';
 
 
-import 'dashboard_form.dart';
+import 'notification_dashboard_form.dart';
 
-class DashboardListWidget extends StatefulWidget with HasFab {
+
+typedef NotificationDashboardWidgetProvider(NotificationDashboardModel value);
+
+class NotificationDashboardListWidget extends StatefulWidget with HasFab {
   BackgroundModel listBackground;
+  NotificationDashboardWidgetProvider widgetProvider;
   bool readOnly;
   String form;
-  String listItemWidget;
-  DashboardListWidgetState state;
+  NotificationDashboardListWidgetState state;
   bool isEmbedded;
 
-  DashboardListWidget({ Key key, this.readOnly, this.form, this.listItemWidget, this.isEmbedded, this.listBackground }): super(key: key);
+  NotificationDashboardListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
-  DashboardListWidgetState createState() {
-    state ??= DashboardListWidgetState();
+  NotificationDashboardListWidgetState createState() {
+    state ??= NotificationDashboardListWidgetState();
     return state;
   }
 
   @override
   Widget fab(BuildContext context) {
     if ((readOnly != null) && readOnly) return null;
-    state ??= DashboardListWidgetState();
+    state ??= NotificationDashboardListWidgetState();
     var accessState = AccessBloc.getState(context);
     return state.fab(context, accessState);
   }
 }
 
-class DashboardListWidgetState extends State<DashboardListWidget> {
-  DashboardListBloc bloc;
+class NotificationDashboardListWidgetState extends State<NotificationDashboardListWidget> {
+  NotificationDashboardListBloc bloc;
 
   @override
   void didChangeDependencies() {
-    bloc = BlocProvider.of<DashboardListBloc>(context);
+    bloc = BlocProvider.of<NotificationDashboardListBloc>(context);
     super.didChangeDependencies();
   }
 
@@ -90,7 +93,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
       return !accessState.memberIsOwner() 
         ? null
         :FloatingActionButton(
-        heroTag: "DashboardFloatBtnTag",
+        heroTag: "NotificationDashboardFloatBtnTag",
         foregroundColor: RgbHelper.color(rgbo: accessState.app.floatingButtonForegroundColor),
         backgroundColor: RgbHelper.color(rgbo: accessState.app.floatingButtonBackgroundColor),
         child: Icon(Icons.add),
@@ -98,7 +101,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
           Navigator.of(context).push(
             pageRouteBuilder(accessState.app, page: BlocProvider.value(
                 value: bloc,
-                child: DashboardForm(
+                child: NotificationDashboardForm(
                     value: null,
                     formAction: FormAction.AddAction)
             )),
@@ -114,12 +117,12 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
     if (accessState is AppLoaded) {
-      return BlocBuilder<DashboardListBloc, DashboardListState>(builder: (context, state) {
-        if (state is DashboardListLoading) {
+      return BlocBuilder<NotificationDashboardListBloc, NotificationDashboardListState>(builder: (context, state) {
+        if (state is NotificationDashboardListLoading) {
           return Center(
             child: DelayedCircularProgressIndicator(),
           );
-        } else if (state is DashboardListLoaded) {
+        } else if (state is NotificationDashboardListLoaded) {
           final values = state.values;
           if ((widget.isEmbedded != null) && (widget.isEmbedded)) {
             List<Widget> children = List();
@@ -130,7 +133,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
                       Navigator.of(context).push(
                                 pageRouteBuilder(accessState.app, page: BlocProvider.value(
                                     value: bloc,
-                                    child: DashboardForm(
+                                    child: NotificationDashboardForm(
                                         value: null,
                                         formAction: FormAction.AddAction)
                                 )),
@@ -170,30 +173,32 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
         itemCount: values.length,
         itemBuilder: (context, index) {
           final value = values[index];
+          
+          if (widget.widgetProvider != null) return widget.widgetProvider(value);
 
-          return DashboardListItem(
+          return NotificationDashboardListItem(
             value: value,
             app: accessState.app,
             onDismissed: (direction) {
-              BlocProvider.of<DashboardListBloc>(context)
-                  .add(DeleteDashboardList(value: value));
+              BlocProvider.of<NotificationDashboardListBloc>(context)
+                  .add(DeleteNotificationDashboardList(value: value));
               Scaffold.of(context).showSnackBar(DeleteSnackBar(
-                message: "Dashboard " + value.documentID,
-                onUndo: () => BlocProvider.of<DashboardListBloc>(context)
-                    .add(AddDashboardList(value: value)),
+                message: "NotificationDashboard " + value.documentID,
+                onUndo: () => BlocProvider.of<NotificationDashboardListBloc>(context)
+                    .add(AddNotificationDashboardList(value: value)),
               ));
             },
             onTap: () async {
                                    final removedItem = await Navigator.of(context).push(
                         pageRouteBuilder(accessState.app, page: BlocProvider.value(
-                              value: BlocProvider.of<DashboardListBloc>(context),
+                              value: BlocProvider.of<NotificationDashboardListBloc>(context),
                               child: getForm(value, FormAction.UpdateAction))));
                       if (removedItem != null) {
                         Scaffold.of(context).showSnackBar(
                           DeleteSnackBar(
-                        message: "Dashboard " + value.documentID,
-                            onUndo: () => BlocProvider.of<DashboardListBloc>(context)
-                                .add(AddDashboardList(value: value)),
+                        message: "NotificationDashboard " + value.documentID,
+                            onUndo: () => BlocProvider.of<NotificationDashboardListBloc>(context)
+                                .add(AddNotificationDashboardList(value: value)),
                           ),
                         );
                       }
@@ -207,7 +212,7 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
   
   Widget getForm(value, action) {
     if (widget.form == null) {
-      return DashboardForm(value: value, formAction: action);
+      return NotificationDashboardForm(value: value, formAction: action);
     } else {
       return null;
     }
@@ -217,13 +222,13 @@ class DashboardListWidgetState extends State<DashboardListWidget> {
 }
 
 
-class DashboardListItem extends StatelessWidget {
+class NotificationDashboardListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
   final AppModel app;
-  final DashboardModel value;
+  final NotificationDashboardModel value;
 
-  DashboardListItem({
+  NotificationDashboardListItem({
     Key key,
     @required this.onDismissed,
     @required this.onTap,
@@ -234,12 +239,12 @@ class DashboardListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('__Dashboard_item_${value.documentID}'),
+      key: Key('__NotificationDashboard_item_${value.documentID}'),
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
         title: Hero(
-          tag: '${value.documentID}__DashboardheroTag',
+          tag: '${value.documentID}__NotificationDashboardheroTag',
           child: Container(
             width: fullScreenWidth(context),
             child: Center(child: Text(

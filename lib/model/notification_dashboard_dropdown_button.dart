@@ -7,7 +7,7 @@
   \___|_|_|\__,_|\__,_|
                        
  
- dashboard_list.dart
+ notification_dashboard_list.dart
                        
  This code is generated. This is read only. Don't touch!
 
@@ -28,34 +28,34 @@ import 'package:eliud_core/core/access/bloc/access_state.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 
 
-import 'package:eliud_pkg_notifications/model/dashboard_list_bloc.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_list_state.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_model.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_bloc.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_state.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
 
 
-typedef DashboardChanged(String value);
+typedef NotificationDashboardChanged(String value);
 
-class DashboardDropdownButtonWidget extends StatefulWidget {
+class NotificationDashboardDropdownButtonWidget extends StatefulWidget {
   final String value;
-  final DashboardChanged trigger;
+  final NotificationDashboardChanged trigger;
   final bool optional;
 
-  DashboardDropdownButtonWidget({ this.value, this.trigger, this.optional, Key key }): super(key: key);
+  NotificationDashboardDropdownButtonWidget({ this.value, this.trigger, this.optional, Key key }): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return DashboardDropdownButtonWidgetState();
+    return NotificationDashboardDropdownButtonWidgetState();
   }
 }
 
-class DashboardDropdownButtonWidgetState extends State<DashboardDropdownButtonWidget> {
-  DashboardListBloc bloc;
+class NotificationDashboardDropdownButtonWidgetState extends State<NotificationDashboardDropdownButtonWidget> {
+  NotificationDashboardListBloc bloc;
 
-  DashboardDropdownButtonWidgetState();
+  NotificationDashboardDropdownButtonWidgetState();
 
   @override
   void didChangeDependencies() {
-    bloc = BlocProvider.of<DashboardListBloc>(context);
+    bloc = BlocProvider.of<NotificationDashboardListBloc>(context);
     super.didChangeDependencies();
   }
 
@@ -65,7 +65,7 @@ class DashboardDropdownButtonWidgetState extends State<DashboardDropdownButtonWi
     super.dispose();
   }
 
-List<Widget> widgets(DashboardModel pm) {
+List<Widget> widgets(NotificationDashboardModel pm) {
 List<Widget> widgets = List();
 if (pm.documentID != null) widgets.add(new Text(pm.documentID));
 if (pm.description != null) widgets.add(new Text(pm.description));
@@ -76,12 +76,12 @@ return widgets;
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    return BlocBuilder<DashboardListBloc, DashboardListState>(builder: (context, state) {
-      if (state is DashboardListLoading) {
+    return BlocBuilder<NotificationDashboardListBloc, NotificationDashboardListState>(builder: (context, state) {
+      if (state is NotificationDashboardListLoading) {
         return Center(
           child: DelayedCircularProgressIndicator(),
         );
-      } else if (state is DashboardListLoaded) {
+      } else if (state is NotificationDashboardListLoaded) {
         String valueChosen;
         if (state.values.indexWhere((v) => (v.documentID == widget.value)) >= 0)
           valueChosen = widget.value;
@@ -122,7 +122,7 @@ return widgets;
                       isExpanded: false,
                       items: items,
                       value: valueChosen,
-                      hint: Text('Select a dashboard'),
+                      hint: Text('Select a notificationDashboard'),
                       onChanged: !accessState.memberIsOwner() ? null : _onChange,
                     );
         if (false) {

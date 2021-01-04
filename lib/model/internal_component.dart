@@ -22,10 +22,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/tools/has_fab.dart';
 
 
-import 'package:eliud_pkg_notifications/model/dashboard_list_bloc.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_list.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_dropdown_button.dart';
-import 'package:eliud_pkg_notifications/model/dashboard_list_event.dart';
+import 'package:eliud_pkg_notifications/model/notification_list_bloc.dart';
+import 'package:eliud_pkg_notifications/model/notification_list.dart';
+import 'package:eliud_pkg_notifications/model/notification_dropdown_button.dart';
+import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -39,10 +39,10 @@ import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
-import 'package:eliud_pkg_notifications/model/notification_list_bloc.dart';
-import 'package:eliud_pkg_notifications/model/notification_list.dart';
-import 'package:eliud_pkg_notifications/model/notification_dropdown_button.dart';
-import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_bloc.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_dropdown_button.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_list_event.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -69,17 +69,17 @@ class DropdownButtonComponentFactory implements ComponentDropDown {
 
   bool supports(String id) {
 
-    if (id == "dashboards") return true;
     if (id == "notifications") return true;
+    if (id == "notificationDashboards") return true;
     return false;
   }
 
   Widget createNew({String id, Map<String, Object> parameters, String value, DropdownButtonChanged trigger, bool optional}) {
 
-    if (id == "dashboards")
+    if (id == "notifications")
       return DropdownButtonComponent(componentId: id, value: value, trigger: trigger, optional: optional);
 
-    if (id == "notifications")
+    if (id == "notificationDashboards")
       return DropdownButtonComponent(componentId: id, value: value, trigger: trigger, optional: optional);
 
     return null;
@@ -107,28 +107,14 @@ class ListComponent extends StatelessWidget with HasFab {
   @override
   Widget build(BuildContext context) {
 
-    if (componentId == 'dashboards') return _dashboardBuild(context);
     if (componentId == 'notifications') return _notificationBuild(context);
+    if (componentId == 'notificationDashboards') return _notificationDashboardBuild(context);
     return Text('Component with componentId == $componentId not found');
   }
 
   Widget initWidget() {
-    if (componentId == 'dashboards') widget = DashboardListWidget();
     if (componentId == 'notifications') widget = NotificationListWidget();
-  }
-
-  Widget _dashboardBuild(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DashboardListBloc>(
-          create: (context) => DashboardListBloc(
-            BlocProvider.of<AccessBloc>(context), 
-            dashboardRepository: dashboardRepository(appId: AccessBloc.appId(context)),
-          )..add(LoadDashboardList()),
-        )
-      ],
-      child: widget,
-    );
+    if (componentId == 'notificationDashboards') widget = NotificationDashboardListWidget();
   }
 
   Widget _notificationBuild(BuildContext context) {
@@ -139,6 +125,20 @@ class ListComponent extends StatelessWidget with HasFab {
             BlocProvider.of<AccessBloc>(context), 
             notificationRepository: notificationRepository(appId: AccessBloc.appId(context)),
           )..add(LoadNotificationList()),
+        )
+      ],
+      child: widget,
+    );
+  }
+
+  Widget _notificationDashboardBuild(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NotificationDashboardListBloc>(
+          create: (context) => NotificationDashboardListBloc(
+            BlocProvider.of<AccessBloc>(context), 
+            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context)),
+          )..add(LoadNotificationDashboardList()),
         )
       ],
       child: widget,
@@ -161,25 +161,11 @@ class DropdownButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if (componentId == 'dashboards') return _dashboardBuild(context);
     if (componentId == 'notifications') return _notificationBuild(context);
+    if (componentId == 'notificationDashboards') return _notificationDashboardBuild(context);
     return Text('Component with componentId == $componentId not found');
   }
 
-
-  Widget _dashboardBuild(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DashboardListBloc>(
-          create: (context) => DashboardListBloc(
-            BlocProvider.of<AccessBloc>(context), 
-            dashboardRepository: dashboardRepository(appId: AccessBloc.appId(context)),
-          )..add(LoadDashboardList()),
-        )
-      ],
-      child: DashboardDropdownButtonWidget(value: value, trigger: trigger, optional: optional),
-    );
-  }
 
   Widget _notificationBuild(BuildContext context) {
     return MultiBlocProvider(
@@ -192,6 +178,20 @@ class DropdownButtonComponent extends StatelessWidget {
         )
       ],
       child: NotificationDropdownButtonWidget(value: value, trigger: trigger, optional: optional),
+    );
+  }
+
+  Widget _notificationDashboardBuild(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NotificationDashboardListBloc>(
+          create: (context) => NotificationDashboardListBloc(
+            BlocProvider.of<AccessBloc>(context), 
+            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context)),
+          )..add(LoadNotificationDashboardList()),
+        )
+      ],
+      child: NotificationDashboardDropdownButtonWidget(value: value, trigger: trigger, optional: optional),
     );
   }
 

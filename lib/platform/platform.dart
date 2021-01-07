@@ -9,12 +9,14 @@ import 'package:flutter/cupertino.dart';
 abstract class AbstractNotificationPlatform {
   static AbstractNotificationPlatform platform;
 
-  Future<void> sendMessage(BuildContext context, String addresseeMemberId, String message) ;
+  Future<void> sendMessage(BuildContext context, String addresseeMemberId, String message, {Action postSendAction}) ;
 }
+
+typedef void Action(NotificationModel notificationModel);
 
 class NotificationPlatform extends AbstractNotificationPlatform {
 
-  Future<void> sendMessage(BuildContext context, String assigneeId, String message) async {
+  Future<void> sendMessage(BuildContext context, String assigneeId, String message, {Action postSendAction}) async {
     AccessState accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
       await AbstractRepositorySingleton.singleton.notificationRepository(accessState.app.documentID).add(NotificationModel(
@@ -25,7 +27,9 @@ class NotificationPlatform extends AbstractNotificationPlatform {
         status: NotificationStatus.Open,
         assigneeId: assigneeId,
         reporterId: accessState.member.documentID
-      ));
+      )).then((value) =>
+        postSendAction(value)
+      );
     }
   }
 }

@@ -58,8 +58,9 @@ class AdminApp extends AdminAppInstallerBase {
       documentID: "internalWidget-notifications", componentName: "eliud_pkg_notifications_internalWidgets", componentId: "notifications"));
     PageModel page = PageModel(
         conditions: ConditionsModel(
-          readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
-          privilegeLevelRequired: OWNER_PRIVILEGES
+          privilegeLevelRequired: PrivilegeLevelRequired.OwnerPrivilegeRequired,
+          packageCondition: null,
+          conditionOverride: null,
         ),
         appId: appId,
         documentID: "eliud_pkg_notifications_notifications_page",
@@ -81,8 +82,9 @@ class AdminApp extends AdminAppInstallerBase {
       documentID: "internalWidget-notificationDashboards", componentName: "eliud_pkg_notifications_internalWidgets", componentId: "notificationDashboards"));
     PageModel page = PageModel(
         conditions: ConditionsModel(
-          readCondition: ReadCondition.MemberOrPrivilegedMemberOnly,
-          privilegeLevelRequired: OWNER_PRIVILEGES
+          privilegeLevelRequired: PrivilegeLevelRequired.OwnerPrivilegeRequired,
+          packageCondition: null,
+          conditionOverride: null,
         ),
         appId: appId,
         documentID: "eliud_pkg_notifications_notificationdashboards_page",

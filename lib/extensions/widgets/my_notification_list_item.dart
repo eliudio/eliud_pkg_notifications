@@ -83,16 +83,12 @@ class MyNotificationListItem extends StatelessWidget {
               width: 2.0,
             ),
           ),
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 3.0),
-            decoration: new BoxDecoration(
-              color: Colors.transparent,
-              image: new DecorationImage(
-                image: image,
-                fit: BoxFit.cover,
-              ),
+          child: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              radius: 60,
+              backgroundImage: image
             ),
-          ));
+      );
     } else {
       return _letterAvatar(memberPublicInfo.name[0]);
     }

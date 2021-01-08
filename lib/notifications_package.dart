@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:eliud_core/model/access_model.dart';
 
 import 'package:eliud_core/core/access/bloc/access_event.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -40,7 +41,7 @@ abstract class NotificationsPackage extends PackageWithSubscription {
 
 
   @override
-  Future<bool> isConditionOk(String pluginCondition, AppModel app, MemberModel member, bool isOwner, int privilegeLevel) async {
+  Future<bool> isConditionOk(String pluginCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) async {
     if (pluginCondition == CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
       if (member == null) return false;
       var values = await notificationRepository(appId: app.documentID).valuesList(eliudQuery: getOpenNotificationsQuery(app.documentID, member.documentID));

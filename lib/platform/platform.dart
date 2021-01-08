@@ -27,8 +27,11 @@ class NotificationPlatform extends AbstractNotificationPlatform {
         status: NotificationStatus.Open,
         assigneeId: assigneeId,
         reporterId: accessState.member.documentID
-      )).then((value) =>
-        postSendAction(value)
+      )).then((value) {
+        if (postSendAction != null) {
+          postSendAction(value);
+        }
+      }
       );
     }
   }

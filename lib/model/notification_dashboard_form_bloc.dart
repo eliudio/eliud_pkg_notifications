@@ -97,6 +97,12 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
 
         return;
       }
+      if (event is ChangedNotificationDashboardConditions) {
+        newValue = currentState.value.copyWith(conditions: event.value);
+        yield SubmittableNotificationDashboardForm(value: newValue);
+
+        return;
+      }
     }
   }
 

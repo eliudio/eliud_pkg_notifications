@@ -62,12 +62,16 @@ class NotificationDashboardJsFirestore implements NotificationDashboardRepositor
     return NotificationDashboardModel.fromEntityPlus(value.id, NotificationDashboardEntity.fromMap(value.data()), appId: appId);
   }
 
-  Future<NotificationDashboardModel> get(String id) {
+  Future<NotificationDashboardModel> get(String id, { Function(Exception) onError }) {
     return notificationDashboardCollection.doc(id).get().then((data) {
       if (data.data() != null) {
         return _populateDocPlus(data);
       } else {
         return null;
+      }
+    }).catchError((Object e) {
+      if (onError != null) {
+        onError(e);
       }
     });
   }

@@ -39,7 +39,7 @@ typedef NotificationChanged(NotificationModel value);
 abstract class NotificationRepository {
   Future<NotificationModel> add(NotificationModel value);
   Future<void> delete(NotificationModel value);
-  Future<NotificationModel> get(String id);
+  Future<NotificationModel> get(String id, { Function(Exception) onError });
   Future<NotificationModel> update(NotificationModel value);
 
   Stream<List<NotificationModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });

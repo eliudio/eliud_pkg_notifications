@@ -20,6 +20,8 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart'
 import 'package:eliud_pkg_notifications/model/notification_dashboard_component_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_component_state.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
+import 'package:flutter/services.dart';
+
 class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardComponentEvent, NotificationDashboardComponentState> {
   final NotificationDashboardRepository notificationDashboardRepository;
 
@@ -30,13 +32,23 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
     if (event is FetchNotificationDashboardComponent) {
       try {
         if (currentState is NotificationDashboardComponentUninitialized) {
-          final NotificationDashboardModel model = await _fetchNotificationDashboard(event.id);
-
-          if (model != null) {
-            yield NotificationDashboardComponentLoaded(value: model);
+          bool permissionDenied = false;
+          final model = await notificationDashboardRepository.get(event.id, onError: (error) {
+            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
+            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+              permissionDenied = true;
+            }
+          });
+          if (permissionDenied) {
+            yield NotificationDashboardComponentPermissionDenied();
           } else {
-            String id = event.id;
-            yield NotificationDashboardComponentError(message: "NotificationDashboard with id = '$id' not found");
+            if (model != null) {
+              yield NotificationDashboardComponentLoaded(value: model);
+            } else {
+              String id = event.id;
+              yield NotificationDashboardComponentError(
+                  message: "NotificationDashboard with id = '$id' not found");
+            }
           }
           return;
         }
@@ -46,15 +58,10 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
     }
   }
 
-  Future<NotificationDashboardModel> _fetchNotificationDashboard(String id) async {
-    return notificationDashboardRepository.get(id);
-  }
-
   @override
   Future<void> close() {
     return super.close();
   }
 
 }
-
 

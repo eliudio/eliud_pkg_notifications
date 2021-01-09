@@ -111,6 +111,22 @@ class DescriptionNotificationDashboardFormError extends NotificationDashboardFor
 }
 
 
+class ConditionsNotificationDashboardFormError extends NotificationDashboardFormError { 
+  const ConditionsNotificationDashboardFormError({ String message, NotificationDashboardModel value }): super(message: message, value: value);
+
+  @override
+  List<Object> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''ConditionsNotificationDashboardFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class NotificationDashboardFormLoaded extends NotificationDashboardFormInitialized { 
   const NotificationDashboardFormLoaded({ NotificationDashboardModel value }): super(value: value);
 

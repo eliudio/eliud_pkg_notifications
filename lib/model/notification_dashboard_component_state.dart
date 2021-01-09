@@ -30,6 +30,10 @@ class NotificationDashboardComponentError extends NotificationDashboardComponent
   NotificationDashboardComponentError({ this.message });
 }
 
+class NotificationDashboardComponentPermissionDenied extends NotificationDashboardComponentState {
+  NotificationDashboardComponentPermissionDenied();
+}
+
 class NotificationDashboardComponentLoaded extends NotificationDashboardComponentState {
   final NotificationDashboardModel value;
 
@@ -45,5 +49,4 @@ class NotificationDashboardComponentLoaded extends NotificationDashboardComponen
   @override
   String toString() => 'NotificationDashboardComponentLoaded { value: $value }';
 }
-
 

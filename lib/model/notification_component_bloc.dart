@@ -20,6 +20,8 @@ import 'package:eliud_pkg_notifications/model/notification_model.dart';
 import 'package:eliud_pkg_notifications/model/notification_component_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_component_state.dart';
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
+import 'package:flutter/services.dart';
+
 class NotificationComponentBloc extends Bloc<NotificationComponentEvent, NotificationComponentState> {
   final NotificationRepository notificationRepository;
 
@@ -30,13 +32,23 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
     if (event is FetchNotificationComponent) {
       try {
         if (currentState is NotificationComponentUninitialized) {
-          final NotificationModel model = await _fetchNotification(event.id);
-
-          if (model != null) {
-            yield NotificationComponentLoaded(value: model);
+          bool permissionDenied = false;
+          final model = await notificationRepository.get(event.id, onError: (error) {
+            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
+            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+              permissionDenied = true;
+            }
+          });
+          if (permissionDenied) {
+            yield NotificationComponentPermissionDenied();
           } else {
-            String id = event.id;
-            yield NotificationComponentError(message: "Notification with id = '$id' not found");
+            if (model != null) {
+              yield NotificationComponentLoaded(value: model);
+            } else {
+              String id = event.id;
+              yield NotificationComponentError(
+                  message: "Notification with id = '$id' not found");
+            }
           }
           return;
         }
@@ -46,15 +58,10 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
     }
   }
 
-  Future<NotificationModel> _fetchNotification(String id) async {
-    return notificationRepository.get(id);
-  }
-
   @override
   Future<void> close() {
     return super.close();
   }
 
 }
-
 

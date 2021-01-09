@@ -95,3 +95,15 @@ class ChangedNotificationDashboardDescription extends NotificationDashboardFormE
   String toString() => 'ChangedNotificationDashboardDescription{ value: $value }';
 }
 
+class ChangedNotificationDashboardConditions extends NotificationDashboardFormEvent {
+  final ConditionsSimpleModel value;
+
+  ChangedNotificationDashboardConditions({this.value});
+
+  @override
+  List<Object> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedNotificationDashboardConditions{ value: $value }';
+}
+

@@ -39,7 +39,7 @@ typedef NotificationDashboardChanged(NotificationDashboardModel value);
 abstract class NotificationDashboardRepository {
   Future<NotificationDashboardModel> add(NotificationDashboardModel value);
   Future<void> delete(NotificationDashboardModel value);
-  Future<NotificationDashboardModel> get(String id);
+  Future<NotificationDashboardModel> get(String id, { Function(Exception) onError });
   Future<NotificationDashboardModel> update(NotificationDashboardModel value);
 
   Stream<List<NotificationDashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });

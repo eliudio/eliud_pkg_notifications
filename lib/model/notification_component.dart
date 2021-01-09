@@ -43,10 +43,16 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
     return BlocBuilder<NotificationComponentBloc, NotificationComponentState>(builder: (context, state) {
       if (state is NotificationComponentLoaded) {
         if (state.value == null) {
-          return alertWidget(title: 'Error', content: 'No notification defined');
+          return alertWidget(title: 'Error', content: 'No Notification defined');
         } else {
           return yourWidget(context, state.value);
         }
+      } else if (state is NotificationComponentPermissionDenied) {
+        return Icon(
+          Icons.highlight_off,
+          color: Colors.red,
+          size: 30.0,
+        );
       } else if (state is NotificationComponentError) {
         return alertWidget(title: 'Error', content: state.message);
       } else {
@@ -61,5 +67,4 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
   Widget alertWidget({ title: String, content: String});
   NotificationRepository getNotificationRepository(BuildContext context);
 }
-
 

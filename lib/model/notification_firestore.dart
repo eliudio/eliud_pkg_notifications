@@ -55,12 +55,16 @@ class NotificationFirestore implements NotificationRepository {
   Future<NotificationModel> _populateDocPlus(DocumentSnapshot value) async {
     return NotificationModel.fromEntityPlus(value.documentID, NotificationEntity.fromMap(value.data), appId: appId);  }
 
-  Future<NotificationModel> get(String id) {
+  Future<NotificationModel> get(String id, {Function(Exception) onError}) {
     return NotificationCollection.document(id).get().then((doc) {
       if (doc.data != null)
         return _populateDocPlus(doc);
       else
         return null;
+    }).catchError((Object e) {
+      if (onError != null) {
+        onError(e);
+      }
     });
   }
 

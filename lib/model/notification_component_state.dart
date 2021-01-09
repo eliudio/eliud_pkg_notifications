@@ -30,6 +30,10 @@ class NotificationComponentError extends NotificationComponentState {
   NotificationComponentError({ this.message });
 }
 
+class NotificationComponentPermissionDenied extends NotificationComponentState {
+  NotificationComponentPermissionDenied();
+}
+
 class NotificationComponentLoaded extends NotificationComponentState {
   final NotificationModel value;
 
@@ -45,5 +49,4 @@ class NotificationComponentLoaded extends NotificationComponentState {
   @override
   String toString() => 'NotificationComponentLoaded { value: $value }';
 }
-
 

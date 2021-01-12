@@ -37,27 +37,27 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class NotificationDashboardFirestore implements NotificationDashboardRepository {
   Future<NotificationDashboardModel> add(NotificationDashboardModel value) {
-    return NotificationDashboardCollection.document(value.documentID).setData(value.toEntity(appId: appId).toDocument()).then((_) => value);
+    return NotificationDashboardCollection.doc(value.documentID).set(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
 
   Future<void> delete(NotificationDashboardModel value) {
-    return NotificationDashboardCollection.document(value.documentID).delete();
+    return NotificationDashboardCollection.doc(value.documentID).delete();
   }
 
   Future<NotificationDashboardModel> update(NotificationDashboardModel value) {
-    return NotificationDashboardCollection.document(value.documentID).updateData(value.toEntity(appId: appId).toDocument()).then((_) => value);
+    return NotificationDashboardCollection.doc(value.documentID).update(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
 
   NotificationDashboardModel _populateDoc(DocumentSnapshot value) {
-    return NotificationDashboardModel.fromEntity(value.documentID, NotificationDashboardEntity.fromMap(value.data));
+    return NotificationDashboardModel.fromEntity(value.id, NotificationDashboardEntity.fromMap(value.data()));
   }
 
   Future<NotificationDashboardModel> _populateDocPlus(DocumentSnapshot value) async {
-    return NotificationDashboardModel.fromEntityPlus(value.documentID, NotificationDashboardEntity.fromMap(value.data), appId: appId);  }
+    return NotificationDashboardModel.fromEntityPlus(value.id, NotificationDashboardEntity.fromMap(value.data()), appId: appId);  }
 
   Future<NotificationDashboardModel> get(String id, {Function(Exception) onError}) {
-    return NotificationDashboardCollection.document(id).get().then((doc) {
-      if (doc.data != null)
+    return NotificationDashboardCollection.doc(id).get().then((doc) {
+      if (doc.data() != null)
         return _populateDocPlus(doc);
       else
         return null;
@@ -71,7 +71,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
   StreamSubscription<List<NotificationDashboardModel>> listen(NotificationDashboardModelTrigger trigger, {String currentMember, String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery}) {
     Stream<List<NotificationDashboardModel>> stream;
     stream = getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((data) {
-      Iterable<NotificationDashboardModel> notificationDashboards  = data.documents.map((doc) {
+      Iterable<NotificationDashboardModel> notificationDashboards  = data.docs.map((doc) {
         NotificationDashboardModel value = _populateDoc(doc);
         return value;
       }).toList();
@@ -86,7 +86,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
     Stream<List<NotificationDashboardModel>> stream;
     stream = getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots()
         .asyncMap((data) async {
-      return await Future.wait(data.documents.map((doc) =>  _populateDocPlus(doc)).toList());
+      return await Future.wait(data.docs.map((doc) =>  _populateDocPlus(doc)).toList());
     });
 
     return stream.listen((listOfNotificationDashboardModels) {
@@ -96,7 +96,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
 
   @override
   StreamSubscription<NotificationDashboardModel> listenTo(String documentId, NotificationDashboardChanged changed) {
-    var stream = NotificationDashboardCollection.document(documentId)
+    var stream = NotificationDashboardCollection.doc(documentId)
         .snapshots()
         .asyncMap((data) {
       return _populateDocPlus(data);
@@ -109,7 +109,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
   Stream<List<NotificationDashboardModel>> values({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
     Stream<List<NotificationDashboardModel>> _values = getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().map((snapshot) {
-      return snapshot.documents.map((doc) {
+      return snapshot.docs.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
       }).toList();});
@@ -120,7 +120,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
   Stream<List<NotificationDashboardModel>> valuesWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) {
     DocumentSnapshot lastDoc;
     Stream<List<NotificationDashboardModel>> _values = getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).snapshots().asyncMap((snapshot) {
-      return Future.wait(snapshot.documents.map((doc) {
+      return Future.wait(snapshot.docs.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
       }).toList());
@@ -131,8 +131,8 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
 
   Future<List<NotificationDashboardModel>> valuesList({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<NotificationDashboardModel> _values = await getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
-      var list = value.documents;
+    List<NotificationDashboardModel> _values = await getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
+      var list = value.docs;
       return list.map((doc) { 
         lastDoc = doc;
         return _populateDoc(doc);
@@ -144,8 +144,8 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
 
   Future<List<NotificationDashboardModel>> valuesListWithDetails({String currentMember, String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery }) async {
     DocumentSnapshot lastDoc;
-    List<NotificationDashboardModel> _values = await getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).getDocuments().then((value) {
-      var list = value.documents;
+    List<NotificationDashboardModel> _values = await getQuery(NotificationDashboardCollection, currentMember: currentMember, orderBy: orderBy,  descending: descending,  startAfter: startAfter,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId).get().then((value) {
+      var list = value.docs;
       return Future.wait(list.map((doc) {
         lastDoc = doc;
         return _populateDocPlus(doc);
@@ -158,15 +158,15 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
   void flush() {}
 
   Future<void> deleteAll() {
-    return NotificationDashboardCollection.getDocuments().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents){
+    return NotificationDashboardCollection.get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs){
         ds.reference.delete();
       }
     });
   }
 
   dynamic getSubCollection(String documentId, String name) {
-    return NotificationDashboardCollection.document(documentId).collection(name);
+    return NotificationDashboardCollection.doc(documentId).collection(name);
   }
 
   String timeStampToString(dynamic timeStamp) {

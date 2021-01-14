@@ -43,9 +43,9 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listen((list) => add(NotificationDashboardListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
-  Stream<NotificationDashboardListState> _mapLoadNotificationDashboardListWithDetailsToState() async* {
+  Stream<NotificationDashboardListState> _mapLoadNotificationDashboardListWithDetailsToState({ String orderBy, bool descending }) async* {
     _notificationDashboardsListSubscription?.cancel();
-    _notificationDashboardsListSubscription = _notificationDashboardRepository.listenWithDetails((list) => add(NotificationDashboardListUpdated(value: list)), );
+    _notificationDashboardsListSubscription = _notificationDashboardRepository.listenWithDetails((list) => add(NotificationDashboardListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
   }
 
   Stream<NotificationDashboardListState> _mapAddNotificationDashboardListToState(AddNotificationDashboardList event) async* {

@@ -16,7 +16,7 @@ import 'model/notification_model.dart';
 
 abstract class NotificationsPackage extends PackageWithSubscription {
   static final String CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = 'Unread Notifications';
-  bool previousState = null;
+  bool state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = null;
 
   static EliudQuery getOpenNotificationsQuery(String appId, String assigneeId) {
     return EliudQuery(
@@ -34,8 +34,8 @@ abstract class NotificationsPackage extends PackageWithSubscription {
       // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
       // then we must inform the AccessBloc, so that it can refresh the state
       bool currentState = list.length > 0;
-      if (currentState != previousState) {
-        previousState = currentState;
+      if (currentState != state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
+        state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = currentState;
         accessBloc.add(MemberUpdated(currentMember));
       }
     }, orderBy: 'timestamp', descending: true, eliudQuery: getOpenNotificationsQuery(appId, currentMember.documentID));
@@ -45,9 +45,13 @@ abstract class NotificationsPackage extends PackageWithSubscription {
   @override
   Future<bool> isConditionOk(String pluginCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) async {
     if (pluginCondition == CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
+      if (state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS == null) return false;
+      return state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS;
+/*
       if (member == null) return false;
       var values = await notificationRepository(appId: app.documentID).valuesList(eliudQuery: getOpenNotificationsQuery(app.documentID, member.documentID));
       return values != null && values.length > 0;
+*/
     }
     return null;
   }

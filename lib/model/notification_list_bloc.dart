@@ -40,12 +40,12 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
 
   Stream<NotificationListState> _mapLoadNotificationListToState({ String orderBy, bool descending }) async* {
     _notificationsListSubscription?.cancel();
-    _notificationsListSubscription = _notificationRepository.listen((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
+    _notificationsListSubscription = _notificationRepository.listen((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
   }
 
   Stream<NotificationListState> _mapLoadNotificationListWithDetailsToState({ String orderBy, bool descending }) async* {
     _notificationsListSubscription?.cancel();
-    _notificationsListSubscription = _notificationRepository.listenWithDetails((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery, );
+    _notificationsListSubscription = _notificationRepository.listenWithDetails((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
   }
 
   Stream<NotificationListState> _mapAddNotificationListToState(AddNotificationList event) async* {

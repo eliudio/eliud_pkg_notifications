@@ -22,18 +22,9 @@ abstract class NotificationListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadNotificationList extends NotificationListEvent {
-  final String orderBy;
-  final bool descending;
+class LoadNotificationList extends NotificationListEvent {}
 
-  LoadNotificationList({this.orderBy, this.descending});
-
-  @override
-  List<Object> get props => [orderBy, descending];
-
-}
-
-class LoadNotificationListWithDetails extends NotificationListEvent {}
+class NewPage extends NotificationListEvent {}
 
 class AddNotificationList extends NotificationListEvent {
   final NotificationModel value;
@@ -73,13 +64,14 @@ class DeleteNotificationList extends NotificationListEvent {
 
 class NotificationListUpdated extends NotificationListEvent {
   final List<NotificationModel> value;
+  final bool mightHaveMore;
 
-  const NotificationListUpdated({ this.value });
-
-  @override
-  List<Object> get props => [ value ];
+  const NotificationListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  String toString() => 'NotificationListUpdated{ value: $value }';
+  List<Object> get props => [ value, mightHaveMore ];
+
+  @override
+  String toString() => 'NotificationListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 

@@ -27,11 +27,12 @@ class NotificationDashboardListLoading extends NotificationDashboardListState {}
 
 class NotificationDashboardListLoaded extends NotificationDashboardListState {
   final List<NotificationDashboardModel> values;
+  final bool mightHaveMore;
 
-  const NotificationDashboardListLoaded({this.values = const []});
+  const NotificationDashboardListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values ];
+  List<Object> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'NotificationDashboardListLoaded { values: $values }';

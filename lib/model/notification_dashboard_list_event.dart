@@ -22,18 +22,9 @@ abstract class NotificationDashboardListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadNotificationDashboardList extends NotificationDashboardListEvent {
-  final String orderBy;
-  final bool descending;
+class LoadNotificationDashboardList extends NotificationDashboardListEvent {}
 
-  LoadNotificationDashboardList({this.orderBy, this.descending});
-
-  @override
-  List<Object> get props => [orderBy, descending];
-
-}
-
-class LoadNotificationDashboardListWithDetails extends NotificationDashboardListEvent {}
+class NewPage extends NotificationDashboardListEvent {}
 
 class AddNotificationDashboardList extends NotificationDashboardListEvent {
   final NotificationDashboardModel value;
@@ -73,13 +64,14 @@ class DeleteNotificationDashboardList extends NotificationDashboardListEvent {
 
 class NotificationDashboardListUpdated extends NotificationDashboardListEvent {
   final List<NotificationDashboardModel> value;
+  final bool mightHaveMore;
 
-  const NotificationDashboardListUpdated({ this.value });
-
-  @override
-  List<Object> get props => [ value ];
+  const NotificationDashboardListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  String toString() => 'NotificationDashboardListUpdated{ value: $value }';
+  List<Object> get props => [ value, mightHaveMore ];
+
+  @override
+  String toString() => 'NotificationDashboardListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 

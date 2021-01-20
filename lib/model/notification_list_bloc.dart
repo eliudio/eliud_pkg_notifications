@@ -20,32 +20,48 @@ import 'package:meta/meta.dart';
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_event.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
 
+
+const _notificationLimit = 5;
 
 class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListState> {
   final NotificationRepository _notificationRepository;
   StreamSubscription _notificationsListSubscription;
-  final AccessBloc accessBloc;
   final EliudQuery eliudQuery;
+  int pages = 1;
+  final bool paged;
+  final String orderBy;
+  final bool descending;
+  final bool detailed;
 
-
-  NotificationListBloc(this.accessBloc,{ this.eliudQuery, @required NotificationRepository notificationRepository })
+  NotificationListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, @required NotificationRepository notificationRepository})
       : assert(notificationRepository != null),
-      _notificationRepository = notificationRepository,
-      super(NotificationListLoading());
+        _notificationRepository = notificationRepository,
+        super(NotificationListLoading());
 
-  Stream<NotificationListState> _mapLoadNotificationListToState({ String orderBy, bool descending }) async* {
+  Stream<NotificationListState> _mapLoadNotificationListToState() async* {
+    int amountNow =  (state is NotificationListLoaded) ? (state as NotificationListLoaded).values.length : 0;
     _notificationsListSubscription?.cancel();
-    _notificationsListSubscription = _notificationRepository.listen((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
+    _notificationsListSubscription = _notificationRepository.listen(
+          (list) => add(NotificationListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+      orderBy: orderBy,
+      descending: descending,
+      eliudQuery: eliudQuery,
+      limit: ((paged != null) && (paged)) ? pages * _notificationLimit : null
+    );
   }
 
-  Stream<NotificationListState> _mapLoadNotificationListWithDetailsToState({ String orderBy, bool descending }) async* {
+  Stream<NotificationListState> _mapLoadNotificationListWithDetailsToState() async* {
+    int amountNow =  (state is NotificationListLoaded) ? (state as NotificationListLoaded).values.length : 0;
     _notificationsListSubscription?.cancel();
-    _notificationsListSubscription = _notificationRepository.listenWithDetails((list) => add(NotificationListUpdated(value: list)), orderBy: orderBy, descending: descending, eliudQuery: eliudQuery,);
+    _notificationsListSubscription = _notificationRepository.listenWithDetails(
+            (list) => add(NotificationListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+        orderBy: orderBy,
+        descending: descending,
+        eliudQuery: eliudQuery,
+        limit: ((paged != null) && (paged)) ? pages * _notificationLimit : null
+    );
   }
 
   Stream<NotificationListState> _mapAddNotificationListToState(AddNotificationList event) async* {
@@ -60,17 +76,22 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
     _notificationRepository.delete(event.value);
   }
 
-  Stream<NotificationListState> _mapNotificationListUpdatedToState(NotificationListUpdated event) async* {
-    yield NotificationListLoaded(values: event.value);
+  Stream<NotificationListState> _mapNotificationListUpdatedToState(
+      NotificationListUpdated event) async* {
+    yield NotificationListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
   }
-
 
   @override
   Stream<NotificationListState> mapEventToState(NotificationListEvent event) async* {
-    final currentState = state;
     if (event is LoadNotificationList) {
-      yield* _mapLoadNotificationListToState(orderBy: event.orderBy, descending: event.descending);
-    } if (event is LoadNotificationListWithDetails) {
+      if ((detailed == null) || (!detailed)) {
+        yield* _mapLoadNotificationListToState();
+      } else {
+        yield* _mapLoadNotificationListWithDetailsToState();
+      }
+    }
+    if (event is NewPage) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadNotificationListWithDetailsToState();
     } else if (event is AddNotificationList) {
       yield* _mapAddNotificationListToState(event);
@@ -88,7 +109,6 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
     _notificationsListSubscription?.cancel();
     return super.close();
   }
-
 }
 
 

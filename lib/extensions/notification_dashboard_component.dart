@@ -38,7 +38,6 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
     if (state is AppLoaded) {
       return BlocProvider<NotificationListBloc>(
         create: (context) => NotificationListBloc(
-          AccessBloc.getBloc(context),
           eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
               state.app.documentID, state.getMember().documentID),
           notificationRepository:

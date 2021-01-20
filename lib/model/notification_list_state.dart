@@ -27,11 +27,12 @@ class NotificationListLoading extends NotificationListState {}
 
 class NotificationListLoaded extends NotificationListState {
   final List<NotificationModel> values;
+  final bool mightHaveMore;
 
-  const NotificationListLoaded({this.values = const []});
+  const NotificationListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values ];
+  List<Object> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'NotificationListLoaded { values: $values }';

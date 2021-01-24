@@ -180,6 +180,12 @@ class NotificationFirestore implements NotificationRepository {
     return firestoreTimeStampToString(timeStamp);
   } 
 
+  Future<NotificationModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
+    var change = FieldValue.increment(changeByThisValue);
+    return NotificationCollection.doc(documentId).update({fieldName: change}).then((v) => get(documentId));
+  }
+
+
   final String appId;
   NotificationFirestore(this.NotificationCollection, this.appId);
 

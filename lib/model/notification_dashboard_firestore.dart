@@ -180,6 +180,12 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
     return firestoreTimeStampToString(timeStamp);
   } 
 
+  Future<NotificationDashboardModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
+    var change = FieldValue.increment(changeByThisValue);
+    return NotificationDashboardCollection.doc(documentId).update({fieldName: change}).then((v) => get(documentId));
+  }
+
+
   final String appId;
   NotificationDashboardFirestore(this.NotificationDashboardCollection, this.appId);
 

@@ -67,8 +67,7 @@ class MyNotificationListItem extends StatelessWidget {
   Widget _avatar(MemberPublicInfoModel memberPublicInfo) {
     var image;
     if (memberPublicInfo != null) {
-      image = AbstractPlatform.platform
-          .getImageProviderOnPlatform(memberPublicInfo.photoURL);
+      image = NetworkImage(memberPublicInfo.photoURL);
     }
     if (image != null) {
       return Container(

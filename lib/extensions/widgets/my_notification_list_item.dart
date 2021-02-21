@@ -1,4 +1,3 @@
-import 'package:eliud_core/platform/platform.dart';
 import 'package:eliud_pkg_membership/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_membership/model/member_public_info_repository.dart';
 import 'package:eliud_pkg_membership/model/member_public_info_model.dart';

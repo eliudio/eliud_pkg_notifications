@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:eliud_core/model/access_model.dart';
+import 'package:eliud_core/package/package.dart';
 
 import 'model/abstract_repository_singleton.dart';
 import 'model/repository_singleton.dart';
@@ -86,4 +87,7 @@ abstract class NotificationsPackage extends PackageWithSubscription {
     AbstractNotificationPlatform.platform = NotificationPlatform();
 
   }
+
+  @override
+  List<MemberCollectionInfo> getMemberCollectionInfo() => AbstractRepositorySingleton.collections;
 }

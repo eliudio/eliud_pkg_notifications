@@ -7,19 +7,19 @@ import 'package:eliud_pkg_notifications/model/notification_model.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class AbstractNotificationPlatform {
-  static AbstractNotificationPlatform platform;
+  static AbstractNotificationPlatform? platform;
 
-  Future<void> sendMessage(BuildContext context, String addresseeMemberId, String message, {Action postSendAction}) ;
+  Future<void> sendMessage(BuildContext context, String addresseeMemberId, String message, {Action? postSendAction}) ;
 }
 
-typedef void Action(NotificationModel notificationModel);
+typedef void Action(NotificationModel? notificationModel);
 
 class NotificationPlatform extends AbstractNotificationPlatform {
 
-  Future<void> sendMessage(BuildContext context, String assigneeId, String message, {Action postSendAction}) async {
+  Future<void> sendMessage(BuildContext context, String assigneeId, String message, {Action? postSendAction}) async {
     AccessState accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
-      await AbstractRepositorySingleton.singleton.notificationRepository(accessState.app.documentID).add(NotificationModel(
+      await AbstractRepositorySingleton.singleton.notificationRepository(accessState.app.documentID)!.add(NotificationModel(
         documentID: newRandomKey(),
         appId:  accessState.app.documentID,
         description: message,

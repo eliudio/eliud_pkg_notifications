@@ -17,9 +17,9 @@ import 'model/notification_model.dart';
 
 abstract class NotificationsPackage extends PackageWithSubscription {
   static final String CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = 'Unread Notifications';
-  bool state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = null;
+  bool? state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = null;
 
-  static EliudQuery getOpenNotificationsQuery(String appId, String assigneeId) {
+  static EliudQuery getOpenNotificationsQuery(String? appId, String? assigneeId) {
     return EliudQuery(
         theConditions: [
           EliudQueryCondition('assigneeId', isEqualTo: assigneeId),
@@ -29,17 +29,17 @@ abstract class NotificationsPackage extends PackageWithSubscription {
     );
   }
 
-  void _setState(bool newState, {MemberModel currentMember}) {
+  void _setState(bool newState, {MemberModel? currentMember}) {
     if (newState != state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
       state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = newState;
       accessBloc.add(MemberUpdated(currentMember));
     }
   }
 
-  void resubscribe(AppModel app, MemberModel currentMember) {
-    String appId = app.documentID;
+  void resubscribe(AppModel app, MemberModel? currentMember) {
+    String? appId = app.documentID;
     if (currentMember != null) {
-      subscription = notificationRepository(appId: appId).listen((list) {
+      subscription = notificationRepository(appId: appId)!.listen((list) {
         // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
         // then we must inform the AccessBloc, so that it can refresh the state
         _setState(list.length > 0, currentMember: currentMember);
@@ -58,7 +58,7 @@ abstract class NotificationsPackage extends PackageWithSubscription {
   }
 
   @override
-  Future<bool> isConditionOk(String pluginCondition, AppModel app, MemberModel member, bool isOwner, bool isBlocked, PrivilegeLevel privilegeLevel) async {
+  Future<bool?> isConditionOk(String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async {
     if (pluginCondition == CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
       if (state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS == null) return false;
       return state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS;

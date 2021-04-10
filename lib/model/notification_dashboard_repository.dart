@@ -33,29 +33,29 @@ import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
-typedef NotificationDashboardModelTrigger(List<NotificationDashboardModel> list);
-typedef NotificationDashboardChanged(NotificationDashboardModel value);
+typedef NotificationDashboardModelTrigger(List<NotificationDashboardModel?> list);
+typedef NotificationDashboardChanged(NotificationDashboardModel? value);
 
 abstract class NotificationDashboardRepository {
   Future<NotificationDashboardModel> add(NotificationDashboardModel value);
   Future<void> delete(NotificationDashboardModel value);
-  Future<NotificationDashboardModel> get(String id, { Function(Exception) onError });
+  Future<NotificationDashboardModel?> get(String? id, { Function(Exception)? onError });
   Future<NotificationDashboardModel> update(NotificationDashboardModel value);
 
-  Stream<List<NotificationDashboardModel>> values({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Stream<List<NotificationDashboardModel>> valuesWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Future<List<NotificationDashboardModel>> valuesList({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
-  Future<List<NotificationDashboardModel>> valuesListWithDetails({String orderBy, bool descending, Object startAfter, int limit, SetLastDoc setLastDoc, int privilegeLevel, EliudQuery eliudQuery });
+  Stream<List<NotificationDashboardModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Stream<List<NotificationDashboardModel?>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Future<List<NotificationDashboardModel?>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  Future<List<NotificationDashboardModel?>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
 
-  StreamSubscription<List<NotificationDashboardModel>> listen(NotificationDashboardModelTrigger trigger, {String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<List<NotificationDashboardModel>> listenWithDetails(NotificationDashboardModelTrigger trigger, {String orderBy, bool descending, Object startAfter, int limit, int privilegeLevel, EliudQuery eliudQuery });
-  StreamSubscription<NotificationDashboardModel> listenTo(String documentId, NotificationDashboardChanged changed);
+  StreamSubscription<List<NotificationDashboardModel?>> listen(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
+  StreamSubscription<List<NotificationDashboardModel?>> listenWithDetails(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
+  StreamSubscription<NotificationDashboardModel?> listenTo(String documentId, NotificationDashboardChanged changed);
   void flush();
   
-  String timeStampToString(dynamic timeStamp);
+  String? timeStampToString(dynamic timeStamp);
 
   dynamic getSubCollection(String documentId, String name);
-  Future<NotificationDashboardModel> changeValue(String documentId, String fieldName, num changeByThisValue);
+  Future<NotificationDashboardModel?> changeValue(String documentId, String fieldName, num changeByThisValue);
 
   Future<void> deleteAll();
 }

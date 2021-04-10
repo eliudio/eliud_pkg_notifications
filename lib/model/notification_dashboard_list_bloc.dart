@@ -27,53 +27,59 @@ const _notificationDashboardLimit = 5;
 
 class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent, NotificationDashboardListState> {
   final NotificationDashboardRepository _notificationDashboardRepository;
-  StreamSubscription _notificationDashboardsListSubscription;
-  final EliudQuery eliudQuery;
+  StreamSubscription? _notificationDashboardsListSubscription;
+  final EliudQuery? eliudQuery;
   int pages = 1;
-  final bool paged;
-  final String orderBy;
-  final bool descending;
-  final bool detailed;
+  final bool? paged;
+  final String? orderBy;
+  final bool? descending;
+  final bool? detailed;
 
-  NotificationDashboardListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, @required NotificationDashboardRepository notificationDashboardRepository})
+  NotificationDashboardListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationDashboardRepository notificationDashboardRepository})
       : assert(notificationDashboardRepository != null),
         _notificationDashboardRepository = notificationDashboardRepository,
         super(NotificationDashboardListLoading());
 
   Stream<NotificationDashboardListState> _mapLoadNotificationDashboardListToState() async* {
-    int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values.length : 0;
+    int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values!.length : 0;
     _notificationDashboardsListSubscription?.cancel();
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listen(
           (list) => add(NotificationDashboardListUpdated(value: list, mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && (paged)) ? pages * _notificationDashboardLimit : null
+      limit: ((paged != null) && paged!) ? pages * _notificationDashboardLimit : null
     );
   }
 
   Stream<NotificationDashboardListState> _mapLoadNotificationDashboardListWithDetailsToState() async* {
-    int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values.length : 0;
+    int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values!.length : 0;
     _notificationDashboardsListSubscription?.cancel();
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listenWithDetails(
             (list) => add(NotificationDashboardListUpdated(value: list, mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && (paged)) ? pages * _notificationDashboardLimit : null
+        limit: ((paged != null) && paged!) ? pages * _notificationDashboardLimit : null
     );
   }
 
   Stream<NotificationDashboardListState> _mapAddNotificationDashboardListToState(AddNotificationDashboardList event) async* {
-    _notificationDashboardRepository.add(event.value);
+    var value = event.value;
+    if (value != null) 
+      _notificationDashboardRepository.add(value);
   }
 
   Stream<NotificationDashboardListState> _mapUpdateNotificationDashboardListToState(UpdateNotificationDashboardList event) async* {
-    _notificationDashboardRepository.update(event.value);
+    var value = event.value;
+    if (value != null) 
+      _notificationDashboardRepository.update(value);
   }
 
   Stream<NotificationDashboardListState> _mapDeleteNotificationDashboardListToState(DeleteNotificationDashboardList event) async* {
-    _notificationDashboardRepository.delete(event.value);
+    var value = event.value;
+    if (value != null) 
+      _notificationDashboardRepository.delete(value);
   }
 
   Stream<NotificationDashboardListState> _mapNotificationDashboardListUpdatedToState(
@@ -84,7 +90,7 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
   @override
   Stream<NotificationDashboardListState> mapEventToState(NotificationDashboardListEvent event) async* {
     if (event is LoadNotificationDashboardList) {
-      if ((detailed == null) || (!detailed)) {
+      if ((detailed == null) || (!detailed!)) {
         yield* _mapLoadNotificationDashboardListToState();
       } else {
         yield* _mapLoadNotificationDashboardListWithDetailsToState();

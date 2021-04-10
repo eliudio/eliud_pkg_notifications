@@ -20,17 +20,17 @@ import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_core/package/package.dart';
 
-NotificationRepository notificationRepository({ String appId }) => AbstractRepositorySingleton.singleton.notificationRepository(appId);
-NotificationDashboardRepository notificationDashboardRepository({ String appId }) => AbstractRepositorySingleton.singleton.notificationDashboardRepository(appId);
+NotificationRepository? notificationRepository({ String? appId }) => AbstractRepositorySingleton.singleton.notificationRepository(appId);
+NotificationDashboardRepository? notificationDashboardRepository({ String? appId }) => AbstractRepositorySingleton.singleton.notificationDashboardRepository(appId);
 
 abstract class AbstractRepositorySingleton {
   static List<MemberCollectionInfo> collections = [
   ];
-  static AbstractRepositorySingleton singleton;
+  static late AbstractRepositorySingleton singleton;
 
-  NotificationRepository notificationRepository(String appId);
-  NotificationDashboardRepository notificationDashboardRepository(String appId);
+  NotificationRepository? notificationRepository(String? appId);
+  NotificationDashboardRepository? notificationDashboardRepository(String? appId);
 
-  void flush(String appId) {
+  void flush(String? appId) {
   }
 }

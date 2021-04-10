@@ -34,7 +34,7 @@ abstract class NotificationDashboardFormEvent extends Equatable {
   const NotificationDashboardFormEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialiseNewNotificationDashboardFormEvent extends NotificationDashboardFormEvent {
@@ -42,66 +42,66 @@ class InitialiseNewNotificationDashboardFormEvent extends NotificationDashboardF
 
 
 class InitialiseNotificationDashboardFormEvent extends NotificationDashboardFormEvent {
-  final NotificationDashboardModel value;
+  final NotificationDashboardModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseNotificationDashboardFormEvent({this.value});
 }
 
 class InitialiseNotificationDashboardFormNoLoadEvent extends NotificationDashboardFormEvent {
-  final NotificationDashboardModel value;
+  final NotificationDashboardModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseNotificationDashboardFormNoLoadEvent({this.value});
 }
 
 class ChangedNotificationDashboardDocumentID extends NotificationDashboardFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationDashboardDocumentID({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationDashboardDocumentID{ value: $value }';
 }
 
 class ChangedNotificationDashboardAppId extends NotificationDashboardFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationDashboardAppId({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationDashboardAppId{ value: $value }';
 }
 
 class ChangedNotificationDashboardDescription extends NotificationDashboardFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationDashboardDescription({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationDashboardDescription{ value: $value }';
 }
 
 class ChangedNotificationDashboardConditions extends NotificationDashboardFormEvent {
-  final ConditionsSimpleModel value;
+  final ConditionsSimpleModel? value;
 
   ChangedNotificationDashboardConditions({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationDashboardConditions{ value: $value }';

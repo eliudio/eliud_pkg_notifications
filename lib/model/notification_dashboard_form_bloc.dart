@@ -42,8 +42,8 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_form_state.
 import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
 
 class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent, NotificationDashboardFormState> {
-  final FormAction formAction;
-  final String appId;
+  final FormAction? formAction;
+  final String? appId;
 
   NotificationDashboardFormBloc(this.appId, { this.formAction }): super(NotificationDashboardFormUninitialized());
   @override
@@ -65,20 +65,20 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
 
       if (event is InitialiseNotificationDashboardFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId).get(event.value.documentID));
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId)!.get(event!.value!.documentID));
         yield loaded;
         return;
       } else if (event is InitialiseNotificationDashboardFormNoLoadEvent) {
-        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event.value);
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event!.value);
         yield loaded;
         return;
       }
     } else if (currentState is NotificationDashboardFormInitialized) {
-      NotificationDashboardModel newValue = null;
+      NotificationDashboardModel? newValue = null;
       if (event is ChangedNotificationDashboardDocumentID) {
-        newValue = currentState.value.copyWith(documentID: event.value);
+        newValue = currentState.value!.copyWith(documentID: event!.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event.value, newValue).asStream();
+          yield* _isDocumentIDValid(event!.value, newValue).asStream();
         } else {
           yield SubmittableNotificationDashboardForm(value: newValue);
         }
@@ -86,19 +86,19 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
         return;
       }
       if (event is ChangedNotificationDashboardAppId) {
-        newValue = currentState.value.copyWith(appId: event.value);
+        newValue = currentState.value!.copyWith(appId: event!.value);
         yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationDashboardDescription) {
-        newValue = currentState.value.copyWith(description: event.value);
+        newValue = currentState.value!.copyWith(description: event!.value);
         yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationDashboardConditions) {
-        newValue = currentState.value.copyWith(conditions: event.value);
+        newValue = currentState.value!.copyWith(conditions: event!.value);
         yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
@@ -109,10 +109,10 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
 
   DocumentIDNotificationDashboardFormError error(String message, NotificationDashboardModel newValue) => DocumentIDNotificationDashboardFormError(message: message, value: newValue);
 
-  Future<NotificationDashboardFormState> _isDocumentIDValid(String value, NotificationDashboardModel newValue) async {
+  Future<NotificationDashboardFormState> _isDocumentIDValid(String? value, NotificationDashboardModel newValue) async {
     if (value == null) return Future.value(error("Provide value for documentID", newValue));
     if (value.length == 0) return Future.value(error("Provide value for documentID", newValue));
-    Future<NotificationDashboardModel> findDocument = notificationDashboardRepository(appId: appId).get(value);
+    Future<NotificationDashboardModel?> findDocument = notificationDashboardRepository(appId: appId)!.get(value);
     return await findDocument.then((documentFound) {
       if (documentFound == null) {
         return SubmittableNotificationDashboardForm(value: newValue);

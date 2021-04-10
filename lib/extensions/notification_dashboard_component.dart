@@ -19,13 +19,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../notifications_package.dart';
 
 class NotificationDashboardComponentConstructorDefault implements ComponentConstructor {
-  Widget createNew({String id, Map<String, Object> parameters}) {
+  Widget createNew({String? id, Map<String, Object>? parameters}) {
     return NotificationDashboardComponent(id: id);
   }
 }
 
 class NotificationDashboardComponent extends AbstractNotificationDashboardComponent {
-  NotificationDashboardComponent({String id}) : super(notificationDashboardID: id);
+  NotificationDashboardComponent({String? id}) : super(notificationDashboardID: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {
@@ -33,15 +33,15 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
   }
 
   @override
-  Widget yourWidget(BuildContext context, NotificationDashboardModel DashboardModel) {
+  Widget yourWidget(BuildContext context, NotificationDashboardModel? DashboardModel) {
     var state = AccessBloc.getState(context);
     if (state is AppLoaded) {
       return BlocProvider<NotificationListBloc>(
         create: (context) => NotificationListBloc(
           eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
-              state.app.documentID, state.getMember().documentID),
+              state.app.documentID, state.getMember()!.documentID),
           notificationRepository:
-          notificationRepository(appId: AccessBloc.appId(context)),
+          notificationRepository(appId: AccessBloc.appId(context))!,
         )..add(LoadNotificationList()),
         child: NotificationListWidget(
             readOnly: true,
@@ -53,13 +53,17 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
     }
   }
 
-  Widget widgetProvider(NotificationModel value) {
-    return MyNotificationListItem(value: value);
+  Widget widgetProvider(NotificationModel? value) {
+    if (value != null) {
+      return MyNotificationListItem(value: value);
+    } else {
+      return Text("Value for notification model is null");
+    }
   }
 
   @override
   NotificationDashboardRepository getNotificationDashboardRepository(BuildContext context) {
     return AbstractRepositorySingleton.singleton
-        .notificationDashboardRepository(AccessBloc.appId(context));
+        .notificationDashboardRepository(AccessBloc.appId(context))!;
   }
 }

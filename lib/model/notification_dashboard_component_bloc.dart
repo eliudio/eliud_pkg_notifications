@@ -23,7 +23,7 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.
 import 'package:flutter/services.dart';
 
 class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardComponentEvent, NotificationDashboardComponentState> {
-  final NotificationDashboardRepository notificationDashboardRepository;
+  final NotificationDashboardRepository? notificationDashboardRepository;
 
   NotificationDashboardComponentBloc({ this.notificationDashboardRepository }): super(NotificationDashboardComponentUninitialized());
   @override
@@ -33,9 +33,9 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
       try {
         if (currentState is NotificationDashboardComponentUninitialized) {
           bool permissionDenied = false;
-          final model = await notificationDashboardRepository.get(event.id, onError: (error) {
+          final model = await notificationDashboardRepository!.get(event.id, onError: (error) {
             // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
               permissionDenied = true;
             }
           });
@@ -45,7 +45,7 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
             if (model != null) {
               yield NotificationDashboardComponentLoaded(value: model);
             } else {
-              String id = event.id;
+              String? id = event.id;
               yield NotificationDashboardComponentError(
                   message: "NotificationDashboard with id = '$id' not found");
             }

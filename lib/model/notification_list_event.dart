@@ -19,7 +19,7 @@ import 'package:eliud_pkg_notifications/model/notification_model.dart';
 abstract class NotificationListEvent extends Equatable {
   const NotificationListEvent();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadNotificationList extends NotificationListEvent {}
@@ -27,49 +27,49 @@ class LoadNotificationList extends NotificationListEvent {}
 class NewPage extends NotificationListEvent {}
 
 class AddNotificationList extends NotificationListEvent {
-  final NotificationModel value;
+  final NotificationModel? value;
 
   const AddNotificationList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'AddNotificationList{ value: $value }';
 }
 
 class UpdateNotificationList extends NotificationListEvent {
-  final NotificationModel value;
+  final NotificationModel? value;
 
   const UpdateNotificationList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'UpdateNotificationList{ value: $value }';
 }
 
 class DeleteNotificationList extends NotificationListEvent {
-  final NotificationModel value;
+  final NotificationModel? value;
 
   const DeleteNotificationList({ this.value });
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'DeleteNotificationList{ value: $value }';
 }
 
 class NotificationListUpdated extends NotificationListEvent {
-  final List<NotificationModel> value;
-  final bool mightHaveMore;
+  final List<NotificationModel?>? value;
+  final bool? mightHaveMore;
 
   const NotificationListUpdated({ this.value, this.mightHaveMore });
 
   @override
-  List<Object> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [ value, mightHaveMore ];
 
   @override
   String toString() => 'NotificationListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';

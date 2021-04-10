@@ -20,13 +20,13 @@ abstract class NotificationComponentState extends Equatable {
   const NotificationComponentState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NotificationComponentUninitialized extends NotificationComponentState {}
 
 class NotificationComponentError extends NotificationComponentState {
-  final String message;
+  final String? message;
   NotificationComponentError({ this.message });
 }
 
@@ -35,16 +35,16 @@ class NotificationComponentPermissionDenied extends NotificationComponentState {
 }
 
 class NotificationComponentLoaded extends NotificationComponentState {
-  final NotificationModel value;
+  final NotificationModel? value;
 
   const NotificationComponentLoaded({ this.value });
 
-  NotificationComponentLoaded copyWith({ NotificationModel copyThis }) {
+  NotificationComponentLoaded copyWith({ NotificationModel? copyThis }) {
     return NotificationComponentLoaded(value: copyThis ?? this.value);
   }
 
   @override
-  List<Object> get props => [value];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'NotificationComponentLoaded { value: $value }';

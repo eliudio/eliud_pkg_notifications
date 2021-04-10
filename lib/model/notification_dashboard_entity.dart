@@ -22,21 +22,21 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 class NotificationDashboardEntity {
-  final String appId;
-  final String description;
-  final ConditionsSimpleEntity conditions;
+  final String? appId;
+  final String? description;
+  final ConditionsSimpleEntity? conditions;
 
   NotificationDashboardEntity({this.appId, this.description, this.conditions, });
 
 
-  List<Object> get props => [appId, description, conditions, ];
+  List<Object?> get props => [appId, description, conditions, ];
 
   @override
   String toString() {
     return 'NotificationDashboardEntity{appId: $appId, description: $description, conditions: $conditions}';
   }
 
-  static NotificationDashboardEntity fromMap(Map map) {
+  static NotificationDashboardEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     var conditionsFromMap;
@@ -51,12 +51,12 @@ class NotificationDashboardEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    final Map<String, dynamic> conditionsMap = conditions != null 
-        ? conditions.toDocument()
+  Map<String, Object?> toDocument() {
+    final Map<String, dynamic>? conditionsMap = conditions != null 
+        ? conditions!.toDocument()
         : null;
 
-    Map<String, Object> theDocument = HashMap();
+    Map<String, Object?> theDocument = HashMap();
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
     if (description != null) theDocument["description"] = description;
@@ -66,8 +66,8 @@ class NotificationDashboardEntity {
     return theDocument;
   }
 
-  static NotificationDashboardEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static NotificationDashboardEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

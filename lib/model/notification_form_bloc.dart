@@ -42,8 +42,8 @@ import 'package:eliud_pkg_notifications/model/notification_form_state.dart';
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 
 class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormState> {
-  final FormAction formAction;
-  final String appId;
+  final FormAction? formAction;
+  final String? appId;
 
   NotificationFormBloc(this.appId, { this.formAction }): super(NotificationFormUninitialized());
   @override
@@ -67,20 +67,20 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
 
       if (event is InitialiseNotificationFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        NotificationFormLoaded loaded = NotificationFormLoaded(value: await notificationRepository(appId: appId).get(event.value.documentID));
+        NotificationFormLoaded loaded = NotificationFormLoaded(value: await notificationRepository(appId: appId)!.get(event!.value!.documentID));
         yield loaded;
         return;
       } else if (event is InitialiseNotificationFormNoLoadEvent) {
-        NotificationFormLoaded loaded = NotificationFormLoaded(value: event.value);
+        NotificationFormLoaded loaded = NotificationFormLoaded(value: event!.value);
         yield loaded;
         return;
       }
     } else if (currentState is NotificationFormInitialized) {
-      NotificationModel newValue = null;
+      NotificationModel? newValue = null;
       if (event is ChangedNotificationDocumentID) {
-        newValue = currentState.value.copyWith(documentID: event.value);
+        newValue = currentState.value!.copyWith(documentID: event!.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event.value, newValue).asStream();
+          yield* _isDocumentIDValid(event!.value, newValue).asStream();
         } else {
           yield SubmittableNotificationForm(value: newValue);
         }
@@ -88,31 +88,31 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
         return;
       }
       if (event is ChangedNotificationDescription) {
-        newValue = currentState.value.copyWith(description: event.value);
+        newValue = currentState.value!.copyWith(description: event!.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationRead) {
-        newValue = currentState.value.copyWith(read: event.value);
+        newValue = currentState.value!.copyWith(read: event!.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationReporterId) {
-        newValue = currentState.value.copyWith(reporterId: event.value);
+        newValue = currentState.value!.copyWith(reporterId: event!.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationAssigneeId) {
-        newValue = currentState.value.copyWith(assigneeId: event.value);
+        newValue = currentState.value!.copyWith(assigneeId: event!.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationStatus) {
-        newValue = currentState.value.copyWith(status: event.value);
+        newValue = currentState.value!.copyWith(status: event!.value);
         yield SubmittableNotificationForm(value: newValue);
 
         return;
@@ -123,10 +123,10 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
 
   DocumentIDNotificationFormError error(String message, NotificationModel newValue) => DocumentIDNotificationFormError(message: message, value: newValue);
 
-  Future<NotificationFormState> _isDocumentIDValid(String value, NotificationModel newValue) async {
+  Future<NotificationFormState> _isDocumentIDValid(String? value, NotificationModel newValue) async {
     if (value == null) return Future.value(error("Provide value for documentID", newValue));
     if (value.length == 0) return Future.value(error("Provide value for documentID", newValue));
-    Future<NotificationModel> findDocument = notificationRepository(appId: appId).get(value);
+    Future<NotificationModel?> findDocument = notificationRepository(appId: appId)!.get(value);
     return await findDocument.then((documentFound) {
       if (documentFound == null) {
         return SubmittableNotificationForm(value: newValue);

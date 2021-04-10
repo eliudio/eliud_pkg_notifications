@@ -45,50 +45,36 @@ import 'package:eliud_core/model/app_model.dart';
 import 'notification_dashboard_form.dart';
 
 
-typedef NotificationDashboardWidgetProvider(NotificationDashboardModel value);
+typedef NotificationDashboardWidgetProvider(NotificationDashboardModel? value);
 
 class NotificationDashboardListWidget extends StatefulWidget with HasFab {
-  BackgroundModel listBackground;
-  NotificationDashboardWidgetProvider widgetProvider;
-  bool readOnly;
-  String form;
-  NotificationDashboardListWidgetState state;
-  bool isEmbedded;
+  BackgroundModel? listBackground;
+  NotificationDashboardWidgetProvider? widgetProvider;
+  bool? readOnly;
+  String? form;
+  NotificationDashboardListWidgetState? state;
+  bool? isEmbedded;
 
-  NotificationDashboardListWidget({ Key key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
+  NotificationDashboardListWidget({ Key? key, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
 
   @override
   NotificationDashboardListWidgetState createState() {
     state ??= NotificationDashboardListWidgetState();
-    return state;
+    return state!;
   }
 
   @override
-  Widget fab(BuildContext context) {
-    if ((readOnly != null) && readOnly) return null;
+  Widget? fab(BuildContext context) {
+    if ((readOnly != null) && readOnly!) return null;
     state ??= NotificationDashboardListWidgetState();
     var accessState = AccessBloc.getState(context);
-    return state.fab(context, accessState);
+    return state!.fab(context, accessState);
   }
 }
 
 class NotificationDashboardListWidgetState extends State<NotificationDashboardListWidget> {
-  NotificationDashboardListBloc bloc;
-
   @override
-  void didChangeDependencies() {
-    bloc = BlocProvider.of<NotificationDashboardListBloc>(context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose () {
-    if (bloc != null) bloc.close();
-    super.dispose();
-  }
-
-  @override
-  Widget fab(BuildContext aContext, AccessState accessState) {
+  Widget? fab(BuildContext aContext, AccessState accessState) {
     if (accessState is AppLoaded) {
       return !accessState.memberIsOwner() 
         ? null
@@ -100,7 +86,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
         onPressed: () {
           Navigator.of(context).push(
             pageRouteBuilder(accessState.app, page: BlocProvider.value(
-                value: bloc,
+                value: BlocProvider.of<NotificationDashboardListBloc>(context),
                 child: NotificationDashboardForm(
                     value: null,
                     formAction: FormAction.AddAction)
@@ -124,15 +110,15 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
           );
         } else if (state is NotificationDashboardListLoaded) {
           final values = state.values;
-          if ((widget.isEmbedded != null) && (widget.isEmbedded)) {
-            List<Widget> children = List();
+          if ((widget.isEmbedded != null) && widget.isEmbedded!) {
+            var children = <Widget>[];
             children.add(theList(context, values, accessState));
             children.add(RaisedButton(
                     color: RgbHelper.color(rgbo: accessState.app.formSubmitButtonColor),
                     onPressed: () {
                       Navigator.of(context).push(
                                 pageRouteBuilder(accessState.app, page: BlocProvider.value(
-                                    value: bloc,
+                                    value: BlocProvider.of<NotificationDashboardListBloc>(context),
                                     child: NotificationDashboardForm(
                                         value: null,
                                         formAction: FormAction.AddAction)
@@ -174,7 +160,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
         itemBuilder: (context, index) {
           final value = values[index];
           
-          if (widget.widgetProvider != null) return widget.widgetProvider(value);
+          if (widget.widgetProvider != null) return widget.widgetProvider!(value);
 
           return NotificationDashboardListItem(
             value: value,
@@ -210,7 +196,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
   }
   
   
-  Widget getForm(value, action) {
+  Widget? getForm(value, action) {
     if (widget.form == null) {
       return NotificationDashboardForm(value: value, formAction: action);
     } else {
@@ -226,36 +212,36 @@ class NotificationDashboardListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
   final AppModel app;
-  final NotificationDashboardModel value;
+  final NotificationDashboardModel? value;
 
   NotificationDashboardListItem({
-    Key key,
-    @required this.onDismissed,
-    @required this.onTap,
-    @required this.value,
-    @required this.app,
+    Key? key,
+    required this.onDismissed,
+    required this.onTap,
+    required this.value,
+    required this.app,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('__NotificationDashboard_item_${value.documentID}'),
+      key: Key('__NotificationDashboard_item_${value!.documentID}'),
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
         title: Hero(
-          tag: '${value.documentID}__NotificationDashboardheroTag',
+          tag: '${value!.documentID}__NotificationDashboardheroTag',
           child: Container(
             width: fullScreenWidth(context),
             child: Center(child: Text(
-              value.documentID,
+              value!.documentID!,
               style: TextStyle(color: RgbHelper.color(rgbo: app.listTextItemColor)),
             )),
           ),
         ),
-        subtitle: (value.description != null) && (value.description.isNotEmpty)
+        subtitle: (value!.description != null) && (value!.description!.isNotEmpty)
             ? Center( child: Text(
-          value.description,
+          value!.description!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(color: RgbHelper.color(rgbo: app.listTextItemColor)),

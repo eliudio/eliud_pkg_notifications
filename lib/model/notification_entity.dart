@@ -22,31 +22,31 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 class NotificationEntity {
-  final Object timestamp;
-  final String appId;
-  final String description;
-  final bool read;
-  final String reporterId;
-  final String assigneeId;
-  final int status;
+  final Object? timestamp;
+  final String? appId;
+  final String? description;
+  final bool? read;
+  final String? reporterId;
+  final String? assigneeId;
+  final int? status;
 
   NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, });
 
-  NotificationEntity copyWith({Object timestamp, }) {
+  NotificationEntity copyWith({Object? timestamp, }) {
     return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, reporterId: reporterId, assigneeId: assigneeId, status: status, );
   }
-  List<Object> get props => [timestamp, appId, description, read, reporterId, assigneeId, status, ];
+  List<Object?> get props => [timestamp, appId, description, read, reporterId, assigneeId, status, ];
 
   @override
   String toString() {
     return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
-  static NotificationEntity fromMap(Map map) {
+  static NotificationEntity? fromMap(Map? map) {
     if (map == null) return null;
 
     return NotificationEntity(
-      timestamp: notificationRepository().timeStampToString(map['timestamp']), 
+      timestamp: notificationRepository()!.timeStampToString(map['timestamp']),
       appId: map['appId'], 
       description: map['description'], 
       read: map['read'], 
@@ -56,8 +56,8 @@ class NotificationEntity {
     );
   }
 
-  Map<String, Object> toDocument() {
-    Map<String, Object> theDocument = HashMap();
+  Map<String, Object?> toDocument() {
+    Map<String, Object?> theDocument = HashMap();
     theDocument["timestamp"] = timestamp;
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
@@ -74,8 +74,8 @@ class NotificationEntity {
     return theDocument;
   }
 
-  static NotificationEntity fromJsonString(String json) {
-    Map<String, dynamic> generationSpecificationMap = jsonDecode(json);
+  static NotificationEntity? fromJsonString(String json) {
+    Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap);
   }
 

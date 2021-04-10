@@ -36,18 +36,18 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class NotificationDashboardModel {
-  String documentID;
+  String? documentID;
 
   // This is the identifier of the app to which this feed belongs
-  String appId;
-  String description;
-  ConditionsSimpleModel conditions;
+  String? appId;
+  String? description;
+  ConditionsSimpleModel? conditions;
 
   NotificationDashboardModel({this.documentID, this.appId, this.description, this.conditions, })  {
     assert(documentID != null);
   }
 
-  NotificationDashboardModel copyWith({String documentID, String appId, String description, ConditionsSimpleModel conditions, }) {
+  NotificationDashboardModel copyWith({String? documentID, String? appId, String? description, ConditionsSimpleModel? conditions, }) {
     return NotificationDashboardModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, conditions: conditions ?? this.conditions, );
   }
 
@@ -69,15 +69,15 @@ class NotificationDashboardModel {
     return 'NotificationDashboardModel{documentID: $documentID, appId: $appId, description: $description, conditions: $conditions}';
   }
 
-  NotificationDashboardEntity toEntity({String appId}) {
+  NotificationDashboardEntity toEntity({String? appId}) {
     return NotificationDashboardEntity(
           appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
-          conditions: (conditions != null) ? conditions.toEntity(appId: appId) : null, 
+          conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
     );
   }
 
-  static NotificationDashboardModel fromEntity(String documentID, NotificationDashboardEntity entity) {
+  static NotificationDashboardModel? fromEntity(String documentID, NotificationDashboardEntity? entity) {
     if (entity == null) return null;
     return NotificationDashboardModel(
           documentID: documentID, 
@@ -88,7 +88,7 @@ class NotificationDashboardModel {
     );
   }
 
-  static Future<NotificationDashboardModel> fromEntityPlus(String documentID, NotificationDashboardEntity entity, { String appId}) async {
+  static Future<NotificationDashboardModel?> fromEntityPlus(String documentID, NotificationDashboardEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return NotificationDashboardModel(

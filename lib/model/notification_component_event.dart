@@ -21,7 +21,7 @@ abstract class NotificationComponentEvent extends Equatable {
 }
 
 class FetchNotificationComponent extends NotificationComponentEvent {
-  final String id;
+  final String? id;
 
   FetchNotificationComponent({ this.id });
 }

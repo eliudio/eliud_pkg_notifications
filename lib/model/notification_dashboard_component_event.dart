@@ -21,7 +21,7 @@ abstract class NotificationDashboardComponentEvent extends Equatable {
 }
 
 class FetchNotificationDashboardComponent extends NotificationDashboardComponentEvent {
-  final String id;
+  final String? id;
 
   FetchNotificationDashboardComponent({ this.id });
 }

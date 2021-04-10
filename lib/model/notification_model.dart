@@ -38,7 +38,7 @@ enum NotificationStatus {
 }
 
 
-NotificationStatus toNotificationStatus(int index) {
+NotificationStatus toNotificationStatus(int? index) {
   switch (index) {
     case 0: return NotificationStatus.Closed;
     case 1: return NotificationStatus.Open;
@@ -48,22 +48,22 @@ NotificationStatus toNotificationStatus(int index) {
 
 
 class NotificationModel {
-  String documentID;
-  String timestamp;
+  String? documentID;
+  String? timestamp;
 
   // This is the identifier of the app to which this feed belongs
-  String appId;
-  String description;
-  bool read;
-  String reporterId;
-  String assigneeId;
-  NotificationStatus status;
+  String? appId;
+  String? description;
+  bool? read;
+  String? reporterId;
+  String? assigneeId;
+  NotificationStatus? status;
 
   NotificationModel({this.documentID, this.timestamp, this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, })  {
     assert(documentID != null);
   }
 
-  NotificationModel copyWith({String documentID, String timestamp, String appId, String description, bool read, String reporterId, String assigneeId, NotificationStatus status, }) {
+  NotificationModel copyWith({String? documentID, String? timestamp, String? appId, String? description, bool? read, String? reporterId, String? assigneeId, NotificationStatus? status, }) {
     return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, reporterId: reporterId ?? this.reporterId, assigneeId: assigneeId ?? this.assigneeId, status: status ?? this.status, );
   }
 
@@ -89,22 +89,23 @@ class NotificationModel {
     return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
-  NotificationEntity toEntity({String appId}) {
+  NotificationEntity toEntity({String? appId}) {
     return NotificationEntity(
-          timestamp: timestamp,           appId: (appId != null) ? appId : null, 
+          timestamp: timestamp, 
+          appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
           read: (read != null) ? read : null, 
           reporterId: (reporterId != null) ? reporterId : null, 
           assigneeId: (assigneeId != null) ? assigneeId : null, 
-          status: (status != null) ? status.index : null, 
+          status: (status != null) ? status!.index : null, 
     );
   }
 
-  static NotificationModel fromEntity(String documentID, NotificationEntity entity) {
+  static NotificationModel? fromEntity(String documentID, NotificationEntity? entity) {
     if (entity == null) return null;
     return NotificationModel(
           documentID: documentID, 
-          timestamp: entity.timestamp, 
+          timestamp: entity.timestamp.toString(),
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
@@ -114,7 +115,7 @@ class NotificationModel {
     );
   }
 
-  static Future<NotificationModel> fromEntityPlus(String documentID, NotificationEntity entity, { String appId}) async {
+  static Future<NotificationModel?> fromEntityPlus(String documentID, NotificationEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
     return NotificationModel(

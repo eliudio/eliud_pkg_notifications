@@ -23,7 +23,7 @@ import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 import 'package:flutter/services.dart';
 
 class NotificationComponentBloc extends Bloc<NotificationComponentEvent, NotificationComponentState> {
-  final NotificationRepository notificationRepository;
+  final NotificationRepository? notificationRepository;
 
   NotificationComponentBloc({ this.notificationRepository }): super(NotificationComponentUninitialized());
   @override
@@ -33,9 +33,9 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
       try {
         if (currentState is NotificationComponentUninitialized) {
           bool permissionDenied = false;
-          final model = await notificationRepository.get(event.id, onError: (error) {
+          final model = await notificationRepository!.get(event.id, onError: (error) {
             // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message.startsWith("PERMISSION_DENIED"))) {
+            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
               permissionDenied = true;
             }
           });
@@ -45,7 +45,7 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
             if (model != null) {
               yield NotificationComponentLoaded(value: model);
             } else {
-              String id = event.id;
+              String? id = event.id;
               yield NotificationComponentError(
                   message: "Notification with id = '$id' not found");
             }

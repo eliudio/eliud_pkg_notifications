@@ -34,7 +34,7 @@ abstract class NotificationFormEvent extends Equatable {
   const NotificationFormEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialiseNewNotificationFormEvent extends NotificationFormEvent {
@@ -42,114 +42,114 @@ class InitialiseNewNotificationFormEvent extends NotificationFormEvent {
 
 
 class InitialiseNotificationFormEvent extends NotificationFormEvent {
-  final NotificationModel value;
+  final NotificationModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseNotificationFormEvent({this.value});
 }
 
 class InitialiseNotificationFormNoLoadEvent extends NotificationFormEvent {
-  final NotificationModel value;
+  final NotificationModel? value;
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   InitialiseNotificationFormNoLoadEvent({this.value});
 }
 
 class ChangedNotificationDocumentID extends NotificationFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationDocumentID({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationDocumentID{ value: $value }';
 }
 
 class ChangedNotificationTimestamp extends NotificationFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationTimestamp({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationTimestamp{ value: $value }';
 }
 
 class ChangedNotificationAppId extends NotificationFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationAppId({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationAppId{ value: $value }';
 }
 
 class ChangedNotificationDescription extends NotificationFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationDescription({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationDescription{ value: $value }';
 }
 
 class ChangedNotificationRead extends NotificationFormEvent {
-  final bool value;
+  final bool? value;
 
   ChangedNotificationRead({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationRead{ value: $value }';
 }
 
 class ChangedNotificationReporterId extends NotificationFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationReporterId({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationReporterId{ value: $value }';
 }
 
 class ChangedNotificationAssigneeId extends NotificationFormEvent {
-  final String value;
+  final String? value;
 
   ChangedNotificationAssigneeId({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationAssigneeId{ value: $value }';
 }
 
 class ChangedNotificationStatus extends NotificationFormEvent {
-  final NotificationStatus value;
+  final NotificationStatus? value;
 
   ChangedNotificationStatus({this.value});
 
   @override
-  List<Object> get props => [ value ];
+  List<Object?> get props => [ value ];
 
   @override
   String toString() => 'ChangedNotificationStatus{ value: $value }';

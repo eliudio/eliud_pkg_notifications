@@ -57,13 +57,13 @@ import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 class ListComponentFactory implements ComponentConstructor {
-  Widget createNew({String id, Map<String, Object> parameters}) {
+  Widget? createNew({String? id, Map<String, Object>? parameters}) {
     return ListComponent(componentId: id);
   }
 }
 
 
-typedef DropdownButtonChanged(String value);
+typedef DropdownButtonChanged(String? value);
 
 class DropdownButtonComponentFactory implements ComponentDropDown {
 
@@ -74,7 +74,7 @@ class DropdownButtonComponentFactory implements ComponentDropDown {
     return false;
   }
 
-  Widget createNew({String id, Map<String, Object> parameters, String value, DropdownButtonChanged trigger, bool optional}) {
+  Widget createNew({String? id, Map<String, Object>? parameters, String? value, DropdownButtonChanged? trigger, bool? optional}) {
 
     if (id == "notifications")
       return DropdownButtonComponent(componentId: id, value: value, trigger: trigger, optional: optional);
@@ -82,17 +82,17 @@ class DropdownButtonComponentFactory implements ComponentDropDown {
     if (id == "notificationDashboards")
       return DropdownButtonComponent(componentId: id, value: value, trigger: trigger, optional: optional);
 
-    return null;
+    return Text("Id $id not found");
   }
 }
 
 
 class ListComponent extends StatelessWidget with HasFab {
-  final String componentId;
-  Widget widget;
+  final String? componentId;
+  Widget? widget;
 
   @override
-  Widget fab(BuildContext context){
+  Widget? fab(BuildContext context){
     if ((widget != null) && (widget is HasFab)) {
       HasFab hasFab = widget as HasFab;
       return hasFab.fab(context);
@@ -112,7 +112,7 @@ class ListComponent extends StatelessWidget with HasFab {
     return Text('Component with componentId == $componentId not found');
   }
 
-  Widget initWidget() {
+  void initWidget() {
     if (componentId == 'notifications') widget = NotificationListWidget();
     if (componentId == 'notificationDashboards') widget = NotificationDashboardListWidget();
   }
@@ -122,11 +122,11 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
-            notificationRepository: notificationRepository(appId: AccessBloc.appId(context)),
+            notificationRepository: notificationRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadNotificationList()),
         )
       ],
-      child: widget,
+      child: widget!,
     );
   }
 
@@ -135,24 +135,24 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<NotificationDashboardListBloc>(
           create: (context) => NotificationDashboardListBloc(
-            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context)),
+            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadNotificationDashboardList()),
         )
       ],
-      child: widget,
+      child: widget!,
     );
   }
 
 }
 
 
-typedef Changed(String value);
+typedef Changed(String? value);
 
 class DropdownButtonComponent extends StatelessWidget {
-  final String componentId;
-  final String value;
-  final Changed trigger;
-  final bool optional;
+  final String? componentId;
+  final String? value;
+  final Changed? trigger;
+  final bool? optional;
 
   DropdownButtonComponent({this.componentId, this.value, this.trigger, this.optional});
 
@@ -170,7 +170,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
-            notificationRepository: notificationRepository(appId: AccessBloc.appId(context)),
+            notificationRepository: notificationRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadNotificationList()),
         )
       ],
@@ -183,7 +183,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<NotificationDashboardListBloc>(
           create: (context) => NotificationDashboardListBloc(
-            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context)),
+            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context))!,
           )..add(LoadNotificationDashboardList()),
         )
       ],

@@ -25,7 +25,7 @@ import 'package:eliud_pkg_notifications/model/notification_component_state.dart'
 
 abstract class AbstractNotificationComponent extends StatelessWidget {
   static String componentName = "notifications";
-  final String notificationID;
+  final String? notificationID;
 
   AbstractNotificationComponent({this.notificationID});
 
@@ -63,7 +63,7 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
     });
   }
 
-  Widget yourWidget(BuildContext context, NotificationModel value);
+  Widget yourWidget(BuildContext context, NotificationModel? value);
   Widget alertWidget({ title: String, content: String});
   NotificationRepository getNotificationRepository(BuildContext context);
 }

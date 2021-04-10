@@ -25,7 +25,7 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_component_s
 
 abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
   static String componentName = "notificationDashboards";
-  final String notificationDashboardID;
+  final String? notificationDashboardID;
 
   AbstractNotificationDashboardComponent({this.notificationDashboardID});
 
@@ -63,7 +63,7 @@ abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
     });
   }
 
-  Widget yourWidget(BuildContext context, NotificationDashboardModel value);
+  Widget yourWidget(BuildContext context, NotificationDashboardModel? value);
   Widget alertWidget({ title: String, content: String});
   NotificationDashboardRepository getNotificationDashboardRepository(BuildContext context);
 }

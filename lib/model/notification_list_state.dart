@@ -20,19 +20,19 @@ abstract class NotificationListState extends Equatable {
   const NotificationListState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NotificationListLoading extends NotificationListState {}
 
 class NotificationListLoaded extends NotificationListState {
-  final List<NotificationModel> values;
-  final bool mightHaveMore;
+  final List<NotificationModel?>? values;
+  final bool? mightHaveMore;
 
   const NotificationListLoaded({this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [ values, mightHaveMore ];
 
   @override
   String toString() => 'NotificationListLoaded { values: $values }';

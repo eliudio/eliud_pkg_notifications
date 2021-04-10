@@ -63,10 +63,10 @@ import 'package:eliud_pkg_notifications/model/notification_form_state.dart';
 
 class NotificationForm extends StatelessWidget {
   FormAction formAction;
-  NotificationModel value;
-  ActionModel submitAction;
+  NotificationModel? value;
+  ActionModel? submitAction;
 
-  NotificationForm({Key key, @required this.formAction, @required this.value, this.submitAction}) : super(key: key);
+  NotificationForm({Key? key, required this.formAction, required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +94,14 @@ class NotificationForm extends StatelessWidget {
       return Scaffold(
         appBar: formAction == FormAction.UpdateAction ?
                 AppBar(
-                    title: Text("Update Notification", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Update Notification", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
                   ) :
                 AppBar(
-                    title: Text("Add Notification", style: TextStyle(color: RgbHelper.color(rgbo: app.formAppBarTextColor))),
+                    title: Text("Add Notification", style: TextStyle(color: RgbHelper.color(rgbo: app!.formAppBarTextColor))),
                     flexibleSpace: Container(
-                        decoration: BoxDecorationHelper.boxDecoration(accessState, app.formAppBarBackground)),
+                        decoration: BoxDecorationHelper.boxDecoration(accessState, app!.formAppBarBackground)),
                 ),
         body: BlocProvider<NotificationFormBloc >(
             create: (context) => NotificationFormBloc(AccessBloc.appId(context),
@@ -117,8 +117,8 @@ class NotificationForm extends StatelessWidget {
 
 
 class MyNotificationForm extends StatefulWidget {
-  final FormAction formAction;
-  final ActionModel submitAction;
+  final FormAction? formAction;
+  final ActionModel? submitAction;
 
   MyNotificationForm({this.formAction, this.submitAction});
 
@@ -127,16 +127,16 @@ class MyNotificationForm extends StatefulWidget {
 
 
 class _MyNotificationFormState extends State<MyNotificationForm> {
-  final FormAction formAction;
-  NotificationFormBloc _myFormBloc;
+  final FormAction? formAction;
+  late NotificationFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _appIdController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  bool _readSelection;
+  bool? _readSelection;
   final TextEditingController _reporterIdController = TextEditingController();
   final TextEditingController _assigneeIdController = TextEditingController();
-  int _statusSelectedRadioTile;
+  int? _statusSelectedRadioTile;
 
 
   _MyNotificationFormState(this.formAction);
@@ -164,51 +164,51 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
       );
 
       if (state is NotificationFormLoaded) {
-        if (state.value.documentID != null)
-          _documentIDController.text = state.value.documentID.toString();
+        if (state.value!.documentID != null)
+          _documentIDController.text = state.value!.documentID.toString();
         else
           _documentIDController.text = "";
-        if (state.value.appId != null)
-          _appIdController.text = state.value.appId.toString();
+        if (state.value!.appId != null)
+          _appIdController.text = state.value!.appId.toString();
         else
           _appIdController.text = "";
-        if (state.value.description != null)
-          _descriptionController.text = state.value.description.toString();
+        if (state.value!.description != null)
+          _descriptionController.text = state.value!.description.toString();
         else
           _descriptionController.text = "";
-        if (state.value.read != null)
-        _readSelection = state.value.read;
+        if (state.value!.read != null)
+        _readSelection = state.value!.read;
         else
         _readSelection = false;
-        if (state.value.reporterId != null)
-          _reporterIdController.text = state.value.reporterId.toString();
+        if (state.value!.reporterId != null)
+          _reporterIdController.text = state.value!.reporterId.toString();
         else
           _reporterIdController.text = "";
-        if (state.value.assigneeId != null)
-          _assigneeIdController.text = state.value.assigneeId.toString();
+        if (state.value!.assigneeId != null)
+          _assigneeIdController.text = state.value!.assigneeId.toString();
         else
           _assigneeIdController.text = "";
-        if (state.value.status != null)
-          _statusSelectedRadioTile = state.value.status.index;
+        if (state.value!.status != null)
+          _statusSelectedRadioTile = state.value!.status!.index;
         else
           _statusSelectedRadioTile = 0;
       }
       if (state is NotificationFormInitialized) {
-        List<Widget> children = List();
+        List<Widget?> children = [];
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('General',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 CheckboxListTile(
-                    title: Text('Has this been read?', style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
+                    title: Text('Has this been read?', style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
                     value: _readSelection,
-                    onChanged: _readOnly(accessState, state) ? null : (val) {
+                    onChanged: _readOnly(accessState, state) ? null : (dynamic val) {
                       setSelectionRead(val);
                     }),
           );
@@ -217,11 +217,11 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
                 RadioListTile(
                     value: 0,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
                     groupValue: _statusSelectedRadioTile,
-                    title: Text("Closed", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("Closed", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                    title: Text("Closed", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    subtitle: Text("Closed", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionStatus(val);
                     },
                 ),
@@ -230,11 +230,11 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
                 RadioListTile(
                     value: 1,
-                    activeColor: RgbHelper.color(rgbo: app.formFieldTextColor),
+                    activeColor: RgbHelper.color(rgbo: app!.formFieldTextColor),
                     groupValue: _statusSelectedRadioTile,
-                    title: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    subtitle: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor))),
-                    onChanged: !accessState.memberIsOwner() ? null : (val) {
+                    title: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    subtitle: Text("Open", style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),
+                    onChanged: !accessState.memberIsOwner() ? null : (dynamic val) {
                       setSelectionStatus(val);
                     },
                 ),
@@ -242,7 +242,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
          children.add(Container(
@@ -250,17 +250,17 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('General',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: (formAction == FormAction.UpdateAction),
                   controller: _documentIDController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.vpn_key, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.vpn_key, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Document ID',
                   ),
                   keyboardType: TextInputType.text,
@@ -274,11 +274,11 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _descriptionController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Description',
                   ),
                   keyboardType: TextInputType.text,
@@ -291,7 +291,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
          children.add(Container(
@@ -299,17 +299,17 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Reporter',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _reporterIdController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Reporter',
                   ),
                   keyboardType: TextInputType.text,
@@ -322,7 +322,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
          children.add(Container(
@@ -330,17 +330,17 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                   child: Text('Assignee',
                       style: TextStyle(
-                          color: RgbHelper.color(rgbo: app.formGroupTitleColor), fontWeight: FontWeight.bold)),
+                          color: RgbHelper.color(rgbo: app!.formGroupTitleColor), fontWeight: FontWeight.bold)),
                 ));
 
         children.add(
 
                 TextFormField(
-                style: TextStyle(color: RgbHelper.color(rgbo: app.formFieldTextColor)),
+                style: TextStyle(color: RgbHelper.color(rgbo: app!.formFieldTextColor)),
                   readOnly: _readOnly(accessState, state),
                   controller: _assigneeIdController,
                   decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app.formFieldHeaderColor)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldTextColor))),                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: RgbHelper.color(rgbo: app!.formFieldFocusColor))),                    icon: Icon(Icons.text_format, color: RgbHelper.color(rgbo: app!.formFieldHeaderColor)),
                     labelText: 'Assignee',
                   ),
                   keyboardType: TextInputType.text,
@@ -353,55 +353,54 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
 
         children.add(Container(height: 20.0));
-        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app.dividerColor)));
+        children.add(Divider(height: 1.0, thickness: 1.0, color: RgbHelper.color(rgbo: app!.dividerColor)));
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
           children.add(RaisedButton(
-                  color: RgbHelper.color(rgbo: app.formSubmitButtonColor),
+                  color: RgbHelper.color(rgbo: app!.formSubmitButtonColor),
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is NotificationFormError) {
                       return null;
                     } else {
                       if (formAction == FormAction.UpdateAction) {
                         BlocProvider.of<NotificationListBloc>(context).add(
-                          UpdateNotificationList(value: state.value.copyWith(
-                              documentID: state.value.documentID, 
-                              timestamp: state.value.timestamp, 
-                              appId: state.value.appId, 
-                              description: state.value.description, 
-                              read: state.value.read, 
-                              reporterId: state.value.reporterId, 
-                              assigneeId: state.value.assigneeId, 
-                              status: state.value.status, 
+                          UpdateNotificationList(value: state.value!.copyWith(
+                              documentID: state.value!.documentID, 
+                              timestamp: state.value!.timestamp, 
+                              appId: state.value!.appId, 
+                              description: state.value!.description, 
+                              read: state.value!.read, 
+                              reporterId: state.value!.reporterId, 
+                              assigneeId: state.value!.assigneeId, 
+                              status: state.value!.status, 
                         )));
                       } else {
                         BlocProvider.of<NotificationListBloc>(context).add(
                           AddNotificationList(value: NotificationModel(
-                              documentID: state.value.documentID, 
-                              timestamp: state.value.timestamp, 
-                              appId: state.value.appId, 
-                              description: state.value.description, 
-                              read: state.value.read, 
-                              reporterId: state.value.reporterId, 
-                              assigneeId: state.value.assigneeId, 
-                              status: state.value.status, 
+                              documentID: state.value!.documentID, 
+                              timestamp: state.value!.timestamp, 
+                              appId: state.value!.appId, 
+                              description: state.value!.description, 
+                              read: state.value!.read, 
+                              reporterId: state.value!.reporterId, 
+                              assigneeId: state.value!.assigneeId, 
+                              status: state.value!.status, 
                           )));
                       }
                       if (widget.submitAction != null) {
-                        eliudrouter.Router.navigateTo(context, widget.submitAction);
+                        eliudrouter.Router.navigateTo(context, widget.submitAction!);
                       } else {
                         Navigator.pop(context);
                       }
-                      return true;
                     }
                   },
-                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app.formSubmitButtonTextColor))),
+                  child: Text('Submit', style: TextStyle(color: RgbHelper.color(rgbo: app!.formSubmitButtonTextColor))),
                 ));
 
         return Container(
           color: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? Colors.transparent : null,
-          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app.formBackground),
+          decoration: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? null : BoxDecorationHelper.boxDecoration(accessState, app!.formBackground),
           padding:
           const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
             child: Form(
@@ -409,7 +408,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
               padding: const EdgeInsets.all(8),
               physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
               shrinkWrap: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)),
-              children: children
+              children: children as List<Widget>
             ),
           )
         );
@@ -434,7 +433,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   }
 
 
-  void setSelectionRead(bool val) {
+  void setSelectionRead(bool? val) {
     setState(() {
       _readSelection = val;
     });
@@ -451,7 +450,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   }
 
 
-  void setSelectionStatus(int val) {
+  void setSelectionStatus(int? val) {
     setState(() {
       _statusSelectedRadioTile = val;
     });

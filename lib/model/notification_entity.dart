@@ -46,7 +46,7 @@ class NotificationEntity {
     if (map == null) return null;
 
     return NotificationEntity(
-      timestamp: notificationRepository()!.timeStampToString(map['timestamp']),
+      timestamp: notificationRepository()?.timeStampToString(map['timestamp']), 
       appId: map['appId'], 
       description: map['description'], 
       read: map['read'], 

@@ -105,7 +105,7 @@ class NotificationModel {
     if (entity == null) return null;
     return NotificationModel(
           documentID: documentID, 
-          timestamp: entity.timestamp.toString(),
+          timestamp: entity.timestamp.toString(), 
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
@@ -120,7 +120,7 @@ class NotificationModel {
 
     return NotificationModel(
           documentID: documentID, 
-          timestamp: entity.timestamp, 
+          timestamp: entity.timestamp.toString(), 
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 

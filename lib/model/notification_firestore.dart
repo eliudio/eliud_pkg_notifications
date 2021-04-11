@@ -37,7 +37,15 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class NotificationFirestore implements NotificationRepository {
   Future<NotificationModel> add(NotificationModel value) {
-    return NotificationCollection.doc(value.documentID).set(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
+    return NotificationCollection.doc(value.documentID).set(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) async {
+      var newValue = await get(value.documentID);
+      if (newValue == null) {
+        return value;
+      } else {
+        return newValue;
+      }
+    })
+;
   }
 
   Future<void> delete(NotificationModel value) {
@@ -45,7 +53,15 @@ class NotificationFirestore implements NotificationRepository {
   }
 
   Future<NotificationModel> update(NotificationModel value) {
-    return NotificationCollection.doc(value.documentID).update(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) => get(value.documentID));
+    return NotificationCollection.doc(value.documentID).update(value.toEntity(appId: appId).copyWith(timestamp : FieldValue.serverTimestamp(), ).toDocument()).then((_) => value).then((v) async {
+      var newValue = await get(value.documentID);
+      if (newValue == null) {
+        return value;
+      } else {
+        return newValue;
+      }
+    })
+;
   }
 
   NotificationModel? _populateDoc(DocumentSnapshot value) {

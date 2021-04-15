@@ -19,7 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../notifications_package.dart';
 
 class NotificationDashboardComponentConstructorDefault implements ComponentConstructor {
-  Widget createNew({String? id, Map<String, Object>? parameters}) {
+  Widget createNew({String? id, Map<String, dynamic>? parameters}) {
     return NotificationDashboardComponent(id: id);
   }
 }

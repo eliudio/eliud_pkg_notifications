@@ -53,13 +53,12 @@ class NotificationCache implements NotificationRepository {
     return Future.value();
   }
 
-  Future<NotificationModel> get(String? id, {Function(Exception)? onError}) {
-    NotificationModel? value = fullCache[id];
+  Future<NotificationModel> get(String? id, {Function(Exception)? onError}) async {
+    var value = fullCache[id];
     if (value != null) return refreshRelations(value);
-    return reference.get(id, onError: onError).then((value) {
-      fullCache[id] = value;
-      return value!;
-    });
+    value = await reference.get(id, onError: onError);
+    fullCache[id] = value;
+    return Future.value(value);
   }
 
   Future<NotificationModel> update(NotificationModel value) {

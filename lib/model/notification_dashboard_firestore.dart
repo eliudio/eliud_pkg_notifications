@@ -55,17 +55,18 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
   Future<NotificationDashboardModel?> _populateDocPlus(DocumentSnapshot value) async {
     return NotificationDashboardModel.fromEntityPlus(value.id, NotificationDashboardEntity.fromMap(value.data()), appId: appId);  }
 
-  Future<NotificationDashboardModel?> get(String? id, {Function(Exception)? onError}) {
-    return NotificationDashboardCollection.doc(id).get().then((doc) async {
-      if (doc.data() != null)
-        return await _populateDocPlus(doc);
-      else
-        return null;
-    }).catchError((Object e) {
+  Future<NotificationDashboardModel?> get(String? id, {Function(Exception)? onError}) async {
+    try {
+      var collection = NotificationDashboardCollection.doc(id);
+      var doc = await collection.get();
+      return await _populateDocPlus(doc);
+    } on Exception catch(e) {
+      print("Error whilst retrieving NotificationDashboard with id $id");
+      print("Exceptoin: $e");
       if (onError != null) {
-        onError(e as Exception);
+        onError(e);
       }
-    });
+    };
   }
 
   StreamSubscription<List<NotificationDashboardModel?>> listen(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery}) {

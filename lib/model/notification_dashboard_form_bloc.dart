@@ -65,20 +65,20 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
 
       if (event is InitialiseNotificationDashboardFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
-        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId)!.get(event!.value!.documentID));
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId)!.get(event.value!.documentID));
         yield loaded;
         return;
       } else if (event is InitialiseNotificationDashboardFormNoLoadEvent) {
-        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event!.value);
+        NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event.value);
         yield loaded;
         return;
       }
     } else if (currentState is NotificationDashboardFormInitialized) {
       NotificationDashboardModel? newValue = null;
       if (event is ChangedNotificationDashboardDocumentID) {
-        newValue = currentState.value!.copyWith(documentID: event!.value);
+        newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event!.value, newValue).asStream();
+          yield* _isDocumentIDValid(event.value, newValue).asStream();
         } else {
           yield SubmittableNotificationDashboardForm(value: newValue);
         }
@@ -86,19 +86,19 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
         return;
       }
       if (event is ChangedNotificationDashboardAppId) {
-        newValue = currentState.value!.copyWith(appId: event!.value);
+        newValue = currentState.value!.copyWith(appId: event.value);
         yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationDashboardDescription) {
-        newValue = currentState.value!.copyWith(description: event!.value);
+        newValue = currentState.value!.copyWith(description: event.value);
         yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;
       }
       if (event is ChangedNotificationDashboardConditions) {
-        newValue = currentState.value!.copyWith(conditions: event!.value);
+        newValue = currentState.value!.copyWith(conditions: event.value);
         yield SubmittableNotificationDashboardForm(value: newValue);
 
         return;

@@ -227,10 +227,10 @@ class NotificationListItem extends StatelessWidget {
           tag: '${value!.documentID}__NotificationheroTag',
           child: Container(
             width: fullScreenWidth(context),
-            child: Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.timestamp.toString()!)),
+            child: Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.timestamp.toString())),
           ),
         ),
-        subtitle: (value!.documentID != null) && (value!.documentID!.isNotEmpty)
+        subtitle: (value!.documentID! != null) && (value!.documentID!.isNotEmpty)
             ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!))
             : null,
       ),

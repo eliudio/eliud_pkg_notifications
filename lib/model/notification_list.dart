@@ -100,7 +100,7 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
     if (accessState is AppLoaded) {
       return BlocBuilder<NotificationListBloc, NotificationListState>(builder: (context, state) {
         if (state is NotificationListLoading) {
-          return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+          return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
         } else if (state is NotificationListLoaded) {
           final values = state.values;
           if ((widget.isEmbedded != null) && widget.isEmbedded!) {
@@ -130,7 +130,7 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
             return theList(context, values, accessState);
           }
         } else {
-          return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+          return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
         }
       });
     } else {

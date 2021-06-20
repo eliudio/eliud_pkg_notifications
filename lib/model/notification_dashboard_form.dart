@@ -145,7 +145,7 @@ class _MyNotificationDashboardFormState extends State<MyNotificationDashboardFor
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<NotificationDashboardFormBloc, NotificationDashboardFormState>(builder: (context, state) {
       if (state is NotificationDashboardFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
       );
 
       if (state is NotificationDashboardFormLoaded) {
@@ -244,7 +244,7 @@ class _MyNotificationDashboardFormState extends State<MyNotificationDashboardFor
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
       }
     });
   }

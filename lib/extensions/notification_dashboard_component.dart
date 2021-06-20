@@ -18,14 +18,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../notifications_package.dart';
 
-class NotificationDashboardComponentConstructorDefault implements ComponentConstructor {
+class NotificationDashboardComponentConstructorDefault
+    implements ComponentConstructor {
   Widget createNew({String? id, Map<String, dynamic>? parameters}) {
     return NotificationDashboardComponent(id: id);
   }
 }
 
-class NotificationDashboardComponent extends AbstractNotificationDashboardComponent {
-  NotificationDashboardComponent({String? id}) : super(notificationDashboardID: id);
+class NotificationDashboardComponent
+    extends AbstractNotificationDashboardComponent {
+  NotificationDashboardComponent({String? id})
+      : super(notificationDashboardID: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {
@@ -33,7 +36,8 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
   }
 
   @override
-  Widget yourWidget(BuildContext context, NotificationDashboardModel? DashboardModel) {
+  Widget yourWidget(
+      BuildContext context, NotificationDashboardModel? dashboardModel) {
     var state = AccessBloc.getState(context);
     if (state is AppLoaded) {
       return BlocProvider<NotificationListBloc>(
@@ -41,7 +45,7 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
           eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
               state.app.documentID, state.getMember()!.documentID),
           notificationRepository:
-          notificationRepository(appId: AccessBloc.appId(context))!,
+              notificationRepository(appId: AccessBloc.appId(context))!,
         )..add(LoadNotificationList()),
         child: NotificationListWidget(
             readOnly: true,
@@ -49,7 +53,11 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
             listBackground: BackgroundModel(documentID: "`transparent")),
       );
     } else {
-      return StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicator(context);
+      return StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .progressIndicatorStyle()
+          .progressIndicator(context);
     }
   }
 
@@ -62,7 +70,8 @@ class NotificationDashboardComponent extends AbstractNotificationDashboardCompon
   }
 
   @override
-  NotificationDashboardRepository getNotificationDashboardRepository(BuildContext context) {
+  NotificationDashboardRepository getNotificationDashboardRepository(
+      BuildContext context) {
     return AbstractRepositorySingleton.singleton
         .notificationDashboardRepository(AccessBloc.appId(context))!;
   }

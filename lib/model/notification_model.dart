@@ -102,6 +102,7 @@ class NotificationModel {
 
   static NotificationModel? fromEntity(String documentID, NotificationEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return NotificationModel(
           documentID: documentID, 
           timestamp: entity.timestamp.toString(), 
@@ -117,6 +118,7 @@ class NotificationModel {
   static Future<NotificationModel?> fromEntityPlus(String documentID, NotificationEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return NotificationModel(
           documentID: documentID, 
           timestamp: entity.timestamp.toString(), 

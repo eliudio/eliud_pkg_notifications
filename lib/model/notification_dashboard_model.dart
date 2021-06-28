@@ -78,6 +78,7 @@ class NotificationDashboardModel {
 
   static NotificationDashboardModel? fromEntity(String documentID, NotificationDashboardEntity? entity) {
     if (entity == null) return null;
+    var counter = 0;
     return NotificationDashboardModel(
           documentID: documentID, 
           appId: entity.appId, 
@@ -90,6 +91,7 @@ class NotificationDashboardModel {
   static Future<NotificationDashboardModel?> fromEntityPlus(String documentID, NotificationDashboardEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
+    var counter = 0;
     return NotificationDashboardModel(
           documentID: documentID, 
           appId: entity.appId, 

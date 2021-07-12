@@ -36,8 +36,9 @@ class NotificationDashboardEntity {
     return 'NotificationDashboardEntity{appId: $appId, description: $description, conditions: $conditions}';
   }
 
-  static NotificationDashboardEntity? fromMap(Map? map) {
-    if (map == null) return null;
+  static NotificationDashboardEntity? fromMap(Object? o) {
+    if (o == null) return null;
+    var map = o as Map<String, dynamic>;
 
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];

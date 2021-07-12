@@ -49,11 +49,11 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
   }
 
   NotificationDashboardModel? _populateDoc(DocumentSnapshot value) {
-    return NotificationDashboardModel.fromEntity(value.id, NotificationDashboardEntity.fromMap(value.data() as Map<String, dynamic>));
+    return NotificationDashboardModel.fromEntity(value.id, NotificationDashboardEntity.fromMap(value.data()));
   }
 
   Future<NotificationDashboardModel?> _populateDocPlus(DocumentSnapshot value) async {
-    return NotificationDashboardModel.fromEntityPlus(value.id, NotificationDashboardEntity.fromMap(value.data() as Map<String, dynamic>), appId: appId);  }
+    return NotificationDashboardModel.fromEntityPlus(value.id, NotificationDashboardEntity.fromMap(value.data()), appId: appId);  }
 
   Future<NotificationDashboardModel?> get(String? id, {Function(Exception)? onError}) async {
     try {

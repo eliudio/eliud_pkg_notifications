@@ -42,8 +42,9 @@ class NotificationEntity {
     return 'NotificationEntity{timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
-  static NotificationEntity? fromMap(Map? map) {
-    if (map == null) return null;
+  static NotificationEntity? fromMap(Object? o) {
+    if (o == null) return null;
+    var map = o as Map<String, dynamic>;
 
     return NotificationEntity(
       timestamp: notificationRepository(appId: map['appId'])!.timeStampToString(map['timestamp']), 

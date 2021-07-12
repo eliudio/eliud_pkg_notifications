@@ -65,11 +65,11 @@ class NotificationFirestore implements NotificationRepository {
   }
 
   NotificationModel? _populateDoc(DocumentSnapshot value) {
-    return NotificationModel.fromEntity(value.id, NotificationEntity.fromMap(value.data()));
+    return NotificationModel.fromEntity(value.id, NotificationEntity.fromMap(value.data() as Map<String, dynamic>));
   }
 
   Future<NotificationModel?> _populateDocPlus(DocumentSnapshot value) async {
-    return NotificationModel.fromEntityPlus(value.id, NotificationEntity.fromMap(value.data()), appId: appId);  }
+    return NotificationModel.fromEntityPlus(value.id, NotificationEntity.fromMap(value.data() as Map<String, dynamic>), appId: appId);  }
 
   Future<NotificationModel?> get(String? id, {Function(Exception)? onError}) async {
     try {

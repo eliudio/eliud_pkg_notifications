@@ -152,7 +152,7 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
 
           return NotificationListItem(
             value: value,
-            app: accessState.app,
+//            app: accessState.app,
             onDismissed: (direction) {
               BlocProvider.of<NotificationListBloc>(context)
                   .add(DeleteNotificationList(value: value));
@@ -199,7 +199,6 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
 class NotificationListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
-  final AppModel app;
   final NotificationModel? value;
 
   NotificationListItem({
@@ -207,7 +206,6 @@ class NotificationListItem extends StatelessWidget {
     required this.onDismissed,
     required this.onTap,
     required this.value,
-    required this.app,
   }) : super(key: key);
 
   @override

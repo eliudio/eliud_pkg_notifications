@@ -152,7 +152,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
 
           return NotificationDashboardListItem(
             value: value,
-            app: accessState.app,
+//            app: accessState.app,
             onDismissed: (direction) {
               BlocProvider.of<NotificationDashboardListBloc>(context)
                   .add(DeleteNotificationDashboardList(value: value));
@@ -199,7 +199,6 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
 class NotificationDashboardListItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
-  final AppModel app;
   final NotificationDashboardModel? value;
 
   NotificationDashboardListItem({
@@ -207,7 +206,6 @@ class NotificationDashboardListItem extends StatelessWidget {
     required this.onDismissed,
     required this.onTap,
     required this.value,
-    required this.app,
   }) : super(key: key);
 
   @override

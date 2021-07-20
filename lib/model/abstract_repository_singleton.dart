@@ -32,5 +32,7 @@ abstract class AbstractRepositorySingleton {
   NotificationDashboardRepository? notificationDashboardRepository(String? appId);
 
   void flush(String? appId) {
+    notificationRepository(appId)!.flush();
+    notificationDashboardRepository(appId)!.flush();
   }
 }

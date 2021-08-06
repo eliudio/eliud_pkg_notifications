@@ -23,7 +23,6 @@ import 'package:eliud_pkg_notifications/model/notification_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
 
-const _notificationLimit = 5;
 
 class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListState> {
   final NotificationRepository _notificationRepository;
@@ -34,8 +33,9 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
   final String? orderBy;
   final bool? descending;
   final bool? detailed;
+  final int notificationLimit;
 
-  NotificationListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationRepository notificationRepository})
+  NotificationListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationRepository notificationRepository, this.notificationLimit = 5})
       : assert(notificationRepository != null),
         _notificationRepository = notificationRepository,
         super(NotificationListLoading());
@@ -48,7 +48,7 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * _notificationLimit : null
+      limit: ((paged != null) && paged!) ? pages * notificationLimit : null
     );
   }
 
@@ -60,7 +60,7 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * _notificationLimit : null
+        limit: ((paged != null) && paged!) ? pages * notificationLimit : null
     );
   }
 

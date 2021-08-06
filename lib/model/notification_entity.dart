@@ -15,12 +15,13 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/common_tools.dart';
 import 'abstract_repository_singleton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/model/entity_export.dart';
 import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
+import 'package:eliud_core/tools/common_tools.dart';
 class NotificationEntity {
   final Object? timestamp;
   final String? appId;
@@ -47,7 +48,7 @@ class NotificationEntity {
     var map = o as Map<String, dynamic>;
 
     return NotificationEntity(
-      timestamp: notificationRepository(appId: map['appId'])!.timeStampToString(map['timestamp']), 
+      timestamp: map['timestamp'] == null ? null : (map['timestamp']  as Timestamp).millisecondsSinceEpoch,
       appId: map['appId'], 
       description: map['description'], 
       read: map['read'], 

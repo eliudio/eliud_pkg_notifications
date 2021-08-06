@@ -14,6 +14,7 @@
 */
 
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -48,7 +49,7 @@ NotificationStatus toNotificationStatus(int? index) {
 
 class NotificationModel {
   String? documentID;
-  String? timestamp;
+  DateTime? timestamp;
 
   // This is the identifier of the app to which this feed belongs
   String? appId;
@@ -62,7 +63,7 @@ class NotificationModel {
     assert(documentID != null);
   }
 
-  NotificationModel copyWith({String? documentID, String? timestamp, String? appId, String? description, bool? read, String? reporterId, String? assigneeId, NotificationStatus? status, }) {
+  NotificationModel copyWith({String? documentID, DateTime? timestamp, String? appId, String? description, bool? read, String? reporterId, String? assigneeId, NotificationStatus? status, }) {
     return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, reporterId: reporterId ?? this.reporterId, assigneeId: assigneeId ?? this.assigneeId, status: status ?? this.status, );
   }
 
@@ -90,7 +91,7 @@ class NotificationModel {
 
   NotificationEntity toEntity({String? appId}) {
     return NotificationEntity(
-          timestamp: timestamp, 
+          timestamp: (timestamp == null) ? null : timestamp!.millisecondsSinceEpoch, 
           appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
           read: (read != null) ? read : null, 
@@ -105,7 +106,7 @@ class NotificationModel {
     var counter = 0;
     return NotificationModel(
           documentID: documentID, 
-          timestamp: entity.timestamp.toString(), 
+          timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 
@@ -121,7 +122,7 @@ class NotificationModel {
     var counter = 0;
     return NotificationModel(
           documentID: documentID, 
-          timestamp: entity.timestamp.toString(), 
+          timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
           appId: entity.appId, 
           description: entity.description, 
           read: entity.read, 

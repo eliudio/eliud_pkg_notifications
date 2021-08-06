@@ -1,6 +1,7 @@
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/model/member_public_info_model.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_bloc.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_model.dart';
@@ -50,7 +51,7 @@ class MyNotificationListItem extends StatelessWidget {
           return ListTile(
               onTap: () {},
               leading: avatar,
-              trailing: Text(value.timestamp!, style: style),
+              trailing: Text(formatFullPrecision(value.timestamp!), style: style),
               title: Text("From: " + name!, style: style),
               subtitle: Text(
                 value.description!,

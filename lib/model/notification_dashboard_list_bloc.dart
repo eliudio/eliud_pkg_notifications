@@ -23,7 +23,6 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_list_state.
 import 'package:eliud_core/tools/query/query_tools.dart';
 
 
-const _notificationDashboardLimit = 5;
 
 class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent, NotificationDashboardListState> {
   final NotificationDashboardRepository _notificationDashboardRepository;
@@ -34,8 +33,9 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
   final String? orderBy;
   final bool? descending;
   final bool? detailed;
+  final int notificationDashboardLimit;
 
-  NotificationDashboardListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationDashboardRepository notificationDashboardRepository})
+  NotificationDashboardListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationDashboardRepository notificationDashboardRepository, this.notificationDashboardLimit = 5})
       : assert(notificationDashboardRepository != null),
         _notificationDashboardRepository = notificationDashboardRepository,
         super(NotificationDashboardListLoading());
@@ -48,7 +48,7 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * _notificationDashboardLimit : null
+      limit: ((paged != null) && paged!) ? pages * notificationDashboardLimit : null
     );
   }
 
@@ -60,7 +60,7 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * _notificationDashboardLimit : null
+        limit: ((paged != null) && paged!) ? pages * notificationDashboardLimit : null
     );
   }
 

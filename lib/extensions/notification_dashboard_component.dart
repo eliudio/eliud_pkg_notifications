@@ -20,15 +20,15 @@ import '../notifications_package.dart';
 
 class NotificationDashboardComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({String? id, Map<String, dynamic>? parameters}) {
-    return NotificationDashboardComponent(id: id);
+  Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
+    return NotificationDashboardComponent(key: key, id: id);
   }
 }
 
 class NotificationDashboardComponent
     extends AbstractNotificationDashboardComponent {
-  NotificationDashboardComponent({String? id})
-      : super(notificationDashboardID: id);
+  NotificationDashboardComponent({Key? key, required String id})
+      : super(key: key, notificationDashboardID: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {

@@ -27,7 +27,7 @@ abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
   static String componentName = "notificationDashboards";
   final String? notificationDashboardID;
 
-  AbstractNotificationDashboardComponent({this.notificationDashboardID});
+  AbstractNotificationDashboardComponent({Key? key, this.notificationDashboardID}): super(key: key);
 
   @override
   Widget build(BuildContext context) {

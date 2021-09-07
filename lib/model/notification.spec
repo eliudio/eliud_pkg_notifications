@@ -90,8 +90,8 @@
     }
  ],
   "listFields": {
-    "title": "timestamp.toString()",
-    "subTitle": "documentID!"
+    "title": "value!.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.timestamp!.toString())) : Container()",
+    "subTitle": "value!.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!)) : Container()"
   },
   "depends": ["eliud_core"]
 }

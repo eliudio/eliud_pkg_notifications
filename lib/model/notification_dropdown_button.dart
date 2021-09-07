@@ -61,10 +61,10 @@ class NotificationDropdownButtonWidgetState extends State<NotificationDropdownBu
     super.dispose();
   }
 
-List<Widget> widgets(NotificationModel pm) {
+List<Widget> widgets(NotificationModel value) {
 var widgets = <Widget>[];
-if (pm.timestamp.toString() != null) widgets.add(new Text(pm.timestamp.toString()));
-if (pm.documentID! != null) widgets.add(new Text(pm.documentID!));
+widgets.add(value!.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.timestamp!.toString())) : Container());
+widgets.add(value!.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value!.documentID!)) : Container());
 return widgets;
 }
 

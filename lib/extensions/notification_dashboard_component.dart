@@ -4,7 +4,7 @@ import 'package:eliud_core/core/widgets/alert_widget.dart';
 import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
 import 'package:eliud_core/style/style_registry.dart';
-import 'package:eliud_core/tools/component_constructor.dart';
+import 'package:eliud_core/tools/component/component_constructor.dart';
 import 'package:eliud_pkg_notifications/extensions/widgets/my_notification_list_item.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_component.dart';

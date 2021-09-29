@@ -16,8 +16,11 @@
 
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
+import 'package:eliud_core/tools/component/component_spec.dart';
 
 import '../extensions/notification_dashboard_component.dart';
+import '../editors/notification_dashboard_component_editor.dart';
+import 'notification_dashboard_component_selector.dart';
 import 'package:eliud_pkg_notifications/model/internal_component.dart';
 
 
@@ -31,6 +34,9 @@ class ComponentRegistry {
     Registry.registry()!.register(componentName: "eliud_pkg_notifications_internalWidgets", componentConstructor: ListComponentFactory());
     Registry.registry()!.addDropDownSupporter("notificationDashboards", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "notificationDashboards", componentConstructor: NotificationDashboardComponentConstructorDefault());
+    Registry.registry()!.addComponentSpec('eliud_pkg_notifications', [
+      ComponentSpec('notificationDashboards', NotificationDashboardComponentConstructorDefault(), NotificationDashboardComponentSelector(), NotificationDashboardComponentEditorConstructor(), ), 
+    ]);
 
   }
 }

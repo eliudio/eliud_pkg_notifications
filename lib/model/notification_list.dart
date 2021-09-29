@@ -215,8 +215,8 @@ class NotificationListItem extends StatelessWidget {
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
-        title: value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.timestamp!.toString())) : Container(),
-        subtitle: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).adminListStyle().listItem(context, value.documentID!)) : Container(),
+        title: value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.timestamp!.toString())) : Container(),
+        subtitle: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.documentID!)) : Container(),
       ),
     );
   }

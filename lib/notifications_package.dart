@@ -16,6 +16,8 @@ import 'model/component_registry.dart';
 import 'model/notification_model.dart';
 
 abstract class NotificationsPackage extends PackageWithSubscription {
+  NotificationsPackage() : super('eliud_pkg_notifications');
+  
   static final String CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = 'Unread Notifications';
   bool? state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = null;
 

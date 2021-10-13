@@ -24,42 +24,30 @@ import 'package:flutter/services.dart';
 
 class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardComponentEvent, NotificationDashboardComponentState> {
   final NotificationDashboardRepository? notificationDashboardRepository;
+  StreamSubscription? _notificationDashboardSubscription;
+
+  Stream<NotificationDashboardComponentState> _mapLoadNotificationDashboardComponentUpdateToState(String documentId) async* {
+    _notificationDashboardSubscription?.cancel();
+    _notificationDashboardSubscription = notificationDashboardRepository!.listenTo(documentId, (value) {
+      if (value != null) add(NotificationDashboardComponentUpdated(value: value!));
+    });
+  }
 
   NotificationDashboardComponentBloc({ this.notificationDashboardRepository }): super(NotificationDashboardComponentUninitialized());
+
   @override
   Stream<NotificationDashboardComponentState> mapEventToState(NotificationDashboardComponentEvent event) async* {
     final currentState = state;
     if (event is FetchNotificationDashboardComponent) {
-      try {
-        if (currentState is NotificationDashboardComponentUninitialized) {
-          bool permissionDenied = false;
-          final model = await notificationDashboardRepository!.get(event.id, onError: (error) {
-            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
-              permissionDenied = true;
-            }
-          });
-          if (permissionDenied) {
-            yield NotificationDashboardComponentPermissionDenied();
-          } else {
-            if (model != null) {
-              yield NotificationDashboardComponentLoaded(value: model);
-            } else {
-              String? id = event.id;
-              yield NotificationDashboardComponentError(
-                  message: "NotificationDashboard with id = '$id' not found");
-            }
-          }
-          return;
-        }
-      } catch (_) {
-        yield NotificationDashboardComponentError(message: "Unknown error whilst retrieving NotificationDashboard");
-      }
+      yield* _mapLoadNotificationDashboardComponentUpdateToState(event.id!);
+    } else if (event is NotificationDashboardComponentUpdated) {
+      yield NotificationDashboardComponentLoaded(value: event.value);
     }
   }
 
   @override
   Future<void> close() {
+    _notificationDashboardSubscription?.cancel();
     return super.close();
   }
 

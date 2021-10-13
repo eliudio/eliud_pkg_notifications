@@ -24,42 +24,30 @@ import 'package:flutter/services.dart';
 
 class NotificationComponentBloc extends Bloc<NotificationComponentEvent, NotificationComponentState> {
   final NotificationRepository? notificationRepository;
+  StreamSubscription? _notificationSubscription;
+
+  Stream<NotificationComponentState> _mapLoadNotificationComponentUpdateToState(String documentId) async* {
+    _notificationSubscription?.cancel();
+    _notificationSubscription = notificationRepository!.listenTo(documentId, (value) {
+      if (value != null) add(NotificationComponentUpdated(value: value!));
+    });
+  }
 
   NotificationComponentBloc({ this.notificationRepository }): super(NotificationComponentUninitialized());
+
   @override
   Stream<NotificationComponentState> mapEventToState(NotificationComponentEvent event) async* {
     final currentState = state;
     if (event is FetchNotificationComponent) {
-      try {
-        if (currentState is NotificationComponentUninitialized) {
-          bool permissionDenied = false;
-          final model = await notificationRepository!.get(event.id, onError: (error) {
-            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
-              permissionDenied = true;
-            }
-          });
-          if (permissionDenied) {
-            yield NotificationComponentPermissionDenied();
-          } else {
-            if (model != null) {
-              yield NotificationComponentLoaded(value: model);
-            } else {
-              String? id = event.id;
-              yield NotificationComponentError(
-                  message: "Notification with id = '$id' not found");
-            }
-          }
-          return;
-        }
-      } catch (_) {
-        yield NotificationComponentError(message: "Unknown error whilst retrieving Notification");
-      }
+      yield* _mapLoadNotificationComponentUpdateToState(event.id!);
+    } else if (event is NotificationComponentUpdated) {
+      yield NotificationComponentLoaded(value: event.value);
     }
   }
 
   @override
   Future<void> close() {
+    _notificationSubscription?.cancel();
     return super.close();
   }
 

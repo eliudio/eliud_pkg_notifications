@@ -14,6 +14,7 @@
 */
 
 import 'package:equatable/equatable.dart';
+import 'package:eliud_pkg_notifications/model/notification_model.dart';
 
 abstract class NotificationComponentEvent extends Equatable {
   @override
@@ -25,4 +26,11 @@ class FetchNotificationComponent extends NotificationComponentEvent {
 
   FetchNotificationComponent({ this.id });
 }
+
+class NotificationComponentUpdated extends NotificationComponentEvent {
+  final NotificationModel value;
+
+  NotificationComponentUpdated({ required this.value });
+}
+
 

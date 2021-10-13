@@ -14,6 +14,7 @@
 */
 
 import 'package:equatable/equatable.dart';
+import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
 
 abstract class NotificationDashboardComponentEvent extends Equatable {
   @override
@@ -25,4 +26,11 @@ class FetchNotificationDashboardComponent extends NotificationDashboardComponent
 
   FetchNotificationDashboardComponent({ this.id });
 }
+
+class NotificationDashboardComponentUpdated extends NotificationDashboardComponentEvent {
+  final NotificationDashboardModel value;
+
+  NotificationDashboardComponentUpdated({ required this.value });
+}
+
 

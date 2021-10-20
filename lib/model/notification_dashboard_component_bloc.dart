@@ -29,7 +29,7 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
   Stream<NotificationDashboardComponentState> _mapLoadNotificationDashboardComponentUpdateToState(String documentId) async* {
     _notificationDashboardSubscription?.cancel();
     _notificationDashboardSubscription = notificationDashboardRepository!.listenTo(documentId, (value) {
-      if (value != null) add(NotificationDashboardComponentUpdated(value: value!));
+      if (value != null) add(NotificationDashboardComponentUpdated(value: value));
     });
   }
 

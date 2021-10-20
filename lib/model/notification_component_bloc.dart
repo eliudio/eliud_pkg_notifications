@@ -29,7 +29,7 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
   Stream<NotificationComponentState> _mapLoadNotificationComponentUpdateToState(String documentId) async* {
     _notificationSubscription?.cancel();
     _notificationSubscription = notificationRepository!.listenTo(documentId, (value) {
-      if (value != null) add(NotificationComponentUpdated(value: value!));
+      if (value != null) add(NotificationComponentUpdated(value: value));
     });
   }
 

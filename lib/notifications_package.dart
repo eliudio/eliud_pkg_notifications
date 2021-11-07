@@ -34,7 +34,6 @@ abstract class NotificationsPackage extends PackageWithSubscription {
   void _setState(bool newState, {MemberModel? currentMember}) {
     if (newState != state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
       state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = newState;
-      accessBloc!.add(MemberUpdated(currentMember));
     }
   }
 

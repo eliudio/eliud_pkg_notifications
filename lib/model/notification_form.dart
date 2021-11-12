@@ -13,8 +13,9 @@
 
 */
 
-import 'package:eliud_core/core/access/bloc/access_state.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
+import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import '../tools/bespoke_models.dart';
 import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
 import 'package:eliud_core/tools/screen_size.dart';
@@ -71,11 +72,11 @@ class NotificationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
     if (formAction == FormAction.ShowData) {
       return BlocProvider<NotificationFormBloc >(
-            create: (context) => NotificationFormBloc(AccessBloc.appId(context),
+            create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
                                        formAction: formAction,
 
                                                 )..add(InitialiseNotificationFormEvent(value: value)),
@@ -84,7 +85,7 @@ class NotificationForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<NotificationFormBloc >(
-            create: (context) => NotificationFormBloc(AccessBloc.appId(context),
+            create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
                                        formAction: formAction,
 
                                                 )..add(InitialiseNotificationFormNoLoadEvent(value: value)),
@@ -95,7 +96,7 @@ class NotificationForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Notification' : 'Add Notification'),
         body: BlocProvider<NotificationFormBloc >(
-            create: (context) => NotificationFormBloc(AccessBloc.appId(context),
+            create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseNotificationFormEvent(value: value) : InitialiseNewNotificationFormEvent())),
@@ -147,7 +148,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.app(context);
+    var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<NotificationFormBloc, NotificationFormState>(builder: (context, state) {
@@ -200,11 +201,11 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _statusSelectedRadioTile, 'Closed', 'Closed', !accessState.memberIsOwner() ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _statusSelectedRadioTile, 'Closed', 'Closed', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionStatus(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _statusSelectedRadioTile, 'Open', 'Open', !accessState.memberIsOwner() ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _statusSelectedRadioTile, 'Open', 'Open', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionStatus(val))
           );
 
 
@@ -372,7 +373,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   }
 
   bool _readOnly(AccessState accessState, NotificationFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner());
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
   }
   
 

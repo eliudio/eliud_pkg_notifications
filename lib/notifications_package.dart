@@ -1,25 +1,21 @@
 import 'dart:async';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/package/package.dart';
-
 import 'model/abstract_repository_singleton.dart';
 import 'model/repository_singleton.dart';
-import 'package:eliud_core/core/access/bloc/access_event.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_pkg_notifications/platform/platform.dart';
-import 'package:eliud_core/package/package_with_subscription.dart';
-
-import 'model/abstract_repository_singleton.dart';
 import 'model/component_registry.dart';
 import 'model/notification_model.dart';
 
-abstract class NotificationsPackage extends PackageWithSubscription {
+abstract class NotificationsPackage extends Package {
   NotificationsPackage() : super('eliud_pkg_notifications');
   
   static final String CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = 'Unread Notifications';
   bool? state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = null;
+  late StreamSubscription<List<NotificationModel?>> subscription;
 
   static EliudQuery getOpenNotificationsQuery(String? appId, String? assigneeId) {
     return EliudQuery(
@@ -51,11 +47,6 @@ abstract class NotificationsPackage extends PackageWithSubscription {
     } else {
       _setState(false);
     }
-  }
-
-  void unsubscribe() {
-    super.unsubscribe();
-    _setState(false);
   }
 
   @override

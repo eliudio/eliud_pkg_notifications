@@ -1,5 +1,6 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
+import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_core/core/widgets/alert_widget.dart';
 import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
@@ -42,23 +43,25 @@ class NotificationDashboardComponent
   @override
   Widget yourWidget(
       BuildContext context, NotificationDashboardModel? dashboardModel) {
-    var state = AccessBloc.getState(context);
-    if (state is AppLoaded) {
-      return BlocProvider<NotificationListBloc>(
-        create: (context) => NotificationListBloc(
-          eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
-              state.app.documentID, state.getMember()!.documentID),
-          notificationRepository:
-              notificationRepository(appId: AccessBloc.appId(context))!,
-        )..add(LoadNotificationList()),
-        child: NotificationListWidget(
-            readOnly: true,
-            widgetProvider: widgetProvider,
-            listBackground: BackgroundModel(documentID: "`transparent")),
-      );
-    } else {
-      return progressIndicator(context);
-    }
+    return BlocBuilder<AccessBloc, AccessState>(
+        builder: (context, accessState) {
+          if (accessState is AccessDetermined) {
+            return BlocProvider<NotificationListBloc>(
+              create: (context) => NotificationListBloc(
+                eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
+                    accessState.currentApp.documentID, accessState.getMember()!.documentID),
+                notificationRepository:
+                notificationRepository(appId: accessState.currentAppId())!,
+              )..add(LoadNotificationList()),
+              child: NotificationListWidget(
+                  readOnly: true,
+                  widgetProvider: widgetProvider,
+                  listBackground: BackgroundModel(documentID: "`transparent")),
+            );
+          } else {
+            return progressIndicator(context);
+          }
+        });
   }
 
   Widget widgetProvider(NotificationModel? value) {
@@ -73,6 +76,6 @@ class NotificationDashboardComponent
   NotificationDashboardRepository getNotificationDashboardRepository(
       BuildContext context) {
     return AbstractRepositorySingleton.singleton
-        .notificationDashboardRepository(AccessBloc.appId(context))!;
+        .notificationDashboardRepository(AccessBloc.currentAppId(context))!;
   }
 }

@@ -15,7 +15,7 @@
 
 
 import 'package:eliud_core/tools/component/component_constructor.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -132,7 +132,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
-            notificationRepository: notificationRepository(appId: AccessBloc.appId(context))!,
+            notificationRepository: notificationRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadNotificationList()),
         )
       ],
@@ -145,7 +145,7 @@ class ListComponent extends StatelessWidget with HasFab {
       providers: [
         BlocProvider<NotificationDashboardListBloc>(
           create: (context) => NotificationDashboardListBloc(
-            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context))!,
+            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadNotificationDashboardList()),
         )
       ],
@@ -180,7 +180,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
-            notificationRepository: notificationRepository(appId: AccessBloc.appId(context))!,
+            notificationRepository: notificationRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadNotificationList()),
         )
       ],
@@ -193,7 +193,7 @@ class DropdownButtonComponent extends StatelessWidget {
       providers: [
         BlocProvider<NotificationDashboardListBloc>(
           create: (context) => NotificationDashboardListBloc(
-            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.appId(context))!,
+            notificationDashboardRepository: notificationDashboardRepository(appId: AccessBloc.currentAppId(context))!,
           )..add(LoadNotificationDashboardList()),
         )
       ],

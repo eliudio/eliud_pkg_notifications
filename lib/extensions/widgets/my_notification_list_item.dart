@@ -1,6 +1,6 @@
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/model/member_public_info_model.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_bloc.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
@@ -19,7 +19,7 @@ class MyNotificationListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.app(context)!;
+    var app = AccessBloc.currentApp(context);
     return Dismissible(
         key: Key('__Notification_item_${value.documentID}'),
         onDismissed: (_) {
@@ -63,7 +63,7 @@ class MyNotificationListItem extends StatelessWidget {
 
   Widget _avatar(MemberPublicInfoModel memberPublicInfo) {
     var image;
-    if (memberPublicInfo != null) {
+    if (memberPublicInfo.photoURL != null) {
       image = NetworkImage(memberPublicInfo.photoURL!);
     }
     if (image != null) {

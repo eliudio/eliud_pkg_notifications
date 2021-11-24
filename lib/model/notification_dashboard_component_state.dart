@@ -35,9 +35,9 @@ class NotificationDashboardComponentPermissionDenied extends NotificationDashboa
 }
 
 class NotificationDashboardComponentLoaded extends NotificationDashboardComponentState {
-  final NotificationDashboardModel? value;
+  final NotificationDashboardModel value;
 
-  const NotificationDashboardComponentLoaded({ this.value });
+  const NotificationDashboardComponentLoaded({ required this.value });
 
   NotificationDashboardComponentLoaded copyWith({ NotificationDashboardModel? copyThis }) {
     return NotificationDashboardComponentLoaded(value: copyThis ?? this.value);

@@ -13,9 +13,6 @@
 
 */
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core/style/style_registry.dart';
 
 import 'package:eliud_pkg_notifications/model/notification_component_bloc.dart';
 import 'package:eliud_pkg_notifications/model/notification_component_event.dart';
@@ -23,18 +20,26 @@ import 'package:eliud_pkg_notifications/model/notification_model.dart';
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 import 'package:eliud_pkg_notifications/model/notification_component_state.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eliud_core/style/style_registry.dart';
+import 'abstract_repository_singleton.dart';
+import 'package:eliud_core/core/widgets/alert_widget.dart';
+import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
+
 abstract class AbstractNotificationComponent extends StatelessWidget {
   static String componentName = "notifications";
-  final String? notificationID;
+  final String theAppId;
+  final String notificationId;
 
-  AbstractNotificationComponent({Key? key, this.notificationID}): super(key: key);
+  AbstractNotificationComponent({Key? key, required this.theAppId, required this.notificationId}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<NotificationComponentBloc> (
           create: (context) => NotificationComponentBloc(
-            notificationRepository: getNotificationRepository(context))
-        ..add(FetchNotificationComponent(id: notificationID)),
+            notificationRepository: notificationRepository(appId: theAppId)!)
+        ..add(FetchNotificationComponent(id: notificationId)),
       child: _notificationBlockBuilder(context),
     );
   }
@@ -43,7 +48,7 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
     return BlocBuilder<NotificationComponentBloc, NotificationComponentState>(builder: (context, state) {
       if (state is NotificationComponentLoaded) {
         if (state.value == null) {
-          return alertWidget(title: 'Error', content: 'No Notification defined');
+          return AlertWidget(title: "Error", content: 'No Notification defined');
         } else {
           return yourWidget(context, state.value);
         }
@@ -54,7 +59,7 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
           size: 30.0,
         );
       } else if (state is NotificationComponentError) {
-        return alertWidget(title: 'Error', content: state.message);
+        return AlertWidget(title: 'Error', content: state.message);
       } else {
         return Center(
           child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().progressIndicatorStyle().progressIndicator(context),
@@ -63,8 +68,6 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
     });
   }
 
-  Widget yourWidget(BuildContext context, NotificationModel? value);
-  Widget alertWidget({ title: String, content: String});
-  NotificationRepository getNotificationRepository(BuildContext context);
+  Widget yourWidget(BuildContext context, NotificationModel value);
 }
 

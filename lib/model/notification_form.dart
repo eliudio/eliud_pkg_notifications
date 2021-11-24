@@ -74,6 +74,7 @@ class NotificationForm extends StatelessWidget {
     var accessState = AccessBloc.getState(context);
     var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
+    var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<NotificationFormBloc >(
             create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
@@ -150,6 +151,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   Widget build(BuildContext context) {
     var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
+    var appId = app.documentID!;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<NotificationFormBloc, NotificationFormState>(builder: (context, state) {
       if (state is NotificationFormUninitialized) return Center(

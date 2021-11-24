@@ -20,9 +20,10 @@ class NotificationPlatform extends AbstractNotificationPlatform {
   Future<void> sendMessage(BuildContext context, String assigneeId, String message, {Action? postSendAction}) async {
     AccessState accessState = AccessBloc.getState(context);
     if (accessState is LoggedIn) {
-      await AbstractRepositorySingleton.singleton.notificationRepository(accessState.currentApp.documentID)!.add(NotificationModel(
+      var appId = accessState.currentApp(context).documentID!;
+      await AbstractRepositorySingleton.singleton.notificationRepository(appId)!.add(NotificationModel(
         documentID: newRandomKey(),
-        appId:  accessState.currentApp.documentID,
+        appId: appId,
         description: message,
         read: false,
         status: NotificationStatus.Open,

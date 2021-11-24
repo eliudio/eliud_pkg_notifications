@@ -22,8 +22,8 @@ import '../notifications_package.dart';
 
 class NotificationDashboardComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
-    return NotificationDashboardComponent(key: key, id: id);
+  Widget createNew({Key? key, required String appId, required String id, Map<String, dynamic>? parameters}) {
+    return NotificationDashboardComponent(key: key, appId: appId, id: id);
   }
 
   @override
@@ -32,8 +32,8 @@ class NotificationDashboardComponentConstructorDefault
 
 class NotificationDashboardComponent
     extends AbstractNotificationDashboardComponent {
-  NotificationDashboardComponent({Key? key, required String id})
-      : super(key: key, notificationDashboardID: id);
+  NotificationDashboardComponent({Key? key, required String appId, required String id})
+      : super(key: key, theAppId: appId, notificationDashboardId: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {
@@ -49,9 +49,9 @@ class NotificationDashboardComponent
             return BlocProvider<NotificationListBloc>(
               create: (context) => NotificationListBloc(
                 eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
-                    accessState.currentApp.documentID, accessState.getMember()!.documentID),
+                    accessState.currentApp(context).documentID, accessState.getMember()!.documentID),
                 notificationRepository:
-                notificationRepository(appId: accessState.currentAppId())!,
+                notificationRepository(appId: accessState.currentAppId(context))!,
               )..add(LoadNotificationList()),
               child: NotificationListWidget(
                   readOnly: true,

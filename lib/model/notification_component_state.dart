@@ -35,9 +35,9 @@ class NotificationComponentPermissionDenied extends NotificationComponentState {
 }
 
 class NotificationComponentLoaded extends NotificationComponentState {
-  final NotificationModel? value;
+  final NotificationModel value;
 
-  const NotificationComponentLoaded({ this.value });
+  const NotificationComponentLoaded({ required this.value });
 
   NotificationComponentLoaded copyWith({ NotificationModel? copyThis }) {
     return NotificationComponentLoaded(value: copyThis ?? this.value);

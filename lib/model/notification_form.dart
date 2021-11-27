@@ -77,7 +77,7 @@ class NotificationForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<NotificationFormBloc >(
-            create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => NotificationFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseNotificationFormEvent(value: value)),
@@ -86,7 +86,7 @@ class NotificationForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<NotificationFormBloc >(
-            create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => NotificationFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseNotificationFormNoLoadEvent(value: value)),
@@ -97,7 +97,7 @@ class NotificationForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Notification' : 'Add Notification'),
         body: BlocProvider<NotificationFormBloc >(
-            create: (context) => NotificationFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => NotificationFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseNotificationFormEvent(value: value) : InitialiseNewNotificationFormEvent())),

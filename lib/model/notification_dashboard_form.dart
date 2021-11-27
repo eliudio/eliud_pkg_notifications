@@ -77,7 +77,7 @@ class NotificationDashboardForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<NotificationDashboardFormBloc >(
-            create: (context) => NotificationDashboardFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => NotificationDashboardFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseNotificationDashboardFormEvent(value: value)),
@@ -86,7 +86,7 @@ class NotificationDashboardForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<NotificationDashboardFormBloc >(
-            create: (context) => NotificationDashboardFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => NotificationDashboardFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseNotificationDashboardFormNoLoadEvent(value: value)),
@@ -97,7 +97,7 @@ class NotificationDashboardForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update NotificationDashboard' : 'Add NotificationDashboard'),
         body: BlocProvider<NotificationDashboardFormBloc >(
-            create: (context) => NotificationDashboardFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => NotificationDashboardFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseNotificationDashboardFormEvent(value: value) : InitialiseNewNotificationDashboardFormEvent())),

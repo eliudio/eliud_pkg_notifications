@@ -35,10 +35,11 @@ class NotificationComponentSelector extends ComponentSelector {
   @override
   Widget createSelectWidget(BuildContext context, double height,
       SelectComponent selected, editorConstructor) {
+    var appId = AccessBloc.currentAppId(context);
     return BlocProvider<NotificationListBloc>(
           create: (context) => NotificationListBloc(
             notificationRepository:
-                notificationRepository(appId: AccessBloc.currentAppId(context))!,
+                notificationRepository(appId: appId)!,
           )..add(LoadNotificationList()),
       child: SelectNotificationWidget(
           height: height,

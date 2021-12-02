@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'notifications_package.dart';
 
 class NotificationsMobilePackage extends NotificationsPackage {
@@ -12,5 +14,5 @@ class NotificationsMobilePackage extends NotificationsPackage {
       identical(this, other) ||
           other is NotificationsMobilePackage &&
               runtimeType == other.runtimeType &&
-              state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS == other.state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS;
+              mapEquals(state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS, other.state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS);
 }

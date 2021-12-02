@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/blocs/access/access_event.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/package/package.dart';
 import 'model/abstract_repository_singleton.dart';
@@ -15,8 +16,8 @@ abstract class NotificationsPackage extends Package {
   NotificationsPackage() : super('eliud_pkg_notifications');
   
   static final String CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = 'Unread Notifications';
-  bool? state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = null;
-  late StreamSubscription<List<NotificationModel?>> subscription;
+  Map<String, bool?> state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = {};
+  Map<String, StreamSubscription<List<NotificationModel?>>> subscription = {};
 
   static EliudQuery getOpenNotificationsQuery(String? appId, String? assigneeId) {
     return EliudQuery(
@@ -28,40 +29,50 @@ abstract class NotificationsPackage extends Package {
     );
   }
 
-  void _setState(bool newState, {MemberModel? currentMember}) {
-    if (newState != state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
-      state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS = newState;
-    }
-  }
 
-  void resubscribe(AppModel app, MemberModel? currentMember) {
-    String? appId = app.documentID;
-    if (currentMember != null) {
-      subscription = notificationRepository(appId: appId)!.listen((list) {
-        // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
-        // then we must inform the AccessBloc, so that it can refresh the state
-        _setState(list.length > 0, currentMember: currentMember);
-      }, /*orderBy: 'timestamp',
-          descending: true,
-         */ eliudQuery: getOpenNotificationsQuery(
-              appId, currentMember.documentID));
-    } else {
-      _setState(false);
-    }
-  }
 
   @override
-  Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async {
-    if (pluginCondition == CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS) {
-      if (state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS == null) return false;
-      return state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS;
-/*
-      if (member == null) return false;
-      var values = await notificationRepository(appId: app.documentID).valuesList(eliudQuery: getOpenNotificationsQuery(app.documentID, member.documentID));
-      return values != null && values.length > 0;
-*/
+  Future<List<PackageConditionDetails>>? getAndSubscribe(
+      AccessBloc accessBloc,
+      AppModel app,
+      MemberModel? member,
+      bool isOwner,
+      bool? isBlocked,
+      PrivilegeLevel? privilegeLevel) {
+    var appId = app.documentID!;
+    subscription[appId]?.cancel();
+    if (member != null) {
+      final c = Completer<List<PackageConditionDetails>>();
+      subscription[appId] = notificationRepository(appId: appId)!.listen((list) {
+        // If we have a different set of assignments, i.e. it has assignments were before it didn't or vice versa,
+        // then we must inform the AccessBloc, so that it can refresh the state
+        var value = list.length > 0;
+        if (!c.isCompleted) {
+          // the first time we get this trigger, it's upon entry of the getAndSubscribe. Now we simply return the value
+          c.complete([
+            PackageConditionDetails(
+                packageName: packageName,
+                conditionName: CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS,
+                value: value)
+          ]);
+        } else {
+          // subsequent calls we get this trigger, it's when the date has changed. Now add the event to the bloc
+          if (value != state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS[appId]) {
+            state_CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS[appId] = value;
+            accessBloc.add(UpdatePackageConditionEvent(
+                app, this, CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS, value));
+          }
+        }
+      }, eliudQuery: getOpenNotificationsQuery(appId, member.documentID!));
+      return c.future;
+    } else {
+      return Future.value([
+        PackageConditionDetails(
+            packageName: packageName,
+            conditionName: CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS,
+            value: false)
+      ]);
     }
-    return null;
   }
 
   @override

@@ -25,7 +25,7 @@ import 'package:eliud_core/tools/common_tools.dart';
 class NotificationDashboardEntity {
   final String? appId;
   final String? description;
-  final ConditionsSimpleEntity? conditions;
+  final StorageConditionsEntity? conditions;
 
   NotificationDashboardEntity({this.appId, this.description, this.conditions, });
 
@@ -44,7 +44,7 @@ class NotificationDashboardEntity {
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];
     if (conditionsFromMap != null)
-      conditionsFromMap = ConditionsSimpleEntity.fromMap(conditionsFromMap);
+      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap);
 
     return NotificationDashboardEntity(
       appId: map['appId'], 

@@ -96,7 +96,7 @@ class ChangedNotificationDashboardDescription extends NotificationDashboardFormE
 }
 
 class ChangedNotificationDashboardConditions extends NotificationDashboardFormEvent {
-  final ConditionsSimpleModel? value;
+  final StorageConditionsModel? value;
 
   ChangedNotificationDashboardConditions({this.value});
 

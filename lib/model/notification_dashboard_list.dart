@@ -107,7 +107,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
                       context, label: 'Add',
                       onPressed: () {
                         Navigator.of(context).push(
-                                  pageRouteBuilder(accessState.currentApp(context), page: BlocProvider.value(
+                                  pageRouteBuilder(accessState.currentApp, page: BlocProvider.value(
                                       value: BlocProvider.of<NotificationDashboardListBloc>(context),
                                       child: NotificationDashboardForm(
                                           value: null,

@@ -49,9 +49,9 @@ class NotificationDashboardComponent
             return BlocProvider<NotificationListBloc>(
               create: (context) => NotificationListBloc(
                 eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
-                    accessState.currentApp(context).documentID, accessState.getMember()!.documentID),
+                    accessState.currentApp.documentID, accessState.getMember()!.documentID),
                 notificationRepository:
-                notificationRepository(appId: accessState.currentAppId(context))!,
+                notificationRepository(appId: accessState.currentApp.documentID)!,
               )..add(LoadNotificationList()),
               child: NotificationListWidget(
                   readOnly: true,

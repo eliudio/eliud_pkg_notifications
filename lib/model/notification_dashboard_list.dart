@@ -155,7 +155,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
               BlocProvider.of<NotificationDashboardListBloc>(context)
                   .add(DeleteNotificationDashboardList(value: value));
               Scaffold.of(context).showSnackBar(DeleteSnackBar(
-                message: "NotificationDashboard " + value.,
+                message: "NotificationDashboard " + value.documentID,
                 onUndo: () => BlocProvider.of<NotificationDashboardListBloc>(context)
                     .add(AddNotificationDashboardList(value: value)),
               ));
@@ -168,7 +168,7 @@ class NotificationDashboardListWidgetState extends State<NotificationDashboardLi
                       if (removedItem != null) {
                         Scaffold.of(context).showSnackBar(
                           DeleteSnackBar(
-                        message: "NotificationDashboard " + value.,
+                        message: "NotificationDashboard " + value.documentID,
                             onUndo: () => BlocProvider.of<NotificationDashboardListBloc>(context)
                                 .add(AddNotificationDashboardList(value: value)),
                           ),

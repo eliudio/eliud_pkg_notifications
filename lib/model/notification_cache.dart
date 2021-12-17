@@ -123,7 +123,12 @@ class NotificationCache implements NotificationRepository {
 
   @override
   StreamSubscription<NotificationModel?> listenTo(String documentId, NotificationChanged changed) {
-    return reference.listenTo(documentId, changed);
+    return reference.listenTo(documentId, ((value) {
+      if (value != null) {
+        fullCache[value.documentID] = value;
+      }
+      changed(value);
+    }));
   }
 
   static Future<NotificationModel> refreshRelations(NotificationModel model) async {

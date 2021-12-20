@@ -29,11 +29,11 @@ class RepositorySingleton extends AbstractRepositorySingleton {
     var _notificationDashboardRepository = HashMap<String, NotificationDashboardRepository>();
 
     NotificationRepository? notificationRepository(String? appId) {
-      if ((appId != null) && (_notificationRepository[appId] == null)) _notificationRepository[appId] = NotificationCache(NotificationFirestore(appRepository()!.getSubCollection(appId, 'notification'), appId));
+      if ((appId != null) && (_notificationRepository[appId] == null)) _notificationRepository[appId] = NotificationCache(NotificationFirestore(() => appRepository()!.getSubCollection(appId, 'notification'), appId));
       return _notificationRepository[appId];
     }
     NotificationDashboardRepository? notificationDashboardRepository(String? appId) {
-      if ((appId != null) && (_notificationDashboardRepository[appId] == null)) _notificationDashboardRepository[appId] = NotificationDashboardCache(NotificationDashboardFirestore(appRepository()!.getSubCollection(appId, 'notificationdashboard'), appId));
+      if ((appId != null) && (_notificationDashboardRepository[appId] == null)) _notificationDashboardRepository[appId] = NotificationDashboardCache(NotificationDashboardFirestore(() => appRepository()!.getSubCollection(appId, 'notificationdashboard'), appId));
       return _notificationDashboardRepository[appId];
     }
 

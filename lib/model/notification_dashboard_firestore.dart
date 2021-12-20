@@ -72,7 +72,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
 
   StreamSubscription<List<NotificationDashboardModel?>> listen(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery}) {
     Stream<List<NotificationDashboardModel?>> stream;
-      stream = getQuery(appRepository()!.getSubCollection(appId, 'notificationdashboard'), orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().map((data) {
+      stream = getQuery(getCollection(), orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().map((data) {
 //    The above line should eventually become the below line
 //    See https://github.com/felangel/bloc/issues/2073.
 //    stream = getQuery(NotificationDashboardCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().map((data) {
@@ -89,7 +89,7 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
 
   StreamSubscription<List<NotificationDashboardModel?>> listenWithDetails(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery}) {
     Stream<List<NotificationDashboardModel?>> stream;
-    stream = getQuery(appRepository()!.getSubCollection(appId, 'notificationdashboard'), orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots()
+    stream = getQuery(getCollection(), orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots()
 //  see comment listen(...) above
 //  stream = getQuery(NotificationDashboardCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots()
         .asyncMap((data) async {
@@ -187,8 +187,9 @@ class NotificationDashboardFirestore implements NotificationDashboardRepository 
 
 
   final String appId;
-  NotificationDashboardFirestore(this.NotificationDashboardCollection, this.appId);
+  NotificationDashboardFirestore(this.getCollection, this.appId): NotificationDashboardCollection = getCollection();
 
   final CollectionReference NotificationDashboardCollection;
+  final GetCollection getCollection;
 }
 

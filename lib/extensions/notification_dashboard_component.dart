@@ -2,6 +2,7 @@ import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
 import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_core/core/widgets/alert_widget.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
 import 'package:eliud_core/style/style_registry.dart';
@@ -22,22 +23,22 @@ import '../notifications_package.dart';
 
 class NotificationDashboardComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({Key? key, required String appId, required String id, Map<String, dynamic>? parameters}) {
-    return NotificationDashboardComponent(key: key, appId: appId, id: id);
+  Widget createNew({Key? key, required AppModel app, required String id, Map<String, dynamic>? parameters}) {
+    return NotificationDashboardComponent(key: key, app: app, id: id);
   }
 
   @override
-  Future<dynamic> getModel({required String appId, required String id}) async => await notificationDashboardRepository(appId: appId)!.get(id);
+  Future<dynamic> getModel({required AppModel app, required String id}) async => await notificationDashboardRepository(appId: app.documentID!)!.get(id);
 }
 
 class NotificationDashboardComponent
     extends AbstractNotificationDashboardComponent {
-  NotificationDashboardComponent({Key? key, required String appId, required String id})
-      : super(key: key, theAppId: appId, notificationDashboardId: id);
+  NotificationDashboardComponent({Key? key, required AppModel app, required String id})
+      : super(key: key, app: app, notificationDashboardId: id);
 
   @override
   Widget alertWidget({title = String, content = String}) {
-    return AlertWidget(title: title, content: content);
+    return AlertWidget(app: app, title: title, content: content);
   }
 
   @override
@@ -49,24 +50,24 @@ class NotificationDashboardComponent
             return BlocProvider<NotificationListBloc>(
               create: (context) => NotificationListBloc(
                 eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
-                    accessState.currentApp.documentID, accessState.getMember()!.documentID),
+                    app.documentID, accessState.getMember()!.documentID),
                 notificationRepository:
-                notificationRepository(appId: accessState.currentApp.documentID)!,
+                notificationRepository(appId: app.documentID)!,
               )..add(LoadNotificationList()),
-              child: NotificationListWidget(
+              child: NotificationListWidget(app: app,
                   readOnly: true,
                   widgetProvider: widgetProvider,
                   listBackground: BackgroundModel(documentID: "`transparent")),
             );
           } else {
-            return progressIndicator(context);
+            return progressIndicator(app, context);
           }
         });
   }
 
   Widget widgetProvider(NotificationModel? value) {
     if (value != null) {
-      return MyNotificationListItem(value: value);
+      return MyNotificationListItem(app: app, value: value);
     } else {
       return Text("Value for notification model is null");
     }
@@ -76,6 +77,6 @@ class NotificationDashboardComponent
   NotificationDashboardRepository getNotificationDashboardRepository(
       BuildContext context) {
     return AbstractRepositorySingleton.singleton
-        .notificationDashboardRepository(AccessBloc.currentAppId(context))!;
+        .notificationDashboardRepository(app.documentID!)!;
   }
 }

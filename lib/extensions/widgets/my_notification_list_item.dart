@@ -1,5 +1,6 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_public_info_model.dart';
 import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_bloc.dart';
@@ -10,16 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyNotificationListItem extends StatelessWidget {
+  final AppModel app;
   final NotificationModel value;
 
   MyNotificationListItem({
     Key? key,
+    required this.app,
     required this.value,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.currentApp(context);
     return Dismissible(
         key: Key('__Notification_item_${value.documentID}'),
         onDismissed: (_) {

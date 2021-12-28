@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/core/blocs/access/state/access_state.dart';
 import 'package:eliud_core/core/blocs/access/state/logged_in.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
@@ -63,17 +64,16 @@ import 'package:eliud_pkg_notifications/model/notification_form_state.dart';
 
 
 class NotificationForm extends StatelessWidget {
+  final AppModel app;
   FormAction formAction;
   NotificationModel? value;
   ActionModel? submitAction;
 
-  NotificationForm({Key? key, required this.formAction, required this.value, this.submitAction}) : super(key: key);
+  NotificationForm({Key? key, required this.app, required this.formAction, required this.value, this.submitAction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var app = AccessBloc.currentApp(context);
-    if (app == null) return Text("No app available");
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<NotificationFormBloc >(
@@ -82,7 +82,7 @@ class NotificationForm extends StatelessWidget {
 
                                                 )..add(InitialiseNotificationFormEvent(value: value)),
   
-        child: MyNotificationForm(submitAction: submitAction, formAction: formAction),
+        child: MyNotificationForm(app:app, submitAction: submitAction, formAction: formAction),
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<NotificationFormBloc >(
@@ -91,18 +91,18 @@ class NotificationForm extends StatelessWidget {
 
                                                 )..add(InitialiseNotificationFormNoLoadEvent(value: value)),
   
-        child: MyNotificationForm(submitAction: submitAction, formAction: formAction),
+        child: MyNotificationForm(app:app, submitAction: submitAction, formAction: formAction),
           );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Notification' : 'Add Notification'),
+        appBar: StyleRegistry.registry().styleWithApp(app).adminFormStyle().appBarWithString(app, context, title: formAction == FormAction.UpdateAction ? 'Update Notification' : 'Add Notification'),
         body: BlocProvider<NotificationFormBloc >(
             create: (context) => NotificationFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseNotificationFormEvent(value: value) : InitialiseNewNotificationFormEvent())),
   
-        child: MyNotificationForm(submitAction: submitAction, formAction: formAction),
+        child: MyNotificationForm(app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
@@ -110,10 +110,11 @@ class NotificationForm extends StatelessWidget {
 
 
 class MyNotificationForm extends StatefulWidget {
+  final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyNotificationForm({this.formAction, this.submitAction});
+  MyNotificationForm({required this.app, this.formAction, this.submitAction});
 
   _MyNotificationFormState createState() => _MyNotificationFormState(this.formAction);
 }
@@ -149,13 +150,10 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
 
   @override
   Widget build(BuildContext context) {
-    var app = AccessBloc.currentApp(context);
-    if (app == null) return Text('No app available');
-    var appId = app.documentID!;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<NotificationFormBloc, NotificationFormState>(builder: (context, state) {
       if (state is NotificationFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context),
+        child: StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context),
       );
 
       if (state is NotificationFormLoaded) {
@@ -193,83 +191,83 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'General')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'General')
                 ));
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().checkboxListTile(context, 'Has this been read?', _readSelection, _readOnly(accessState, state) ? null : (dynamic val) => setSelectionRead(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().checkboxListTile(widget.app, context, 'Has this been read?', _readSelection, _readOnly(accessState, state) ? null : (dynamic val) => setSelectionRead(val))
           );
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _statusSelectedRadioTile, 'Closed', 'Closed', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Closed', 'Closed', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionStatus(val))
           );
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().radioListTile(context, 0, _statusSelectedRadioTile, 'Open', 'Open', !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : (dynamic val) => setSelectionStatus(val))
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().radioListTile(widget.app, context, 0, _statusSelectedRadioTile, 'Open', 'Open', !accessState.memberIsOwner(widget.app.documentID!) ? null : (dynamic val) => setSelectionStatus(val))
           );
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'General')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'General')
                 ));
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Document ID', icon: Icons.vpn_key, readOnly: (formAction == FormAction.UpdateAction), textEditingController: _documentIDController, keyboardType: TextInputType.text, validator: (_) => state is DocumentIDNotificationFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Document ID', icon: Icons.vpn_key, readOnly: (formAction == FormAction.UpdateAction), textEditingController: _documentIDController, keyboardType: TextInputType.text, validator: (_) => state is DocumentIDNotificationFormError ? state.message : null, hintText: null)
           );
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Description', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _descriptionController, keyboardType: TextInputType.text, validator: (_) => state is DescriptionNotificationFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Description', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _descriptionController, keyboardType: TextInputType.text, validator: (_) => state is DescriptionNotificationFormError ? state.message : null, hintText: null)
           );
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'Reporter')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'Reporter')
                 ));
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Reporter', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _reporterIdController, keyboardType: TextInputType.text, validator: (_) => state is ReporterIdNotificationFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Reporter', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _reporterIdController, keyboardType: TextInputType.text, validator: (_) => state is ReporterIdNotificationFormError ? state.message : null, hintText: null)
           );
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
          children.add(Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'Assignee')
+                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'Assignee')
                 ));
 
         children.add(
 
-                  StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Assignee', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _assigneeIdController, keyboardType: TextInputType.text, validator: (_) => state is AssigneeIdNotificationFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Assignee', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _assigneeIdController, keyboardType: TextInputType.text, validator: (_) => state is AssigneeIdNotificationFormError ? state.message : null, hintText: null)
           );
 
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
 
         if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().button(context, label: 'Submit',
+          children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app, context, label: 'Submit',
                   onPressed: _readOnly(accessState, state) ? null : () {
                     if (state is NotificationFormError) {
                       return null;
@@ -308,7 +306,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
                   },
                 ));
 
-        return StyleRegistry.registry().styleWithContext(context).adminFormStyle().container(context, Form(
+        return StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().container(widget.app, context, Form(
             child: ListView(
               padding: const EdgeInsets.all(8),
               physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
@@ -318,7 +316,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
           ), formAction!
         );
       } else {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       }
     });
   }
@@ -375,7 +373,7 @@ class _MyNotificationFormState extends State<MyNotificationForm> {
   }
 
   bool _readOnly(AccessState accessState, NotificationFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(AccessBloc.currentAppId(context)));
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID!));
   }
   
 

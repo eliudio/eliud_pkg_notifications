@@ -101,7 +101,7 @@ class NotificationModel {
     );
   }
 
-  static NotificationModel? fromEntity(String documentID, NotificationEntity? entity) {
+  static Future<NotificationModel?> fromEntity(String documentID, NotificationEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return NotificationModel(

@@ -64,7 +64,7 @@ class NotificationFirestore implements NotificationRepository {
 ;
   }
 
-  NotificationModel? _populateDoc(DocumentSnapshot value) {
+  Future<NotificationModel?> _populateDoc(DocumentSnapshot value) async {
     return NotificationModel.fromEntity(value.id, NotificationEntity.fromMap(value.data()));
   }
 
@@ -88,16 +88,13 @@ class NotificationFirestore implements NotificationRepository {
 
   StreamSubscription<List<NotificationModel?>> listen(NotificationModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery}) {
     Stream<List<NotificationModel?>> stream;
-      stream = getQuery(getCollection(), orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().map((data) {
-//    The above line should eventually become the below line
-//    See https://github.com/felangel/bloc/issues/2073.
-//    stream = getQuery(NotificationCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().map((data) {
-      Iterable<NotificationModel?> notifications  = data.docs.map((doc) {
-        NotificationModel? value = _populateDoc(doc);
-        return value;
-      }).toList();
-      return notifications as List<NotificationModel?>;
+    stream = getQuery(getCollection(), orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots()
+//  see comment listen(...) above
+//  stream = getQuery(NotificationCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots()
+        .asyncMap((data) async {
+      return await Future.wait(data.docs.map((doc) =>  _populateDoc(doc)).toList());
     });
+
     return stream.listen((listOfNotificationModels) {
       trigger(listOfNotificationModels);
     });
@@ -131,11 +128,12 @@ class NotificationFirestore implements NotificationRepository {
 
   Stream<List<NotificationModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
     DocumentSnapshot? lastDoc;
-    Stream<List<NotificationModel?>> _values = getQuery(NotificationCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) {
+    Stream<List<NotificationModel?>> _values = getQuery(NotificationCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?, limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.snapshots().asyncMap((snapshot) {
+      return Future.wait(snapshot.docs.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
-      }).toList();});
+      }).toList());
+    });
     if ((setLastDoc != null) && (lastDoc != null)) setLastDoc(lastDoc);
     return _values;
   }
@@ -156,10 +154,10 @@ class NotificationFirestore implements NotificationRepository {
     DocumentSnapshot? lastDoc;
     List<NotificationModel?> _values = await getQuery(NotificationCollection, orderBy: orderBy,  descending: descending,  startAfter: startAfter as DocumentSnapshot?,  limit: limit, privilegeLevel: privilegeLevel, eliudQuery: eliudQuery, appId: appId)!.get().then((value) {
       var list = value.docs;
-      return list.map((doc) { 
+      return Future.wait(list.map((doc) {
         lastDoc = doc;
         return _populateDoc(doc);
-      }).toList();
+      }).toList());
     });
     if ((setLastDoc != null) && (lastDoc != null)) setLastDoc(lastDoc);
     return _values;

@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/package/packages.dart';
 
 import 'package:flutter/material.dart';
@@ -32,11 +33,12 @@ import 'package:eliud_pkg_notifications/model/notification_model.dart';
 typedef NotificationChanged(String? value);
 
 class NotificationDropdownButtonWidget extends StatefulWidget {
+  final AppModel app;
   final String? value;
   final NotificationChanged? trigger;
   final bool? optional;
 
-  NotificationDropdownButtonWidget({ this.value, this.trigger, this.optional, Key? key }): super(key: key);
+  NotificationDropdownButtonWidget({ required this.app, this.value, this.trigger, this.optional, Key? key }): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -62,9 +64,10 @@ class NotificationDropdownButtonWidgetState extends State<NotificationDropdownBu
   }
 
 List<Widget> widgets(NotificationModel value) {
+var app = widget.app;
 var widgets = <Widget>[];
-widgets.add(value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.timestamp!.toString())) : Container());
-widgets.add(value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.documentID!)) : Container());
+widgets.add(value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.timestamp!.toString())) : Container());
+widgets.add(value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID!)) : Container());
 return widgets;
 }
 
@@ -74,7 +77,7 @@ return widgets;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<NotificationListBloc, NotificationListState>(builder: (context, state) {
       if (state is NotificationListLoading) {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       } else if (state is NotificationListLoaded) {
         String? valueChosen;
         if (state.values!.indexWhere((v) => (v!.documentID == widget.value)) >= 0)
@@ -117,7 +120,7 @@ return widgets;
                       items: items,
                       value: valueChosen,
                       hint: Text('Select a notification'),
-                      onChanged: !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : _onChange,
+                      onChanged: !accessState.memberIsOwner(widget.app.documentID!) ? null : _onChange,
                     );
         if (false) {
           return Container(height:48, child: Center(child: button));
@@ -125,7 +128,7 @@ return widgets;
           return Center(child: button);
         }
       } else {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       }
     });
   }

@@ -77,7 +77,7 @@ class NotificationDashboardModel {
     );
   }
 
-  static NotificationDashboardModel? fromEntity(String documentID, NotificationDashboardEntity? entity) {
+  static Future<NotificationDashboardModel?> fromEntity(String documentID, NotificationDashboardEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return NotificationDashboardModel(
@@ -85,7 +85,7 @@ class NotificationDashboardModel {
           appId: entity.appId, 
           description: entity.description, 
           conditions: 
-            StorageConditionsModel.fromEntity(entity.conditions), 
+            await StorageConditionsModel.fromEntity(entity.conditions), 
     );
   }
 

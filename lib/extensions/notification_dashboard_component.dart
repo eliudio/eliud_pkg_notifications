@@ -57,7 +57,7 @@ class NotificationDashboardComponent
               child: NotificationListWidget(app: app,
                   readOnly: true,
                   widgetProvider: widgetProvider,
-                  listBackground: BackgroundModel(documentID: "`transparent")),
+                  listBackground: BackgroundModel()),
             );
           } else {
             return progressIndicator(app, context);

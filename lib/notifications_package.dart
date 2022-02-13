@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/access_event.dart';
+import 'package:eliud_core/core/wizards/registry/registry.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/package/package.dart';
+import 'package:eliud_pkg_notifications/wizards/notification_dashboard_dialog_wizard.dart';
 import 'model/abstract_repository_singleton.dart';
 import 'model/repository_singleton.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -84,6 +86,9 @@ abstract class NotificationsPackage extends Package {
  @override
   void init() {
     ComponentRegistry().init();
+
+    // wizards
+    NewAppWizardRegistry.registry().register(NotificationDashboardDialogDWizard());
 
     // initialise the repository
     AbstractRepositorySingleton.singleton = RepositorySingleton();

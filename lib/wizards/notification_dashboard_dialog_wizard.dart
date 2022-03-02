@@ -1,12 +1,12 @@
-import 'package:eliud_core/core/wizards/registry/action_specification.dart';
-import 'package:eliud_core/core/wizards/registry/new_app_wizard_info_with_action_specification.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/core/wizards/widgets/action_specification_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/model/icon_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/model/menu_item_model.dart';
+import 'package:eliud_core/model/public_medium_model.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_core/wizards/join_action_specification_parameters.dart';
@@ -16,7 +16,7 @@ import '../notifications_package.dart';
 import 'builders/dialog/notification_dashboard_dialog_builder.dart';
 
 class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
-  static String NOTIFICATION_DASHBOARD_DIALOG_ID = 'notification_dashboard';
+  static String notificationDashboardDialogId = 'notification_dashboard';
 
   NotificationDashboardDialogDWizard() : super('notificationdashboard', 'Notification Dashboard Dialog',  );
 
@@ -31,8 +31,7 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
     available: false,
   );
 
-  @override
-  List<MenuItemModel>? getThoseMenuItems(AppModel app) =>[
+  List<MenuItemModel>? getThoseMenuItems(AppModel app, String uniqueId) =>[
     MenuItemModel(
         documentID: 'notifications',
         text: 'Notifications',
@@ -41,7 +40,7 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
             codePoint: Icons.notifications.codePoint,
             fontFamily: Icons.notifications.fontFamily),
         action: OpenDialog(app,
-            dialogID: NOTIFICATION_DASHBOARD_DIALOG_ID,
+            dialogID: constructDocumentId(uniqueId: uniqueId, documentId: notificationDashboardDialogId),
             conditions: DisplayConditionsModel(
                 privilegeLevelRequired:
                 PrivilegeLevelRequired.NoPrivilegeRequired,
@@ -54,6 +53,7 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
 
   @override
   List<NewAppTask>? getCreateTasks(
+      String uniqueId,
       AppModel app,
       NewAppWizardParameters parameters,
       MemberModel member,
@@ -72,8 +72,8 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("Notification Dashboard");
-          await NotificationDashboardDialogBuilder(
-              app, NOTIFICATION_DASHBOARD_DIALOG_ID)
+          await NotificationDashboardDialogBuilder(uniqueId,
+              app, notificationDashboardDialogId)
               .create();
         });
         return tasks;
@@ -85,19 +85,19 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
   }
 
   @override
-  AppModel updateApp(NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
+  AppModel updateApp(String uniqueId, NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
 
   @override
-  String? getPageID(NewAppWizardParameters parameters, String pageType) => null;
+  String? getPageID(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
 
   @override
-  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
+  ActionModel? getAction(String uniqueId, NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
 
   @override
-  List<MenuItemModel>? getMenuItemsFor(AppModel app, NewAppWizardParameters parameters, MenuType type) {
+  List<MenuItemModel>? getMenuItemsFor(String uniqueId, AppModel app, NewAppWizardParameters parameters, MenuType type) {
     if (parameters is JoinActionSpecificationParameters) {
       if (parameters.joinActionSpecifications.should(type)) {
-        return getThoseMenuItems(app);
+        return getThoseMenuItems(app, uniqueId);
       }
     } else {
       throw Exception('Unexpected class for parameters: ' + parameters.toString());
@@ -112,10 +112,13 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
           app: app,
           enabled: true,
           actionSpecification: parameters.joinActionSpecifications,
-          label:     'Generate Notification Dashboard Dialog'
+          label:     'Generate a default Notification Dashboard Dialog'
       );
     } else {
       return text(app, context, 'Unexpected class for parameters: ' + parameters.toString());
     }
   }
+
+  @override
+  PublicMediumModel? getPublicMediumModel(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
 }

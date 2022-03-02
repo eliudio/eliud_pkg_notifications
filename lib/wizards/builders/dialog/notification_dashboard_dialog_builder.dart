@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/wizards/builders/dialog_builder.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart'
     as corerepo;
 import 'package:eliud_core/model/body_component_model.dart';
@@ -8,7 +9,7 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_component.d
 import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
 
 class NotificationDashboardDialogBuilder extends DialogBuilder {
-  NotificationDashboardDialogBuilder(AppModel app, String dialogDocumentId) : super(app, dialogDocumentId);
+  NotificationDashboardDialogBuilder(String uniqueId, AppModel app, String dialogDocumentId) : super(uniqueId, app, dialogDocumentId);
 
   Future<DialogModel> create() async {
     await _setupDashboard();
@@ -29,7 +30,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
         componentId: dialogDocumentId));
 
     return DialogModel(
-        documentID: dialogDocumentId,
+        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID!,
         title: "Notifications",
         layout: DialogLayout.ListView,
@@ -41,7 +42,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
 
   NotificationDashboardModel _dashboardModel() {
     return NotificationDashboardModel(
-        documentID: dialogDocumentId,
+        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID!,
         description: "My Notifications",
         conditions: StorageConditionsModel(

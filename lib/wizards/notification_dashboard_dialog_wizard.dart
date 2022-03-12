@@ -21,6 +21,9 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
   NotificationDashboardDialogDWizard() : super('notificationdashboard', 'Notification Dashboard Dialog',  );
 
   @override
+  String getPackageName() => "eliud_pkg_notifications";
+
+  @override
   NewAppWizardParameters newAppWizardParameters() => JoinActionSpecificationParameters(
     requiresAccessToLocalFileSystem: false,
     paymentType: JoinPaymentType.Manual,

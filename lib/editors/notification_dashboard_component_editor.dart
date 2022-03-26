@@ -18,9 +18,9 @@ import 'package:flutter/material.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'notification_dashboard_bloc/notification_dashboard_bloc.dart';
-import 'notification_dashboard_bloc/notification_dashboard_state.dart';
-import 'notification_dashboard_bloc/notification_dashoard_event.dart';
+import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_bloc.dart';
+import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_event.dart';
+import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_state.dart';
 
 class NotificationDashboardComponentEditorConstructor
     extends ComponentEditorConstructor {
@@ -78,11 +78,34 @@ class NotificationDashboardComponentEditorConstructor
                 /*create,
             */
                 feedback,
-              )..add(NotificationDashboardInitialise(model)),
+              )..add(EditorBaseInitialise<NotificationDashboardModel>(model)),
           child: NotificationDashboardComponentEditor(
             app: app,
           )),
     );
+  }
+}
+
+class NotificationDashboardBloc
+    extends EditorBaseBloc<NotificationDashboardModel> {
+
+  NotificationDashboardBloc(String appId, EditorFeedback feedback)
+      : super(appId, notificationDashboardRepository(appId: appId)!, feedback);
+
+  @override
+  NotificationDashboardModel newInstance(StorageConditionsModel conditions) {
+    return NotificationDashboardModel(
+        documentID: newRandomKey(), conditions: conditions);
+  }
+
+  @override
+  NotificationDashboardModel setDefaultConditions(
+      NotificationDashboardModel t, StorageConditionsModel conditions) {
+    return t.copyWith(
+        conditions: t.conditions ??
+            StorageConditionsModel(
+                privilegeLevelRequired:
+                PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple));
   }
 }
 
@@ -106,9 +129,9 @@ class _NotificationDashboardComponentEditorState
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (aContext, accessState) {
       if (accessState is AccessDetermined) {
-        return BlocBuilder<NotificationDashboardBloc, NotificationDashboardState>(
+        return BlocBuilder<NotificationDashboardBloc, EditorBaseState<NotificationDashboardModel>>(
             builder: (ppContext, notificationDashboardState) {
-          if (notificationDashboardState is NotificationDashboardInitialised) {
+          if (notificationDashboardState is EditorBaseInitialised<NotificationDashboardModel>) {
             return ListView(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
@@ -118,7 +141,7 @@ class _NotificationDashboardComponentEditorState
                     title: 'NotificationDashboard',
                     okAction: () async {
                       await BlocProvider.of<NotificationDashboardBloc>(context)
-                          .save(NotificationDashboardApplyChanges(
+                          .save(EditorBaseApplyChanges<NotificationDashboardModel>(
                               model: notificationDashboardState.model));
                       return true;
                     },

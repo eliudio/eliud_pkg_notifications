@@ -32,11 +32,12 @@ import 'package:eliud_pkg_notifications/model/entity_export.dart';
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/repository_base.dart';
 
 typedef NotificationModelTrigger(List<NotificationModel?> list);
 typedef NotificationChanged(NotificationModel? value);
 
-abstract class NotificationRepository {
+abstract class NotificationRepository extends RepositoryBase<NotificationModel> {
   Future<NotificationModel> add(NotificationModel value);
   Future<void> delete(NotificationModel value);
   Future<NotificationModel?> get(String? id, { Function(Exception)? onError });

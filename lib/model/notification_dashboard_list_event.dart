@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
 
@@ -73,5 +74,17 @@ class NotificationDashboardListUpdated extends NotificationDashboardListEvent {
 
   @override
   String toString() => 'NotificationDashboardListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+}
+
+class NotificationDashboardChangeQuery extends NotificationDashboardListEvent {
+  final EliudQuery newQuery;
+
+  const NotificationDashboardChangeQuery({ required this.newQuery });
+
+  @override
+  List<Object?> get props => [ newQuery ];
+
+  @override
+  String toString() => 'NotificationDashboardChangeQuery{ value: $newQuery }';
 }
 

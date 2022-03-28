@@ -13,6 +13,7 @@
 
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
 
@@ -36,6 +37,13 @@ class NotificationDashboardListLoaded extends NotificationDashboardListState {
 
   @override
   String toString() => 'NotificationDashboardListLoaded { values: $values }';
+
+  @override
+  bool operator ==(Object other) => 
+          other is NotificationDashboardListLoaded &&
+              runtimeType == other.runtimeType &&
+              ListEquality().equals(values, other.values) &&
+              mightHaveMore == other.mightHaveMore;
 }
 
 class NotificationDashboardNotLoaded extends NotificationDashboardListState {}

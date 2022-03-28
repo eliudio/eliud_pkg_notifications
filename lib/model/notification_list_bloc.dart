@@ -27,7 +27,7 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListState> {
   final NotificationRepository _notificationRepository;
   StreamSubscription? _notificationsListSubscription;
-  final EliudQuery? eliudQuery;
+  EliudQuery? eliudQuery;
   int pages = 1;
   final bool? paged;
   final String? orderBy;
@@ -99,6 +99,13 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
     if (event is NewPage) {
       pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadNotificationListWithDetailsToState();
+    } else if (event is NotificationChangeQuery) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        yield* _mapLoadNotificationListToState();
+      } else {
+        yield* _mapLoadNotificationListWithDetailsToState();
+      }
     } else if (event is AddNotificationList) {
       yield* _mapAddNotificationListToState(event);
     } else if (event is UpdateNotificationList) {

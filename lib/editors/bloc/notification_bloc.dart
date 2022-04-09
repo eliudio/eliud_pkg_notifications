@@ -35,7 +35,7 @@ class NotificationDashboardBloc
   }
 
   @override
-  NotificationDashboardModel setDefaultConditions(
+  NotificationDashboardModel setDefaultValues(
       NotificationDashboardModel t, StorageConditionsModel conditions) {
     return t.copyWith(
         conditions: t.conditions ??

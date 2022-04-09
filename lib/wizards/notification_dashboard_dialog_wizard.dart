@@ -64,7 +64,6 @@ class NotificationDashboardDialogDWizard extends NewAppWizardInfo {
       AppBarProvider appBarProvider,
       DrawerProvider leftDrawerProvider,
       DrawerProvider rightDrawerProvider,
-      PageProvider pageProvider,
       ) {
     if (parameters is JoinActionSpecificationParameters) {
       var notificationDashboardDialogSpecifications = parameters.joinActionSpecifications;

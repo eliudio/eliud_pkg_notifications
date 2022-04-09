@@ -175,6 +175,12 @@ class _NotificationDashboardComponentEditorState
                                 labelText: 'Description',
                               ),
                             )),
+                      ]),
+                  topicContainer(widget.app, context,
+                      title: 'Condition',
+                      collapsible: true,
+                      collapsed: true,
+                      children: [
                         getListTile(context, widget.app,
                             leading: Icon(Icons.security),
                             title: ConditionsSimpleWidget(

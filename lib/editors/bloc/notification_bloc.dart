@@ -31,7 +31,9 @@ class NotificationDashboardBloc
   @override
   NotificationDashboardModel newInstance(StorageConditionsModel conditions) {
     return NotificationDashboardModel(
-        documentID: newRandomKey(), conditions: conditions);
+        appId: appId,
+        documentID: newRandomKey(), 
+        conditions: conditions);
   }
 
   @override

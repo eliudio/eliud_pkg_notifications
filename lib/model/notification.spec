@@ -1,12 +1,13 @@
 {
   "id": "Notification",
   "packageName": "eliud_pkg_notifications",
+  "packageFriendlyName": "notifications",
   "isAppModel": true,
   "generate": {
     "generateComponent": true,
     "generateRepository": true,
     "generateCache": true,
-	"hasPersistentRepository": true,
+    "hasPersistentRepository": true,
     "generateFirestoreRepository": true,
     "generateRepositorySingleton": true,
     "generateModel": true,

@@ -34,7 +34,7 @@ class ComponentRegistry {
     Registry.registry()!.register(componentName: "eliud_pkg_notifications_internalWidgets", componentConstructor: ListComponentFactory());
     Registry.registry()!.addDropDownSupporter("notificationDashboards", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "notificationDashboards", componentConstructor: NotificationDashboardComponentConstructorDefault());
-    Registry.registry()!.addComponentSpec('eliud_pkg_notifications', [
+    Registry.registry()!.addComponentSpec('eliud_pkg_notifications', 'notifications', [
       ComponentSpec('notificationDashboards', NotificationDashboardComponentConstructorDefault(), NotificationDashboardComponentSelector(), NotificationDashboardComponentEditorConstructor(), ), 
     ]);
 

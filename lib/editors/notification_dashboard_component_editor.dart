@@ -40,6 +40,7 @@ class NotificationDashboardComponentEditorConstructor
         NotificationDashboardModel(
           appId: app.documentID,
           documentID: newRandomKey(),
+          description: 'New notification dashboard',
           conditions: StorageConditionsModel(
               privilegeLevelRequired:
                   PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),
@@ -96,7 +97,8 @@ class NotificationDashboardBloc
   NotificationDashboardModel newInstance(StorageConditionsModel conditions) {
     return NotificationDashboardModel(
         appId: appId,
-        documentID: newRandomKey(), 
+        documentID: newRandomKey(),
+        description: 'New notification dashboard',
         conditions: conditions);
   }
 

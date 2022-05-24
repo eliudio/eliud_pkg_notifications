@@ -18,7 +18,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
 
   Future<DialogModel> _setupDialog() async {
     return await corerepo.AbstractRepositorySingleton.singleton
-        .dialogRepository(app.documentID!)!
+        .dialogRepository(app.documentID)!
         .add(_dialog());
   }
 
@@ -31,7 +31,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
 
     return DialogModel(
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-        appId: app.documentID!,
+        appId: app.documentID,
         title: "Notifications",
         layout: DialogLayout.ListView,
         conditions: StorageConditionsModel(
@@ -43,7 +43,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
   NotificationDashboardModel _dashboardModel() {
     return NotificationDashboardModel(
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-        appId: app.documentID!,
+        appId: app.documentID,
         description: "My Notifications",
         conditions: StorageConditionsModel(
           privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple
@@ -53,7 +53,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
 
   Future<NotificationDashboardModel> _setupDashboard() async {
     return await AbstractRepositorySingleton.singleton
-        .notificationDashboardRepository(app.documentID!)!
+        .notificationDashboardRepository(app.documentID)!
         .add(_dashboardModel());
   }
 

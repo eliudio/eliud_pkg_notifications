@@ -28,7 +28,7 @@ class NotificationDashboardComponentConstructorDefault
   }
 
   @override
-  Future<dynamic> getModel({required AppModel app, required String id}) async => await notificationDashboardRepository(appId: app.documentID!)!.get(id);
+  Future<dynamic> getModel({required AppModel app, required String id}) async => await notificationDashboardRepository(appId: app.documentID)!.get(id);
 }
 
 class NotificationDashboardComponent
@@ -77,6 +77,6 @@ class NotificationDashboardComponent
   NotificationDashboardRepository getNotificationDashboardRepository(
       BuildContext context) {
     return AbstractRepositorySingleton.singleton
-        .notificationDashboardRepository(app.documentID!)!;
+        .notificationDashboardRepository(app.documentID)!;
   }
 }

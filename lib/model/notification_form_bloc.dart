@@ -51,7 +51,7 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
   Stream<NotificationFormState> mapEventToState(NotificationFormEvent event) async* {
     final currentState = state;
     if (currentState is NotificationFormUninitialized) {
-      if (event is InitialiseNewNotificationFormEvent) {
+      on <InitialiseNewNotificationFormEvent> ((event, emit) {
         NotificationFormLoaded loaded = NotificationFormLoaded(value: NotificationModel(
                                                documentID: "",
                                  appId: "",
@@ -60,64 +60,54 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
                                  assigneeId: "",
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseNotificationFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
         NotificationFormLoaded loaded = NotificationFormLoaded(value: await notificationRepository(appId: appId)!.get(event.value!.documentID));
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseNotificationFormNoLoadEvent) {
         NotificationFormLoaded loaded = NotificationFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is NotificationFormInitialized) {
       NotificationModel? newValue = null;
-      if (event is ChangedNotificationDocumentID) {
+      on <ChangedNotificationDocumentID> ((event, emit) async {
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event.value, newValue).asStream();
+          emit(await _isDocumentIDValid(event.value, newValue!));
         } else {
-          yield SubmittableNotificationForm(value: newValue);
+          emit(SubmittableNotificationForm(value: newValue));
         }
 
-        return;
-      }
-      if (event is ChangedNotificationDescription) {
+      });
+      on <ChangedNotificationDescription> ((event, emit) async {
         newValue = currentState.value!.copyWith(description: event.value);
-        yield SubmittableNotificationForm(value: newValue);
+        emit(SubmittableNotificationForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedNotificationRead) {
+      });
+      on <ChangedNotificationRead> ((event, emit) async {
         newValue = currentState.value!.copyWith(read: event.value);
-        yield SubmittableNotificationForm(value: newValue);
+        emit(SubmittableNotificationForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedNotificationReporterId) {
+      });
+      on <ChangedNotificationReporterId> ((event, emit) async {
         newValue = currentState.value!.copyWith(reporterId: event.value);
-        yield SubmittableNotificationForm(value: newValue);
+        emit(SubmittableNotificationForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedNotificationAssigneeId) {
+      });
+      on <ChangedNotificationAssigneeId> ((event, emit) async {
         newValue = currentState.value!.copyWith(assigneeId: event.value);
-        yield SubmittableNotificationForm(value: newValue);
+        emit(SubmittableNotificationForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedNotificationStatus) {
+      });
+      on <ChangedNotificationStatus> ((event, emit) async {
         newValue = currentState.value!.copyWith(status: event.value);
-        yield SubmittableNotificationForm(value: newValue);
+        emit(SubmittableNotificationForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

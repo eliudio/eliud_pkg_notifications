@@ -77,7 +77,7 @@ class NotificationListUpdated extends NotificationListEvent {
 }
 
 class NotificationChangeQuery extends NotificationListEvent {
-  final EliudQuery newQuery;
+  final EliudQuery? newQuery;
 
   const NotificationChangeQuery({ required this.newQuery });
 

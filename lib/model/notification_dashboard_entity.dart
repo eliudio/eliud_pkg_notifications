@@ -27,7 +27,7 @@ class NotificationDashboardEntity {
   final String? description;
   final StorageConditionsEntity? conditions;
 
-  NotificationDashboardEntity({this.appId, this.description, this.conditions, });
+  NotificationDashboardEntity({required this.appId, this.description, this.conditions, });
 
 
   List<Object?> get props => [appId, description, conditions, ];

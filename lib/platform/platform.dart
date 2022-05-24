@@ -19,9 +19,9 @@ typedef void Action(NotificationModel? notificationModel);
 class NotificationPlatform extends AbstractNotificationPlatform {
 
   Future<void> sendMessage(AppModel app, String memberId, String assigneeId, String message, {Action? postSendAction}) async {
-      await AbstractRepositorySingleton.singleton.notificationRepository(app.documentID!)!.add(NotificationModel(
+      await AbstractRepositorySingleton.singleton.notificationRepository(app.documentID)!.add(NotificationModel(
         documentID: newRandomKey(),
-        appId: app.documentID!,
+        appId: app.documentID,
         description: message,
         read: false,
         status: NotificationStatus.Open,

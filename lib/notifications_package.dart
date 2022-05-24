@@ -41,7 +41,7 @@ abstract class NotificationsPackage extends Package {
       bool isOwner,
       bool? isBlocked,
       PrivilegeLevel? privilegeLevel) {
-    var appId = app.documentID!;
+    var appId = app.documentID;
     subscription[appId]?.cancel();
     if (member != null) {
       final c = Completer<List<PackageConditionDetails>>();
@@ -66,7 +66,7 @@ abstract class NotificationsPackage extends Package {
                 app, this, CONDITION_MEMBER_HAS_UNREAD_NOTIFICATIONS, value));
           }
         }
-      }, eliudQuery: getOpenNotificationsQuery(appId, member.documentID!));
+      }, eliudQuery: getOpenNotificationsQuery(appId, member.documentID));
       return c.future;
     } else {
       return Future.value([

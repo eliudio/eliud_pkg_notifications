@@ -52,11 +52,11 @@ class NotificationDashboardComponentEditorConstructor
   void updateComponentWithID(AppModel app, BuildContext context, String id,
       EditorFeedback feedback) async {
     var notificationDashboard =
-        await notificationDashboardRepository(appId: app.documentID!)!.get(id);
+        await notificationDashboardRepository(appId: app.documentID)!.get(id);
     if (notificationDashboard != null) {
       _openIt(app, context, false, notificationDashboard, feedback);
     } else {
-      openErrorDialog(app, context, app.documentID! + '/_error',
+      openErrorDialog(app, context, app.documentID + '/_error',
           title: 'Error',
           errorMessage: 'Cannot find notification dashboard with id $id');
     }
@@ -67,7 +67,7 @@ class NotificationDashboardComponentEditorConstructor
     openComplexDialog(
       app,
       context,
-      app.documentID! + '/notificationdashboard',
+      app.documentID + '/notificationdashboard',
       title: create
           ? 'Create Notification Dashboard'
           : 'Update Notification Dashboard',
@@ -75,7 +75,7 @@ class NotificationDashboardComponentEditorConstructor
       widthFraction: .9,
       child: BlocProvider<NotificationDashboardBloc>(
           create: (context) => NotificationDashboardBloc(
-                app.documentID!,
+                app.documentID,
                 /*create,
             */
                 feedback,
@@ -157,7 +157,7 @@ class _NotificationDashboardComponentEditorState
                         getListTile(context, widget.app,
                             leading: Icon(Icons.vpn_key),
                             title: text(widget.app, context,
-                                notificationDashboardState.model.documentID!)),
+                                notificationDashboardState.model.documentID)),
                         getListTile(context, widget.app,
                             leading: Icon(Icons.description),
                             title: dialogField(

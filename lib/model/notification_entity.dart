@@ -31,7 +31,7 @@ class NotificationEntity {
   final String? assigneeId;
   final int? status;
 
-  NotificationEntity({this.timestamp, this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, });
+  NotificationEntity({this.timestamp, required this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, });
 
   NotificationEntity copyWith({Object? timestamp, }) {
     return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, reporterId: reporterId, assigneeId: assigneeId, status: status, );

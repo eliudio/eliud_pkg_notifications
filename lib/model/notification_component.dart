@@ -39,7 +39,7 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<NotificationComponentBloc> (
           create: (context) => NotificationComponentBloc(
-            notificationRepository: notificationRepository(appId: app.documentID!)!)
+            notificationRepository: notificationRepository(appId: app.documentID)!)
         ..add(FetchNotificationComponent(id: notificationId)),
       child: _notificationBlockBuilder(context),
     );

@@ -15,6 +15,7 @@
 
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -47,19 +48,19 @@ NotificationStatus toNotificationStatus(int? index) {
 }
 
 
-class NotificationModel {
-  String? documentID;
+class NotificationModel implements ModelBase, WithAppId {
+  String documentID;
   DateTime? timestamp;
 
   // This is the identifier of the app to which this feed belongs
-  String? appId;
+  String appId;
   String? description;
   bool? read;
   String? reporterId;
   String? assigneeId;
   NotificationStatus? status;
 
-  NotificationModel({this.documentID, this.timestamp, this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, })  {
+  NotificationModel({required this.documentID, this.timestamp, required this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, })  {
     assert(documentID != null);
   }
 
@@ -107,7 +108,7 @@ class NotificationModel {
     return NotificationModel(
           documentID: documentID, 
           timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           description: entity.description, 
           read: entity.read, 
           reporterId: entity.reporterId, 
@@ -123,7 +124,7 @@ class NotificationModel {
     return NotificationModel(
           documentID: documentID, 
           timestamp: entity.timestamp == null ? null : DateTime.fromMillisecondsSinceEpoch((entity.timestamp as int)), 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           description: entity.description, 
           read: entity.read, 
           reporterId: entity.reporterId, 

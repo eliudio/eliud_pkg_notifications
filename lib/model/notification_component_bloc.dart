@@ -26,23 +26,22 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
   final NotificationRepository? notificationRepository;
   StreamSubscription? _notificationSubscription;
 
-  Stream<NotificationComponentState> _mapLoadNotificationComponentUpdateToState(String documentId) async* {
+  void _mapLoadNotificationComponentUpdateToState(String documentId) {
     _notificationSubscription?.cancel();
     _notificationSubscription = notificationRepository!.listenTo(documentId, (value) {
-      if (value != null) add(NotificationComponentUpdated(value: value));
+      if (value != null) {
+        add(NotificationComponentUpdated(value: value));
+      }
     });
   }
 
-  NotificationComponentBloc({ this.notificationRepository }): super(NotificationComponentUninitialized());
-
-  @override
-  Stream<NotificationComponentState> mapEventToState(NotificationComponentEvent event) async* {
-    final currentState = state;
-    if (event is FetchNotificationComponent) {
-      yield* _mapLoadNotificationComponentUpdateToState(event.id!);
-    } else if (event is NotificationComponentUpdated) {
-      yield NotificationComponentLoaded(value: event.value);
-    }
+  NotificationComponentBloc({ this.notificationRepository }): super(NotificationComponentUninitialized()) {
+    on <FetchNotificationComponent> ((event, emit) {
+      _mapLoadNotificationComponentUpdateToState(event.id!);
+    });
+    on <NotificationComponentUpdated> ((event, emit) {
+      emit(NotificationComponentLoaded(value: event.value));
+    });
   }
 
   @override

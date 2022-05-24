@@ -137,9 +137,9 @@ class ListComponent extends StatelessWidget with HasFab {
           create: (context) => NotificationListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            notificationRepository: notificationRepository(appId: app.documentID!)!,
+            notificationRepository: notificationRepository(appId: app.documentID)!,
           )..add(LoadNotificationList()),
         )
       ],
@@ -154,9 +154,9 @@ class ListComponent extends StatelessWidget with HasFab {
           create: (context) => NotificationDashboardListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID!)!,
+            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID)!,
           )..add(LoadNotificationDashboardList()),
         )
       ],
@@ -195,9 +195,9 @@ class DropdownButtonComponent extends StatelessWidget {
           create: (context) => NotificationListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            notificationRepository: notificationRepository(appId: app.documentID!)!,
+            notificationRepository: notificationRepository(appId: app.documentID)!,
           )..add(LoadNotificationList()),
         )
       ],
@@ -212,9 +212,9 @@ class DropdownButtonComponent extends StatelessWidget {
           create: (context) => NotificationDashboardListBloc(
             eliudQuery: EliudQuery(theConditions: [
               EliudQueryCondition('conditions.privilegeLevelRequired', isEqualTo: privilegeLevel ?? 0),
-              EliudQueryCondition('appId', isEqualTo: app.documentID!),]
+              EliudQueryCondition('appId', isEqualTo: app.documentID),]
             ),
-            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID!)!,
+            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID)!,
           )..add(LoadNotificationDashboardList()),
         )
       ],

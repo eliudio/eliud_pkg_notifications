@@ -51,59 +51,51 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
   Stream<NotificationDashboardFormState> mapEventToState(NotificationDashboardFormEvent event) async* {
     final currentState = state;
     if (currentState is NotificationDashboardFormUninitialized) {
-      if (event is InitialiseNewNotificationDashboardFormEvent) {
+      on <InitialiseNewNotificationDashboardFormEvent> ((event, emit) {
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: NotificationDashboardModel(
                                                documentID: "",
                                  appId: "",
                                  description: "",
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseNotificationDashboardFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId)!.get(event.value!.documentID));
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseNotificationDashboardFormNoLoadEvent) {
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is NotificationDashboardFormInitialized) {
       NotificationDashboardModel? newValue = null;
-      if (event is ChangedNotificationDashboardDocumentID) {
+      on <ChangedNotificationDashboardDocumentID> ((event, emit) async {
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event.value, newValue).asStream();
+          emit(await _isDocumentIDValid(event.value, newValue!));
         } else {
-          yield SubmittableNotificationDashboardForm(value: newValue);
+          emit(SubmittableNotificationDashboardForm(value: newValue));
         }
 
-        return;
-      }
-      if (event is ChangedNotificationDashboardAppId) {
+      });
+      on <ChangedNotificationDashboardAppId> ((event, emit) async {
         newValue = currentState.value!.copyWith(appId: event.value);
-        yield SubmittableNotificationDashboardForm(value: newValue);
+        emit(SubmittableNotificationDashboardForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedNotificationDashboardDescription) {
+      });
+      on <ChangedNotificationDashboardDescription> ((event, emit) async {
         newValue = currentState.value!.copyWith(description: event.value);
-        yield SubmittableNotificationDashboardForm(value: newValue);
+        emit(SubmittableNotificationDashboardForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedNotificationDashboardConditions) {
+      });
+      on <ChangedNotificationDashboardConditions> ((event, emit) async {
         newValue = currentState.value!.copyWith(conditions: event.value);
-        yield SubmittableNotificationDashboardForm(value: newValue);
+        emit(SubmittableNotificationDashboardForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

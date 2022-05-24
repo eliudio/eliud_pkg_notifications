@@ -26,23 +26,22 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
   final NotificationDashboardRepository? notificationDashboardRepository;
   StreamSubscription? _notificationDashboardSubscription;
 
-  Stream<NotificationDashboardComponentState> _mapLoadNotificationDashboardComponentUpdateToState(String documentId) async* {
+  void _mapLoadNotificationDashboardComponentUpdateToState(String documentId) {
     _notificationDashboardSubscription?.cancel();
     _notificationDashboardSubscription = notificationDashboardRepository!.listenTo(documentId, (value) {
-      if (value != null) add(NotificationDashboardComponentUpdated(value: value));
+      if (value != null) {
+        add(NotificationDashboardComponentUpdated(value: value));
+      }
     });
   }
 
-  NotificationDashboardComponentBloc({ this.notificationDashboardRepository }): super(NotificationDashboardComponentUninitialized());
-
-  @override
-  Stream<NotificationDashboardComponentState> mapEventToState(NotificationDashboardComponentEvent event) async* {
-    final currentState = state;
-    if (event is FetchNotificationDashboardComponent) {
-      yield* _mapLoadNotificationDashboardComponentUpdateToState(event.id!);
-    } else if (event is NotificationDashboardComponentUpdated) {
-      yield NotificationDashboardComponentLoaded(value: event.value);
-    }
+  NotificationDashboardComponentBloc({ this.notificationDashboardRepository }): super(NotificationDashboardComponentUninitialized()) {
+    on <FetchNotificationDashboardComponent> ((event, emit) {
+      _mapLoadNotificationDashboardComponentUpdateToState(event.id!);
+    });
+    on <NotificationDashboardComponentUpdated> ((event, emit) {
+      emit(NotificationDashboardComponentLoaded(value: event.value));
+    });
   }
 
   @override

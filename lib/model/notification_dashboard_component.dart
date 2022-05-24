@@ -39,7 +39,7 @@ abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<NotificationDashboardComponentBloc> (
           create: (context) => NotificationDashboardComponentBloc(
-            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID!)!)
+            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID)!)
         ..add(FetchNotificationDashboardComponent(id: notificationDashboardId)),
       child: _notificationDashboardBlockBuilder(context),
     );

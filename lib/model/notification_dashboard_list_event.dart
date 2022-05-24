@@ -77,7 +77,7 @@ class NotificationDashboardListUpdated extends NotificationDashboardListEvent {
 }
 
 class NotificationDashboardChangeQuery extends NotificationDashboardListEvent {
-  final EliudQuery newQuery;
+  final EliudQuery? newQuery;
 
   const NotificationDashboardChangeQuery({ required this.newQuery });
 

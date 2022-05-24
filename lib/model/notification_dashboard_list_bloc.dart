@@ -38,9 +38,47 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
   NotificationDashboardListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationDashboardRepository notificationDashboardRepository, this.notificationDashboardLimit = 5})
       : assert(notificationDashboardRepository != null),
         _notificationDashboardRepository = notificationDashboardRepository,
-        super(NotificationDashboardListLoading());
+        super(NotificationDashboardListLoading()) {
+    on <LoadNotificationDashboardList> ((event, emit) {
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadNotificationDashboardListToState();
+      } else {
+        _mapLoadNotificationDashboardListWithDetailsToState();
+      }
+    });
+    
+    on <NewPage> ((event, emit) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+      _mapLoadNotificationDashboardListWithDetailsToState();
+    });
+    
+    on <NotificationDashboardChangeQuery> ((event, emit) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadNotificationDashboardListToState();
+      } else {
+        _mapLoadNotificationDashboardListWithDetailsToState();
+      }
+    });
+      
+    on <AddNotificationDashboardList> ((event, emit) async {
+      await _mapAddNotificationDashboardListToState(event);
+    });
+    
+    on <UpdateNotificationDashboardList> ((event, emit) async {
+      await _mapUpdateNotificationDashboardListToState(event);
+    });
+    
+    on <DeleteNotificationDashboardList> ((event, emit) async {
+      await _mapDeleteNotificationDashboardListToState(event);
+    });
+    
+    on <NotificationDashboardListUpdated> ((event, emit) {
+      emit(_mapNotificationDashboardListUpdatedToState(event));
+    });
+  }
 
-  Stream<NotificationDashboardListState> _mapLoadNotificationDashboardListToState() async* {
+  Future<void> _mapLoadNotificationDashboardListToState() async {
     int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values!.length : 0;
     _notificationDashboardsListSubscription?.cancel();
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listen(
@@ -52,7 +90,7 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
     );
   }
 
-  Stream<NotificationDashboardListState> _mapLoadNotificationDashboardListWithDetailsToState() async* {
+  Future<void> _mapLoadNotificationDashboardListWithDetailsToState() async {
     int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values!.length : 0;
     _notificationDashboardsListSubscription?.cancel();
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listenWithDetails(
@@ -64,58 +102,29 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
     );
   }
 
-  Stream<NotificationDashboardListState> _mapAddNotificationDashboardListToState(AddNotificationDashboardList event) async* {
+  Future<void> _mapAddNotificationDashboardListToState(AddNotificationDashboardList event) async {
     var value = event.value;
-    if (value != null) 
-      _notificationDashboardRepository.add(value);
-  }
-
-  Stream<NotificationDashboardListState> _mapUpdateNotificationDashboardListToState(UpdateNotificationDashboardList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _notificationDashboardRepository.update(value);
-  }
-
-  Stream<NotificationDashboardListState> _mapDeleteNotificationDashboardListToState(DeleteNotificationDashboardList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _notificationDashboardRepository.delete(value);
-  }
-
-  Stream<NotificationDashboardListState> _mapNotificationDashboardListUpdatedToState(
-      NotificationDashboardListUpdated event) async* {
-    yield NotificationDashboardListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
-  }
-
-  @override
-  Stream<NotificationDashboardListState> mapEventToState(NotificationDashboardListEvent event) async* {
-    if (event is LoadNotificationDashboardList) {
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadNotificationDashboardListToState();
-      } else {
-        yield* _mapLoadNotificationDashboardListWithDetailsToState();
-      }
-    }
-    if (event is NewPage) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
-      yield* _mapLoadNotificationDashboardListWithDetailsToState();
-    } else if (event is NotificationDashboardChangeQuery) {
-      eliudQuery = event.newQuery;
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadNotificationDashboardListToState();
-      } else {
-        yield* _mapLoadNotificationDashboardListWithDetailsToState();
-      }
-    } else if (event is AddNotificationDashboardList) {
-      yield* _mapAddNotificationDashboardListToState(event);
-    } else if (event is UpdateNotificationDashboardList) {
-      yield* _mapUpdateNotificationDashboardListToState(event);
-    } else if (event is DeleteNotificationDashboardList) {
-      yield* _mapDeleteNotificationDashboardListToState(event);
-    } else if (event is NotificationDashboardListUpdated) {
-      yield* _mapNotificationDashboardListUpdatedToState(event);
+    if (value != null) {
+      await _notificationDashboardRepository.add(value);
     }
   }
+
+  Future<void> _mapUpdateNotificationDashboardListToState(UpdateNotificationDashboardList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _notificationDashboardRepository.update(value);
+    }
+  }
+
+  Future<void> _mapDeleteNotificationDashboardListToState(DeleteNotificationDashboardList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _notificationDashboardRepository.delete(value);
+    }
+  }
+
+  NotificationDashboardListLoaded _mapNotificationDashboardListUpdatedToState(
+      NotificationDashboardListUpdated event) => NotificationDashboardListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {

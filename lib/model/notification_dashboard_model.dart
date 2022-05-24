@@ -15,6 +15,7 @@
 
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -35,15 +36,15 @@ import 'package:eliud_core/tools/random.dart';
 
 
 
-class NotificationDashboardModel {
-  String? documentID;
+class NotificationDashboardModel implements ModelBase, WithAppId {
+  String documentID;
 
   // This is the identifier of the app to which this feed belongs
-  String? appId;
+  String appId;
   String? description;
   StorageConditionsModel? conditions;
 
-  NotificationDashboardModel({this.documentID, this.appId, this.description, this.conditions, })  {
+  NotificationDashboardModel({required this.documentID, required this.appId, this.description, this.conditions, })  {
     assert(documentID != null);
   }
 
@@ -82,7 +83,7 @@ class NotificationDashboardModel {
     var counter = 0;
     return NotificationDashboardModel(
           documentID: documentID, 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           description: entity.description, 
           conditions: 
             await StorageConditionsModel.fromEntity(entity.conditions), 
@@ -95,7 +96,7 @@ class NotificationDashboardModel {
     var counter = 0;
     return NotificationDashboardModel(
           documentID: documentID, 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           description: entity.description, 
           conditions: 
             await StorageConditionsModel.fromEntityPlus(entity.conditions, appId: appId), 

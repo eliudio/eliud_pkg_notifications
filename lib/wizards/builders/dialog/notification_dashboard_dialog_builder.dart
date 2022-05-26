@@ -33,6 +33,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID,
         title: "Notifications",
+        description: "Notifications",
         layout: DialogLayout.ListView,
         conditions: StorageConditionsModel(
           privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple,

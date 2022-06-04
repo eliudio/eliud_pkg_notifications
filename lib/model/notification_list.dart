@@ -156,7 +156,7 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
             onDismissed: (direction) {
               BlocProvider.of<NotificationListBloc>(context)
                   .add(DeleteNotificationList(value: value));
-              Scaffold.of(context).showSnackBar(DeleteSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
                 message: "Notification " + value.documentID,
                 onUndo: () => BlocProvider.of<NotificationListBloc>(context)
                     .add(AddNotificationList(value: value)),
@@ -168,7 +168,7 @@ class NotificationListWidgetState extends State<NotificationListWidget> {
                               value: BlocProvider.of<NotificationListBloc>(context),
                               child: getForm(value, FormAction.UpdateAction))));
                       if (removedItem != null) {
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           DeleteSnackBar(
                         message: "Notification " + value.documentID,
                             onUndo: () => BlocProvider.of<NotificationListBloc>(context)

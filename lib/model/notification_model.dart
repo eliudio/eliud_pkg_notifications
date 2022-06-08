@@ -85,6 +85,10 @@ class NotificationModel implements ModelBase, WithAppId {
           assigneeId == other.assigneeId &&
           status == other.status;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';

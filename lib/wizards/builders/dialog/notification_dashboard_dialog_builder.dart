@@ -27,7 +27,7 @@ class NotificationDashboardDialogBuilder extends DialogBuilder {
     components.add(BodyComponentModel(
         documentID: "1",
         componentName: AbstractNotificationDashboardComponent.componentName,
-        componentId: dialogDocumentId));
+        componentId: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId)));
 
     return DialogModel(
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),

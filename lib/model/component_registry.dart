@@ -17,6 +17,7 @@
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/tools/component/component_spec.dart';
+import 'abstract_repository_singleton.dart';
 
 import '../extensions/notification_dashboard_component.dart';
 import '../editors/notification_dashboard_component_editor.dart';
@@ -35,7 +36,7 @@ class ComponentRegistry {
     Registry.registry()!.addDropDownSupporter("notificationDashboards", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "notificationDashboards", componentConstructor: NotificationDashboardComponentConstructorDefault());
     Registry.registry()!.addComponentSpec('eliud_pkg_notifications', 'notifications', [
-      ComponentSpec('notificationDashboards', NotificationDashboardComponentConstructorDefault(), NotificationDashboardComponentSelector(), NotificationDashboardComponentEditorConstructor(), ), 
+      ComponentSpec('notificationDashboards', NotificationDashboardComponentConstructorDefault(), NotificationDashboardComponentSelector(), NotificationDashboardComponentEditorConstructor(), ({String? appId}) => notificationDashboardRepository(appId: appId)! ), 
     ]);
 
   }

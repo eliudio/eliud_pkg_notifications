@@ -38,6 +38,8 @@ typedef NotificationDashboardModelTrigger(List<NotificationDashboardModel?> list
 typedef NotificationDashboardChanged(NotificationDashboardModel? value);
 
 abstract class NotificationDashboardRepository extends RepositoryBase<NotificationDashboardModel> {
+  Future<NotificationDashboardEntity> addEntity(String documentID, NotificationDashboardEntity value);
+  Future<NotificationDashboardEntity> updateEntity(String documentID, NotificationDashboardEntity value);
   Future<NotificationDashboardModel> add(NotificationDashboardModel value);
   Future<void> delete(NotificationDashboardModel value);
   Future<NotificationDashboardModel?> get(String? id, { Function(Exception)? onError });

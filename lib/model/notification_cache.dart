@@ -47,6 +47,14 @@ class NotificationCache implements NotificationRepository {
     });
   }
 
+  Future<NotificationEntity> addEntity(String documentID, NotificationEntity value) {
+    return reference.addEntity(documentID, value);
+  }
+
+  Future<NotificationEntity> updateEntity(String documentID, NotificationEntity value) {
+    return reference.updateEntity(documentID, value);
+  }
+
   Future<void> delete(NotificationModel value){
     fullCache.remove(value.documentID);
     reference.delete(value);

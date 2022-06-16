@@ -38,6 +38,8 @@ typedef NotificationModelTrigger(List<NotificationModel?> list);
 typedef NotificationChanged(NotificationModel? value);
 
 abstract class NotificationRepository extends RepositoryBase<NotificationModel> {
+  Future<NotificationEntity> addEntity(String documentID, NotificationEntity value);
+  Future<NotificationEntity> updateEntity(String documentID, NotificationEntity value);
   Future<NotificationModel> add(NotificationModel value);
   Future<void> delete(NotificationModel value);
   Future<NotificationModel?> get(String? id, { Function(Exception)? onError });

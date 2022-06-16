@@ -47,6 +47,14 @@ class NotificationDashboardCache implements NotificationDashboardRepository {
     });
   }
 
+  Future<NotificationDashboardEntity> addEntity(String documentID, NotificationDashboardEntity value) {
+    return reference.addEntity(documentID, value);
+  }
+
+  Future<NotificationDashboardEntity> updateEntity(String documentID, NotificationDashboardEntity value) {
+    return reference.updateEntity(documentID, value);
+  }
+
   Future<void> delete(NotificationDashboardModel value){
     fullCache.remove(value.documentID);
     reference.delete(value);

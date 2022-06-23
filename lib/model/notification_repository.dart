@@ -37,7 +37,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 typedef NotificationModelTrigger(List<NotificationModel?> list);
 typedef NotificationChanged(NotificationModel? value);
 
-abstract class NotificationRepository extends RepositoryBase<NotificationModel> {
+abstract class NotificationRepository extends RepositoryBase<NotificationModel, NotificationEntity> {
   Future<NotificationEntity> addEntity(String documentID, NotificationEntity value);
   Future<NotificationEntity> updateEntity(String documentID, NotificationEntity value);
   Future<NotificationModel> add(NotificationModel value);

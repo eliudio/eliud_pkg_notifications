@@ -36,6 +36,11 @@ import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class NotificationFirestore implements NotificationRepository {
+  @override
+  NotificationEntity? fromMap(Object? o) {
+    return NotificationEntity.fromMap(o);
+  }
+
   Future<NotificationEntity> addEntity(String documentID, NotificationEntity value) {
     return NotificationCollection.doc(documentID).set(value.toDocument()).then((_) => value).then((v) async {
       var newValue = await getEntity(documentID);

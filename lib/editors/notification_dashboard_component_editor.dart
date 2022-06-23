@@ -22,6 +22,8 @@ import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_bloc.dart';
 import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_event.dart';
 import 'package:eliud_core/core/editor/editor_base_bloc/editor_base_state.dart';
 
+import '../model/notification_dashboard_entity.dart';
+
 class NotificationDashboardComponentEditorConstructor
     extends ComponentEditorConstructor {
   @override
@@ -88,7 +90,7 @@ class NotificationDashboardComponentEditorConstructor
 }
 
 class NotificationDashboardBloc
-    extends EditorBaseBloc<NotificationDashboardModel> {
+    extends EditorBaseBloc<NotificationDashboardModel, NotificationDashboardEntity> {
 
   NotificationDashboardBloc(String appId, EditorFeedback feedback)
       : super(appId, notificationDashboardRepository(appId: appId)!, feedback);

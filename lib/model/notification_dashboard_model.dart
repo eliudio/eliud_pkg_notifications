@@ -40,6 +40,9 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class NotificationDashboardModel implements ModelBase, WithAppId {
+  static const String packageName = 'eliud_pkg_notifications';
+  static const String id = 'NotificationDashboard';
+
   String documentID;
 
   // This is the identifier of the app to which this feed belongs
@@ -73,7 +76,7 @@ class NotificationDashboardModel implements ModelBase, WithAppId {
     return 'NotificationDashboardModel{documentID: $documentID, appId: $appId, description: $description, conditions: $conditions}';
   }
 
-  NotificationDashboardEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  NotificationDashboardEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return NotificationDashboardEntity(

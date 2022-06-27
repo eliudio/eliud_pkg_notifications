@@ -52,6 +52,9 @@ NotificationStatus toNotificationStatus(int? index) {
 
 
 class NotificationModel implements ModelBase, WithAppId {
+  static const String packageName = 'eliud_pkg_notifications';
+  static const String id = 'Notification';
+
   String documentID;
   DateTime? timestamp;
 
@@ -93,7 +96,7 @@ class NotificationModel implements ModelBase, WithAppId {
     return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
-  NotificationEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  NotificationEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return NotificationEntity(

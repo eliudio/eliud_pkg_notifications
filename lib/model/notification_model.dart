@@ -96,7 +96,7 @@ class NotificationModel implements ModelBase, WithAppId {
     return 'NotificationModel{documentID: $documentID, timestamp: $timestamp, appId: $appId, description: $description, read: $read, reporterId: $reporterId, assigneeId: $assigneeId, status: $status}';
   }
 
-  NotificationEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  NotificationEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return NotificationEntity(

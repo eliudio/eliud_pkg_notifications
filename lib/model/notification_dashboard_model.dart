@@ -76,7 +76,7 @@ class NotificationDashboardModel implements ModelBase, WithAppId {
     return 'NotificationDashboardModel{documentID: $documentID, appId: $appId, description: $description, conditions: $conditions}';
   }
 
-  NotificationDashboardEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  NotificationDashboardEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return NotificationDashboardEntity(

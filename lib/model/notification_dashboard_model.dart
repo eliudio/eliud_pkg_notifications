@@ -41,7 +41,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class NotificationDashboardModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_notifications';
-  static const String id = 'NotificationDashboard';
+  static const String id = 'notificationDashboards';
 
   String documentID;
 

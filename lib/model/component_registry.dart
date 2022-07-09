@@ -38,6 +38,8 @@ class ComponentRegistry {
     Registry.registry()!.addComponentSpec('eliud_pkg_notifications', 'notifications', [
       ComponentSpec('notificationDashboards', NotificationDashboardComponentConstructorDefault(), NotificationDashboardComponentSelector(), NotificationDashboardComponentEditorConstructor(), ({String? appId}) => notificationDashboardRepository(appId: appId)! ), 
     ]);
+      Registry.registry()!.registerRetrieveRepository('eliud_pkg_notifications', 'notifications', ({String? appId}) => notificationRepository(appId: appId)!);
+      Registry.registry()!.registerRetrieveRepository('eliud_pkg_notifications', 'notificationDashboards', ({String? appId}) => notificationDashboardRepository(appId: appId)!);
 
   }
 }

@@ -53,7 +53,7 @@ NotificationStatus toNotificationStatus(int? index) {
 
 class NotificationModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_notifications';
-  static const String id = 'Notification';
+  static const String id = 'notifications';
 
   String documentID;
   DateTime? timestamp;

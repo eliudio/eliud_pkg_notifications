@@ -34,8 +34,8 @@ class NotificationEntity implements EntityBase {
 
   NotificationEntity({this.timestamp, required this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, });
 
-  NotificationEntity copyWith({Object? timestamp, }) {
-    return NotificationEntity(timestamp : timestamp, appId: appId, description: description, read: read, reporterId: reporterId, assigneeId: assigneeId, status: status, );
+  NotificationEntity copyWith({String? documentID, Object? timestamp, String? appId, String? description, bool? read, String? reporterId, String? assigneeId, int? status, }) {
+    return NotificationEntity(timestamp : timestamp ?? this.timestamp, appId : appId ?? this.appId, description : description ?? this.description, read : read ?? this.read, reporterId : reporterId ?? this.reporterId, assigneeId : assigneeId ?? this.assigneeId, status : status ?? this.status, );
   }
   List<Object?> get props => [timestamp, appId, description, read, reporterId, assigneeId, status, ];
 
@@ -75,6 +75,12 @@ class NotificationEntity implements EntityBase {
     if (status != null) theDocument["status"] = status;
       else theDocument["status"] = null;
     return theDocument;
+  }
+
+  @override
+  NotificationEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith(appId: newAppId);
+    return newEntity;
   }
 
   static NotificationEntity? fromJsonString(String json) {

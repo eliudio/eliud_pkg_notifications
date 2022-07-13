@@ -30,7 +30,9 @@ class NotificationDashboardEntity implements EntityBase {
 
   NotificationDashboardEntity({required this.appId, this.description, this.conditions, });
 
-
+  NotificationDashboardEntity copyWith({String? documentID, String? appId, String? description, StorageConditionsEntity? conditions, }) {
+    return NotificationDashboardEntity(appId : appId ?? this.appId, description : description ?? this.description, conditions : conditions ?? this.conditions, );
+  }
   List<Object?> get props => [appId, description, conditions, ];
 
   @override
@@ -67,6 +69,12 @@ class NotificationDashboardEntity implements EntityBase {
     if (conditions != null) theDocument["conditions"] = conditionsMap;
       else theDocument["conditions"] = null;
     return theDocument;
+  }
+
+  @override
+  NotificationDashboardEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith(appId: newAppId);
+    return newEntity;
   }
 
   static NotificationDashboardEntity? fromJsonString(String json) {

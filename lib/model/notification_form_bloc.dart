@@ -46,11 +46,7 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
   final FormAction? formAction;
   final String? appId;
 
-  NotificationFormBloc(this.appId, { this.formAction }): super(NotificationFormUninitialized());
-  @override
-  Stream<NotificationFormState> mapEventToState(NotificationFormEvent event) async* {
-    final currentState = state;
-    if (currentState is NotificationFormUninitialized) {
+  NotificationFormBloc(this.appId, { this.formAction }): super(NotificationFormUninitialized()) {
       on <InitialiseNewNotificationFormEvent> ((event, emit) {
         NotificationFormLoaded loaded = NotificationFormLoaded(value: NotificationModel(
                                                documentID: "",
@@ -64,17 +60,19 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
       });
 
 
-      if (event is InitialiseNotificationFormEvent) {
+      on <InitialiseNotificationFormEvent> ((event, emit) async {
         // Need to re-retrieve the document from the repository so that I get all associated types
         NotificationFormLoaded loaded = NotificationFormLoaded(value: await notificationRepository(appId: appId)!.get(event.value!.documentID));
         emit(loaded);
-      } else if (event is InitialiseNotificationFormNoLoadEvent) {
+      });
+      on <InitialiseNotificationFormNoLoadEvent> ((event, emit) async {
         NotificationFormLoaded loaded = NotificationFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is NotificationFormInitialized) {
+      });
       NotificationModel? newValue = null;
       on <ChangedNotificationDocumentID> ((event, emit) async {
+      if (state is NotificationFormInitialized) {
+        final currentState = state as NotificationFormInitialized;
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
           emit(await _isDocumentIDValid(event.value, newValue!));
@@ -82,33 +80,48 @@ class NotificationFormBloc extends Bloc<NotificationFormEvent, NotificationFormS
           emit(SubmittableNotificationForm(value: newValue));
         }
 
+      }
       });
       on <ChangedNotificationDescription> ((event, emit) async {
+      if (state is NotificationFormInitialized) {
+        final currentState = state as NotificationFormInitialized;
         newValue = currentState.value!.copyWith(description: event.value);
         emit(SubmittableNotificationForm(value: newValue));
 
+      }
       });
       on <ChangedNotificationRead> ((event, emit) async {
+      if (state is NotificationFormInitialized) {
+        final currentState = state as NotificationFormInitialized;
         newValue = currentState.value!.copyWith(read: event.value);
         emit(SubmittableNotificationForm(value: newValue));
 
+      }
       });
       on <ChangedNotificationReporterId> ((event, emit) async {
+      if (state is NotificationFormInitialized) {
+        final currentState = state as NotificationFormInitialized;
         newValue = currentState.value!.copyWith(reporterId: event.value);
         emit(SubmittableNotificationForm(value: newValue));
 
+      }
       });
       on <ChangedNotificationAssigneeId> ((event, emit) async {
+      if (state is NotificationFormInitialized) {
+        final currentState = state as NotificationFormInitialized;
         newValue = currentState.value!.copyWith(assigneeId: event.value);
         emit(SubmittableNotificationForm(value: newValue));
 
+      }
       });
       on <ChangedNotificationStatus> ((event, emit) async {
+      if (state is NotificationFormInitialized) {
+        final currentState = state as NotificationFormInitialized;
         newValue = currentState.value!.copyWith(status: event.value);
         emit(SubmittableNotificationForm(value: newValue));
 
+      }
       });
-    }
   }
 
 

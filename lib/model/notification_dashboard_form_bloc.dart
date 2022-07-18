@@ -46,11 +46,7 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
   final FormAction? formAction;
   final String? appId;
 
-  NotificationDashboardFormBloc(this.appId, { this.formAction }): super(NotificationDashboardFormUninitialized());
-  @override
-  Stream<NotificationDashboardFormState> mapEventToState(NotificationDashboardFormEvent event) async* {
-    final currentState = state;
-    if (currentState is NotificationDashboardFormUninitialized) {
+  NotificationDashboardFormBloc(this.appId, { this.formAction }): super(NotificationDashboardFormUninitialized()) {
       on <InitialiseNewNotificationDashboardFormEvent> ((event, emit) {
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: NotificationDashboardModel(
                                                documentID: "",
@@ -62,17 +58,19 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
       });
 
 
-      if (event is InitialiseNotificationDashboardFormEvent) {
+      on <InitialiseNotificationDashboardFormEvent> ((event, emit) async {
         // Need to re-retrieve the document from the repository so that I get all associated types
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: await notificationDashboardRepository(appId: appId)!.get(event.value!.documentID));
         emit(loaded);
-      } else if (event is InitialiseNotificationDashboardFormNoLoadEvent) {
+      });
+      on <InitialiseNotificationDashboardFormNoLoadEvent> ((event, emit) async {
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is NotificationDashboardFormInitialized) {
+      });
       NotificationDashboardModel? newValue = null;
       on <ChangedNotificationDashboardDocumentID> ((event, emit) async {
+      if (state is NotificationDashboardFormInitialized) {
+        final currentState = state as NotificationDashboardFormInitialized;
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
           emit(await _isDocumentIDValid(event.value, newValue!));
@@ -80,23 +78,32 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
           emit(SubmittableNotificationDashboardForm(value: newValue));
         }
 
+      }
       });
       on <ChangedNotificationDashboardAppId> ((event, emit) async {
+      if (state is NotificationDashboardFormInitialized) {
+        final currentState = state as NotificationDashboardFormInitialized;
         newValue = currentState.value!.copyWith(appId: event.value);
         emit(SubmittableNotificationDashboardForm(value: newValue));
 
+      }
       });
       on <ChangedNotificationDashboardDescription> ((event, emit) async {
+      if (state is NotificationDashboardFormInitialized) {
+        final currentState = state as NotificationDashboardFormInitialized;
         newValue = currentState.value!.copyWith(description: event.value);
         emit(SubmittableNotificationDashboardForm(value: newValue));
 
+      }
       });
       on <ChangedNotificationDashboardConditions> ((event, emit) async {
+      if (state is NotificationDashboardFormInitialized) {
+        final currentState = state as NotificationDashboardFormInitialized;
         newValue = currentState.value!.copyWith(conditions: event.value);
         emit(SubmittableNotificationDashboardForm(value: newValue));
 
+      }
       });
-    }
   }
 
 

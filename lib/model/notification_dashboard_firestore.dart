@@ -37,8 +37,8 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class NotificationDashboardFirestore implements NotificationDashboardRepository {
   @override
-  NotificationDashboardEntity? fromMap(Object? o) {
-    return NotificationDashboardEntity.fromMap(o);
+  NotificationDashboardEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return NotificationDashboardEntity.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<NotificationDashboardEntity> addEntity(String documentID, NotificationDashboardEntity value) {

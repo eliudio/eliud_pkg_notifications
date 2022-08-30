@@ -121,8 +121,8 @@ class NotificationCache implements NotificationRepository {
   }
 
   @override
-  NotificationEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  NotificationEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {

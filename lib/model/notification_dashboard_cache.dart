@@ -121,8 +121,8 @@ class NotificationDashboardCache implements NotificationDashboardRepository {
   }
 
   @override
-  NotificationDashboardEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  NotificationDashboardEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {

@@ -141,7 +141,7 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
                     if (selectedValue == 1) {
                       widget.selected(value.documentID);
                     } else if (selectedValue == 2) {
-                      widget.editorConstructor.updateComponent(widget.app, context, value, (_) {});
+                      widget.editorConstructor.updateComponent(widget.app, context, value, (_, __) {});
                     }
                   }),
               title: value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.timestamp!.toString())) : Container(),
@@ -184,7 +184,7 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
             child: iconButton(widget.app, 
           context,
           onPressed: () {
-            widget.editorConstructor.createNewComponent(widget.app, context, (_) {});
+            widget.editorConstructor.createNewComponent(widget.app, context, (_, __) {});
           },
           icon: Icon(Icons.add),
         ))

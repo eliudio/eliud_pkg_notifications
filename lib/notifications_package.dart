@@ -14,6 +14,10 @@ import 'package:eliud_pkg_notifications/platform/platform.dart';
 import 'model/component_registry.dart';
 import 'model/notification_model.dart';
 
+import 'package:eliud_pkg_notifications/notifications_package_stub.dart'
+if (dart.library.io) 'notifications_mobile_package.dart'
+if (dart.library.html) 'notifications_web_package.dart';
+
 abstract class NotificationsPackage extends Package {
   NotificationsPackage() : super('eliud_pkg_notifications');
   
@@ -100,4 +104,6 @@ abstract class NotificationsPackage extends Package {
 
   @override
   List<MemberCollectionInfo> getMemberCollectionInfo() => AbstractRepositorySingleton.collections;
+
+  static NotificationsPackage instance() => getNotificationsPackage();
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/blocs/access/access_event.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/core_package.dart';
+import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/package/package.dart';
 import 'package:eliud_pkg_notifications/wizards/notification_dashboard_dialog_wizard.dart';
@@ -106,4 +108,11 @@ abstract class NotificationsPackage extends Package {
   List<MemberCollectionInfo> getMemberCollectionInfo() => AbstractRepositorySingleton.collections;
 
   static NotificationsPackage instance() => getNotificationsPackage();
+
+  /*
+   * Register depending packages
+   */
+  void registerDependencies(Eliud eliud) {
+    eliud.registerPackage(CorePackage.instance());
+  }
 }

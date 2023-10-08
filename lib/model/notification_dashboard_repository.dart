@@ -36,6 +36,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 
 typedef NotificationDashboardModelTrigger(List<NotificationDashboardModel?> list);
 typedef NotificationDashboardChanged(NotificationDashboardModel? value);
+typedef NotificationDashboardErrorHandler(o, e);
 
 abstract class NotificationDashboardRepository extends RepositoryBase<NotificationDashboardModel, NotificationDashboardEntity> {
   Future<NotificationDashboardEntity> addEntity(String documentID, NotificationDashboardEntity value);
@@ -52,7 +53,7 @@ abstract class NotificationDashboardRepository extends RepositoryBase<Notificati
 
   StreamSubscription<List<NotificationDashboardModel?>> listen(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
   StreamSubscription<List<NotificationDashboardModel?>> listenWithDetails(NotificationDashboardModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<NotificationDashboardModel?> listenTo(String documentId, NotificationDashboardChanged changed);
+  StreamSubscription<NotificationDashboardModel?> listenTo(String documentId, NotificationDashboardChanged changed, {NotificationDashboardErrorHandler? errorHandler});
   void flush();
   
   String? timeStampToString(dynamic timeStamp);

@@ -36,6 +36,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 
 typedef NotificationModelTrigger(List<NotificationModel?> list);
 typedef NotificationChanged(NotificationModel? value);
+typedef NotificationErrorHandler(o, e);
 
 abstract class NotificationRepository extends RepositoryBase<NotificationModel, NotificationEntity> {
   Future<NotificationEntity> addEntity(String documentID, NotificationEntity value);
@@ -52,7 +53,7 @@ abstract class NotificationRepository extends RepositoryBase<NotificationModel, 
 
   StreamSubscription<List<NotificationModel?>> listen(NotificationModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
   StreamSubscription<List<NotificationModel?>> listenWithDetails(NotificationModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<NotificationModel?> listenTo(String documentId, NotificationChanged changed);
+  StreamSubscription<NotificationModel?> listenTo(String documentId, NotificationChanged changed, {NotificationErrorHandler? errorHandler});
   void flush();
   
   String? timeStampToString(dynamic timeStamp);

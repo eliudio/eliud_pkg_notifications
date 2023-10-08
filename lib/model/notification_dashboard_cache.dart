@@ -140,13 +140,13 @@ class NotificationDashboardCache implements NotificationDashboardRepository {
   }
 
   @override
-  StreamSubscription<NotificationDashboardModel?> listenTo(String documentId, NotificationDashboardChanged changed) {
+  StreamSubscription<NotificationDashboardModel?> listenTo(String documentId, NotificationDashboardChanged changed, {NotificationDashboardErrorHandler? errorHandler}) {
     return reference.listenTo(documentId, ((value) {
       if (value != null) {
         fullCache[value.documentID] = value;
       }
       changed(value);
-    }));
+    }), errorHandler: errorHandler);
   }
 
   static Future<NotificationDashboardModel> refreshRelations(NotificationDashboardModel model) async {

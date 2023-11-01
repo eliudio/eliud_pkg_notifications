@@ -13,29 +13,14 @@
 
 */
 
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_notifications/model/repository_export.dart';
 import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
-import 'package:eliud_pkg_notifications/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_notifications/model/notification_dashboard_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 
 
@@ -50,9 +35,7 @@ class NotificationDashboardModel implements ModelBase, WithAppId {
   String? description;
   StorageConditionsModel? conditions;
 
-  NotificationDashboardModel({required this.documentID, required this.appId, this.description, this.conditions, })  {
-    assert(documentID != null);
-  }
+  NotificationDashboardModel({required this.documentID, required this.appId, this.description, this.conditions, });
 
   NotificationDashboardModel copyWith({String? documentID, String? appId, String? description, StorageConditionsModel? conditions, }) {
     return NotificationDashboardModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, conditions: conditions ?? this.conditions, );

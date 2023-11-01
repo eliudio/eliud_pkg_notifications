@@ -15,16 +15,20 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
+import 'notification_model.dart';
+
+typedef List<NotificationModel?> FilterNotificationModels(List<NotificationModel?> values);
+
 
 
 class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListState> {
+  final FilterNotificationModels? filter;
   final NotificationRepository _notificationRepository;
   StreamSubscription? _notificationsListSubscription;
   EliudQuery? eliudQuery;
@@ -35,9 +39,8 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
   final bool? detailed;
   final int notificationLimit;
 
-  NotificationListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationRepository notificationRepository, this.notificationLimit = 5})
-      : assert(notificationRepository != null),
-        _notificationRepository = notificationRepository,
+  NotificationListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationRepository notificationRepository, this.notificationLimit = 5})
+      : _notificationRepository = notificationRepository,
         super(NotificationListLoading()) {
     on <LoadNotificationList> ((event, emit) {
       if ((detailed == null) || (!detailed!)) {
@@ -78,11 +81,19 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
     });
   }
 
+  List<NotificationModel?> _filter(List<NotificationModel?> original) {
+    if (filter != null) {
+      return filter!(original);
+    } else {
+      return original;
+    }
+  }
+
   Future<void> _mapLoadNotificationListToState() async {
     int amountNow =  (state is NotificationListLoaded) ? (state as NotificationListLoaded).values!.length : 0;
     _notificationsListSubscription?.cancel();
     _notificationsListSubscription = _notificationRepository.listen(
-          (list) => add(NotificationListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+          (list) => add(NotificationListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
@@ -94,7 +105,7 @@ class NotificationListBloc extends Bloc<NotificationListEvent, NotificationListS
     int amountNow =  (state is NotificationListLoaded) ? (state as NotificationListLoaded).values!.length : 0;
     _notificationsListSubscription?.cancel();
     _notificationsListSubscription = _notificationRepository.listenWithDetails(
-            (list) => add(NotificationListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+            (list) => add(NotificationListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,

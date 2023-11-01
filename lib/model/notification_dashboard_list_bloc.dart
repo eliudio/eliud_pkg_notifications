@@ -15,16 +15,20 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
+import 'notification_dashboard_model.dart';
+
+typedef List<NotificationDashboardModel?> FilterNotificationDashboardModels(List<NotificationDashboardModel?> values);
+
 
 
 class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent, NotificationDashboardListState> {
+  final FilterNotificationDashboardModels? filter;
   final NotificationDashboardRepository _notificationDashboardRepository;
   StreamSubscription? _notificationDashboardsListSubscription;
   EliudQuery? eliudQuery;
@@ -35,9 +39,8 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
   final bool? detailed;
   final int notificationDashboardLimit;
 
-  NotificationDashboardListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationDashboardRepository notificationDashboardRepository, this.notificationDashboardLimit = 5})
-      : assert(notificationDashboardRepository != null),
-        _notificationDashboardRepository = notificationDashboardRepository,
+  NotificationDashboardListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required NotificationDashboardRepository notificationDashboardRepository, this.notificationDashboardLimit = 5})
+      : _notificationDashboardRepository = notificationDashboardRepository,
         super(NotificationDashboardListLoading()) {
     on <LoadNotificationDashboardList> ((event, emit) {
       if ((detailed == null) || (!detailed!)) {
@@ -78,11 +81,19 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
     });
   }
 
+  List<NotificationDashboardModel?> _filter(List<NotificationDashboardModel?> original) {
+    if (filter != null) {
+      return filter!(original);
+    } else {
+      return original;
+    }
+  }
+
   Future<void> _mapLoadNotificationDashboardListToState() async {
     int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values!.length : 0;
     _notificationDashboardsListSubscription?.cancel();
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listen(
-          (list) => add(NotificationDashboardListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+          (list) => add(NotificationDashboardListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
@@ -94,7 +105,7 @@ class NotificationDashboardListBloc extends Bloc<NotificationDashboardListEvent,
     int amountNow =  (state is NotificationDashboardListLoaded) ? (state as NotificationDashboardListLoaded).values!.length : 0;
     _notificationDashboardsListSubscription?.cancel();
     _notificationDashboardsListSubscription = _notificationDashboardRepository.listenWithDetails(
-            (list) => add(NotificationDashboardListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+            (list) => add(NotificationDashboardListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,

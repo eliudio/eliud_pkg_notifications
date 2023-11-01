@@ -16,31 +16,16 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:eliud_core/tools/firestore/firestore_tools.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:eliud_core/tools/enums.dart';
-import 'package:eliud_core/tools/common_tools.dart';
 
-import 'package:eliud_core/model/rgb_model.dart';
 
-import 'package:eliud_core/tools/string_validator.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_notifications/model/repository_export.dart';
-import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_notifications/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
-import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 import 'package:eliud_pkg_notifications/model/notification_dashboard_form_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_form_state.dart';
-import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
 
 class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent, NotificationDashboardFormState> {
   final FormAction? formAction;
@@ -67,7 +52,7 @@ class NotificationDashboardFormBloc extends Bloc<NotificationDashboardFormEvent,
         NotificationDashboardFormLoaded loaded = NotificationDashboardFormLoaded(value: event.value);
         emit(loaded);
       });
-      NotificationDashboardModel? newValue = null;
+      NotificationDashboardModel? newValue;
       on <ChangedNotificationDashboardDocumentID> ((event, emit) async {
       if (state is NotificationDashboardFormInitialized) {
         final currentState = state as NotificationDashboardFormInitialized;

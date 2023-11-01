@@ -22,7 +22,6 @@ import 'abstract_repository_singleton.dart';
 import '../extensions/notification_dashboard_component.dart';
 import '../editors/notification_dashboard_component_editor.dart';
 import 'notification_dashboard_component_selector.dart';
-import 'package:eliud_pkg_notifications/model/internal_component.dart';
 
 
 

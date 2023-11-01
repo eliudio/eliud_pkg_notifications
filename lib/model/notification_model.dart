@@ -13,29 +13,13 @@
 
 */
 
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_notifications/model/repository_export.dart';
-import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
-import 'package:eliud_pkg_notifications/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_notifications/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_notifications/model/notification_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 enum NotificationStatus {
   Closed, Open, Unknown
@@ -66,9 +50,7 @@ class NotificationModel implements ModelBase, WithAppId {
   String? assigneeId;
   NotificationStatus? status;
 
-  NotificationModel({required this.documentID, this.timestamp, required this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, })  {
-    assert(documentID != null);
-  }
+  NotificationModel({required this.documentID, this.timestamp, required this.appId, this.description, this.read, this.reporterId, this.assigneeId, this.status, });
 
   NotificationModel copyWith({String? documentID, DateTime? timestamp, String? appId, String? description, bool? read, String? reporterId, String? assigneeId, NotificationStatus? status, }) {
     return NotificationModel(documentID: documentID ?? this.documentID, timestamp: timestamp ?? this.timestamp, appId: appId ?? this.appId, description: description ?? this.description, read: read ?? this.read, reporterId: reporterId ?? this.reporterId, assigneeId: assigneeId ?? this.assigneeId, status: status ?? this.status, );

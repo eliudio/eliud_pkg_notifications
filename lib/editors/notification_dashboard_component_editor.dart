@@ -45,7 +45,7 @@ class NotificationDashboardComponentEditorConstructor
           description: 'New notification dashboard',
           conditions: StorageConditionsModel(
               privilegeLevelRequired:
-                  PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),
+                  PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple),
         ),
         feedback);
   }
@@ -58,7 +58,7 @@ class NotificationDashboardComponentEditorConstructor
     if (notificationDashboard != null) {
       _openIt(app, context, false, notificationDashboard, feedback);
     } else {
-      openErrorDialog(app, context, app.documentID + '/_error',
+      openErrorDialog(app, context, '${app.documentID}/_error',
           title: 'Error',
           errorMessage: 'Cannot find notification dashboard with id $id');
     }
@@ -69,7 +69,7 @@ class NotificationDashboardComponentEditorConstructor
     openComplexDialog(
       app,
       context,
-      app.documentID + '/notificationdashboard',
+      '${app.documentID}/notificationdashboard',
       title: create
           ? 'Create Notification Dashboard'
           : 'Update Notification Dashboard',
@@ -89,9 +89,8 @@ class NotificationDashboardComponentEditorConstructor
   }
 }
 
-class NotificationDashboardBloc
-    extends EditorBaseBloc<NotificationDashboardModel, NotificationDashboardEntity> {
-
+class NotificationDashboardBloc extends EditorBaseBloc<
+    NotificationDashboardModel, NotificationDashboardEntity> {
   NotificationDashboardBloc(String appId, EditorFeedback feedback)
       : super(appId, notificationDashboardRepository(appId: appId)!, feedback);
 
@@ -115,9 +114,9 @@ class NotificationDashboardComponentEditor extends StatefulWidget {
   final AppModel app;
 
   const NotificationDashboardComponentEditor({
-    Key? key,
+    super.key,
     required this.app,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() =>
@@ -131,9 +130,11 @@ class _NotificationDashboardComponentEditorState
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (aContext, accessState) {
       if (accessState is AccessDetermined) {
-        return BlocBuilder<NotificationDashboardBloc, EditorBaseState<NotificationDashboardModel>>(
+        return BlocBuilder<NotificationDashboardBloc,
+                EditorBaseState<NotificationDashboardModel>>(
             builder: (ppContext, notificationDashboardState) {
-          if (notificationDashboardState is EditorBaseInitialised<NotificationDashboardModel>) {
+          if (notificationDashboardState
+              is EditorBaseInitialised<NotificationDashboardModel>) {
             return ListView(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
@@ -143,7 +144,8 @@ class _NotificationDashboardComponentEditorState
                     title: 'NotificationDashboard',
                     okAction: () async {
                       await BlocProvider.of<NotificationDashboardBloc>(context)
-                          .save(EditorBaseApplyChanges<NotificationDashboardModel>(
+                          .save(EditorBaseApplyChanges<
+                                  NotificationDashboardModel>(
                               model: notificationDashboardState.model));
                       return true;
                     },
@@ -165,9 +167,11 @@ class _NotificationDashboardComponentEditorState
                             title: dialogField(
                               widget.app,
                               context,
-                              initialValue: notificationDashboardState.model.description,
+                              initialValue:
+                                  notificationDashboardState.model.description,
                               valueChanged: (value) {
-                                notificationDashboardState.model.description = value;
+                                notificationDashboardState.model.description =
+                                    value;
                               },
                               maxLines: 1,
                               decoration: const InputDecoration(
@@ -185,7 +189,8 @@ class _NotificationDashboardComponentEditorState
                             leading: Icon(Icons.security),
                             title: ConditionsSimpleWidget(
                               app: widget.app,
-                              value: notificationDashboardState.model.conditions!,
+                              value:
+                                  notificationDashboardState.model.conditions!,
                             )),
                       ]),
                 ]);
@@ -198,5 +203,4 @@ class _NotificationDashboardComponentEditorState
       }
     });
   }
-
 }

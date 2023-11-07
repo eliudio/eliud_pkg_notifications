@@ -30,21 +30,24 @@ class NotificationDashboardListLoaded extends NotificationDashboardListState {
   final List<NotificationDashboardModel?>? values;
   final bool? mightHaveMore;
 
-  const NotificationDashboardListLoaded({this.mightHaveMore, this.values = const []});
+  const NotificationDashboardListLoaded(
+      {this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object?> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [values, mightHaveMore];
 
   @override
   String toString() => 'NotificationDashboardListLoaded { values: $values }';
 
   @override
-  bool operator ==(Object other) => 
-          other is NotificationDashboardListLoaded &&
-              runtimeType == other.runtimeType &&
-              ListEquality().equals(values, other.values) &&
-              mightHaveMore == other.mightHaveMore;
+  bool operator ==(Object other) =>
+      other is NotificationDashboardListLoaded &&
+      runtimeType == other.runtimeType &&
+      ListEquality().equals(values, other.values) &&
+      mightHaveMore == other.mightHaveMore;
+
+  @override
+  int get hashCode => values.hashCode ^ mightHaveMore.hashCode;
 }
 
 class NotificationDashboardNotLoaded extends NotificationDashboardListState {}
-

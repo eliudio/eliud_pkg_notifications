@@ -23,18 +23,31 @@ import '../model/notification_dashboard_firestore.dart';
 import '../model/notification_dashboard_repository.dart';
 import '../model/notification_dashboard_cache.dart';
 
-
 class RepositorySingleton extends AbstractRepositorySingleton {
-    var _notificationRepository = HashMap<String, NotificationRepository>();
-    var _notificationDashboardRepository = HashMap<String, NotificationDashboardRepository>();
+  final _notificationRepository = HashMap<String, NotificationRepository>();
+  final _notificationDashboardRepository =
+      HashMap<String, NotificationDashboardRepository>();
 
-    NotificationRepository? notificationRepository(String? appId) {
-      if ((appId != null) && (_notificationRepository[appId] == null)) _notificationRepository[appId] = NotificationCache(NotificationFirestore(() => appRepository()!.getSubCollection(appId, 'notification'), appId));
-      return _notificationRepository[appId];
+  @override
+  NotificationRepository? notificationRepository(String? appId) {
+    if ((appId != null) && (_notificationRepository[appId] == null)) {
+      _notificationRepository[appId] = NotificationCache(NotificationFirestore(
+          () => appRepository()!.getSubCollection(appId, 'notification'),
+          appId));
     }
-    NotificationDashboardRepository? notificationDashboardRepository(String? appId) {
-      if ((appId != null) && (_notificationDashboardRepository[appId] == null)) _notificationDashboardRepository[appId] = NotificationDashboardCache(NotificationDashboardFirestore(() => appRepository()!.getSubCollection(appId, 'notificationdashboard'), appId));
-      return _notificationDashboardRepository[appId];
-    }
+    return _notificationRepository[appId];
+  }
 
+  @override
+  NotificationDashboardRepository? notificationDashboardRepository(
+      String? appId) {
+    if ((appId != null) && (_notificationDashboardRepository[appId] == null)) {
+      _notificationDashboardRepository[appId] = NotificationDashboardCache(
+          NotificationDashboardFirestore(
+              () => appRepository()!
+                  .getSubCollection(appId, 'notificationdashboard'),
+              appId));
+    }
+    return _notificationDashboardRepository[appId];
+  }
 }

@@ -17,7 +17,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:eliud_pkg_notifications/model/model_export.dart';
 
-
 @immutable
 abstract class NotificationFormEvent extends Equatable {
   const NotificationFormEvent();
@@ -26,15 +25,13 @@ abstract class NotificationFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewNotificationFormEvent extends NotificationFormEvent {
-}
-
+class InitialiseNewNotificationFormEvent extends NotificationFormEvent {}
 
 class InitialiseNotificationFormEvent extends NotificationFormEvent {
   final NotificationModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseNotificationFormEvent({this.value});
 }
@@ -43,7 +40,7 @@ class InitialiseNotificationFormNoLoadEvent extends NotificationFormEvent {
   final NotificationModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseNotificationFormNoLoadEvent({this.value});
 }
@@ -54,7 +51,7 @@ class ChangedNotificationDocumentID extends NotificationFormEvent {
   ChangedNotificationDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationDocumentID{ value: $value }';
@@ -66,7 +63,7 @@ class ChangedNotificationTimestamp extends NotificationFormEvent {
   ChangedNotificationTimestamp({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationTimestamp{ value: $value }';
@@ -78,7 +75,7 @@ class ChangedNotificationAppId extends NotificationFormEvent {
   ChangedNotificationAppId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationAppId{ value: $value }';
@@ -90,7 +87,7 @@ class ChangedNotificationDescription extends NotificationFormEvent {
   ChangedNotificationDescription({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationDescription{ value: $value }';
@@ -102,7 +99,7 @@ class ChangedNotificationRead extends NotificationFormEvent {
   ChangedNotificationRead({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationRead{ value: $value }';
@@ -114,7 +111,7 @@ class ChangedNotificationReporterId extends NotificationFormEvent {
   ChangedNotificationReporterId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationReporterId{ value: $value }';
@@ -126,7 +123,7 @@ class ChangedNotificationAssigneeId extends NotificationFormEvent {
   ChangedNotificationAssigneeId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationAssigneeId{ value: $value }';
@@ -138,9 +135,8 @@ class ChangedNotificationStatus extends NotificationFormEvent {
   ChangedNotificationStatus({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationStatus{ value: $value }';
 }
-

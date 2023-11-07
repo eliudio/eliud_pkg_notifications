@@ -30,10 +30,10 @@ class NewPage extends NotificationDashboardListEvent {}
 class AddNotificationDashboardList extends NotificationDashboardListEvent {
   final NotificationDashboardModel? value;
 
-  const AddNotificationDashboardList({ this.value });
+  const AddNotificationDashboardList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddNotificationDashboardList{ value: $value }';
@@ -42,10 +42,10 @@ class AddNotificationDashboardList extends NotificationDashboardListEvent {
 class UpdateNotificationDashboardList extends NotificationDashboardListEvent {
   final NotificationDashboardModel? value;
 
-  const UpdateNotificationDashboardList({ this.value });
+  const UpdateNotificationDashboardList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateNotificationDashboardList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateNotificationDashboardList extends NotificationDashboardListEvent {
 class DeleteNotificationDashboardList extends NotificationDashboardListEvent {
   final NotificationDashboardModel? value;
 
-  const DeleteNotificationDashboardList({ this.value });
+  const DeleteNotificationDashboardList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteNotificationDashboardList{ value: $value }';
@@ -67,24 +67,24 @@ class NotificationDashboardListUpdated extends NotificationDashboardListEvent {
   final List<NotificationDashboardModel?>? value;
   final bool? mightHaveMore;
 
-  const NotificationDashboardListUpdated({ this.value, this.mightHaveMore });
+  const NotificationDashboardListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'NotificationDashboardListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'NotificationDashboardListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class NotificationDashboardChangeQuery extends NotificationDashboardListEvent {
   final EliudQuery? newQuery;
 
-  const NotificationDashboardChangeQuery({ required this.newQuery });
+  const NotificationDashboardChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'NotificationDashboardChangeQuery{ value: $newQuery }';
 }
-

@@ -23,46 +23,75 @@ class NotificationDashboardEntity implements EntityBase {
   final String? description;
   final StorageConditionsEntity? conditions;
 
-  NotificationDashboardEntity({required this.appId, this.description, this.conditions, });
+  NotificationDashboardEntity({
+    required this.appId,
+    this.description,
+    this.conditions,
+  });
 
-  NotificationDashboardEntity copyWith({String? documentID, String? appId, String? description, StorageConditionsEntity? conditions, }) {
-    return NotificationDashboardEntity(appId : appId ?? this.appId, description : description ?? this.description, conditions : conditions ?? this.conditions, );
+  NotificationDashboardEntity copyWith({
+    String? documentID,
+    String? appId,
+    String? description,
+    StorageConditionsEntity? conditions,
+  }) {
+    return NotificationDashboardEntity(
+      appId: appId ?? this.appId,
+      description: description ?? this.description,
+      conditions: conditions ?? this.conditions,
+    );
   }
-  List<Object?> get props => [appId, description, conditions, ];
+
+  List<Object?> get props => [
+        appId,
+        description,
+        conditions,
+      ];
 
   @override
   String toString() {
     return 'NotificationDashboardEntity{appId: $appId, description: $description, conditions: $conditions}';
   }
 
-  static NotificationDashboardEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+  static NotificationDashboardEntity? fromMap(Object? o,
+      {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
-    var conditionsFromMap;
-    conditionsFromMap = map['conditions'];
-    if (conditionsFromMap != null)
-      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap, newDocumentIds: newDocumentIds);
+    var conditionsFromMap = map['conditions'];
+    if (conditionsFromMap != null) {
+      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap,
+          newDocumentIds: newDocumentIds);
+    }
 
     return NotificationDashboardEntity(
-      appId: map['appId'], 
-      description: map['description'], 
-      conditions: conditionsFromMap, 
+      appId: map['appId'],
+      description: map['description'],
+      conditions: conditionsFromMap,
     );
   }
 
+  @override
   Map<String, Object?> toDocument() {
-    final Map<String, dynamic>? conditionsMap = conditions != null 
-        ? conditions!.toDocument()
-        : null;
+    final Map<String, dynamic>? conditionsMap =
+        conditions != null ? conditions!.toDocument() : null;
 
     Map<String, Object?> theDocument = HashMap();
-    if (appId != null) theDocument["appId"] = appId;
-      else theDocument["appId"] = null;
-    if (description != null) theDocument["description"] = description;
-      else theDocument["description"] = null;
-    if (conditions != null) theDocument["conditions"] = conditionsMap;
-      else theDocument["conditions"] = null;
+    if (appId != null) {
+      theDocument["appId"] = appId;
+    } else {
+      theDocument["appId"] = null;
+    }
+    if (description != null) {
+      theDocument["description"] = description;
+    } else {
+      theDocument["description"] = null;
+    }
+    if (conditions != null) {
+      theDocument["conditions"] = conditionsMap;
+    } else {
+      theDocument["conditions"] = null;
+    }
     return theDocument;
   }
 
@@ -72,7 +101,8 @@ class NotificationDashboardEntity implements EntityBase {
     return newEntity;
   }
 
-  static NotificationDashboardEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
+  static NotificationDashboardEntity? fromJsonString(String json,
+      {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
@@ -81,9 +111,9 @@ class NotificationDashboardEntity implements EntityBase {
     return jsonEncode(toDocument());
   }
 
-  Future<Map<String, Object?>> enrichedDocument(Map<String, Object?> theDocument) async {
+  @override
+  Future<Map<String, Object?>> enrichedDocument(
+      Map<String, Object?> theDocument) async {
     return theDocument;
   }
-
 }
-

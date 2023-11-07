@@ -26,7 +26,8 @@ abstract class NotificationDashboardFormState extends Equatable {
 }
 
 // Startup: menu has not been initialised yet and so we should show a "loading indicator" or something
-class NotificationDashboardFormUninitialized extends NotificationDashboardFormState {
+class NotificationDashboardFormUninitialized
+    extends NotificationDashboardFormState {
   @override
   List<Object?> get props => [];
 
@@ -37,23 +38,25 @@ class NotificationDashboardFormUninitialized extends NotificationDashboardFormSt
 }
 
 // NotificationDashboardModel has been initialised and hence NotificationDashboardModel is available
-class NotificationDashboardFormInitialized extends NotificationDashboardFormState {
+class NotificationDashboardFormInitialized
+    extends NotificationDashboardFormState {
   final NotificationDashboardModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
-  const NotificationDashboardFormInitialized({ this.value });
+  const NotificationDashboardFormInitialized({this.value});
 }
 
 // Menu has been initialised and hence a menu is available
-abstract class NotificationDashboardFormError extends NotificationDashboardFormInitialized {
+abstract class NotificationDashboardFormError
+    extends NotificationDashboardFormInitialized {
   final String? message;
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
-  const NotificationDashboardFormError({this.message, NotificationDashboardModel? value }) : super(value: value);
+  const NotificationDashboardFormError({this.message, super.value});
 
   @override
   String toString() {
@@ -63,11 +66,13 @@ abstract class NotificationDashboardFormError extends NotificationDashboardFormI
     }''';
   }
 }
-class DocumentIDNotificationDashboardFormError extends NotificationDashboardFormError { 
-  const DocumentIDNotificationDashboardFormError({ String? message, NotificationDashboardModel? value }): super(message: message, value: value);
+
+class DocumentIDNotificationDashboardFormError
+    extends NotificationDashboardFormError {
+  const DocumentIDNotificationDashboardFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -78,12 +83,12 @@ class DocumentIDNotificationDashboardFormError extends NotificationDashboardForm
   }
 }
 
-
-class AppIdNotificationDashboardFormError extends NotificationDashboardFormError { 
-  const AppIdNotificationDashboardFormError({ String? message, NotificationDashboardModel? value }): super(message: message, value: value);
+class AppIdNotificationDashboardFormError
+    extends NotificationDashboardFormError {
+  const AppIdNotificationDashboardFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -94,12 +99,12 @@ class AppIdNotificationDashboardFormError extends NotificationDashboardFormError
   }
 }
 
-
-class DescriptionNotificationDashboardFormError extends NotificationDashboardFormError { 
-  const DescriptionNotificationDashboardFormError({ String? message, NotificationDashboardModel? value }): super(message: message, value: value);
+class DescriptionNotificationDashboardFormError
+    extends NotificationDashboardFormError {
+  const DescriptionNotificationDashboardFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -110,12 +115,12 @@ class DescriptionNotificationDashboardFormError extends NotificationDashboardFor
   }
 }
 
-
-class ConditionsNotificationDashboardFormError extends NotificationDashboardFormError { 
-  const ConditionsNotificationDashboardFormError({ String? message, NotificationDashboardModel? value }): super(message: message, value: value);
+class ConditionsNotificationDashboardFormError
+    extends NotificationDashboardFormError {
+  const ConditionsNotificationDashboardFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -126,12 +131,12 @@ class ConditionsNotificationDashboardFormError extends NotificationDashboardForm
   }
 }
 
-
-class NotificationDashboardFormLoaded extends NotificationDashboardFormInitialized { 
-  const NotificationDashboardFormLoaded({ NotificationDashboardModel? value }): super(value: value);
+class NotificationDashboardFormLoaded
+    extends NotificationDashboardFormInitialized {
+  const NotificationDashboardFormLoaded({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -141,12 +146,12 @@ class NotificationDashboardFormLoaded extends NotificationDashboardFormInitializ
   }
 }
 
-
-class SubmittableNotificationDashboardForm extends NotificationDashboardFormInitialized { 
-  const SubmittableNotificationDashboardForm({ NotificationDashboardModel? value }): super(value: value);
+class SubmittableNotificationDashboardForm
+    extends NotificationDashboardFormInitialized {
+  const SubmittableNotificationDashboardForm({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -155,5 +160,3 @@ class SubmittableNotificationDashboardForm extends NotificationDashboardFormInit
     }''';
   }
 }
-
-

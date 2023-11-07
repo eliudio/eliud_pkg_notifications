@@ -20,42 +20,48 @@ import '../notifications_package.dart';
 
 class NotificationDashboardComponentConstructorDefault
     implements ComponentConstructor {
-  Widget createNew({Key? key, required AppModel app, required String id, Map<String, dynamic>? parameters}) {
+  @override
+  Widget createNew(
+      {Key? key,
+      required AppModel app,
+      required String id,
+      Map<String, dynamic>? parameters}) {
     return NotificationDashboardComponent(key: key, app: app, id: id);
   }
 
   @override
-  Future<dynamic> getModel({required AppModel app, required String id}) async => await notificationDashboardRepository(appId: app.documentID)!
-        .get(id);
+  Future<dynamic> getModel({required AppModel app, required String id}) async =>
+      await notificationDashboardRepository(appId: app.documentID)!.get(id);
 }
 
 class NotificationDashboardComponent
     extends AbstractNotificationDashboardComponent {
-  NotificationDashboardComponent({Key? key, required AppModel app, required String id})
-      : super(key: key, app: app, notificationDashboardId: id);
+  NotificationDashboardComponent(
+      {super.key, required super.app, required String id})
+      : super(notificationDashboardId: id);
 
   @override
-  Widget yourWidget(
-      BuildContext context, NotificationDashboardModel? dashboardModel) {
+  Widget yourWidget(BuildContext context, NotificationDashboardModel? value) {
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (context, accessState) {
-          if (accessState is AccessDetermined) {
-            return BlocProvider<NotificationListBloc>(
-              create: (context) => NotificationListBloc(
-                eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
-                    app.documentID, accessState.getMember()!.documentID),
-                notificationRepository:
+      if (accessState is AccessDetermined) {
+        return BlocProvider<NotificationListBloc>(
+          create: (context) => NotificationListBloc(
+            eliudQuery: NotificationsPackage.getOpenNotificationsQuery(
+                app.documentID, accessState.getMember()!.documentID),
+            notificationRepository:
                 notificationRepository(appId: app.documentID)!,
-              )..add(LoadNotificationList()),
-              child: NotificationListWidget(app: app,
-                  readOnly: true,
-                  widgetProvider: widgetProvider,
-                  listBackground: BackgroundModel()),
-            );
-          } else {
-            return progressIndicator(app, context);
-          }
-        });
+          )..add(LoadNotificationList()),
+          child: NotificationListWidget(
+              app: app,
+              readOnly: true,
+              widgetProvider: widgetProvider,
+              listBackground: BackgroundModel()),
+        );
+      } else {
+        return progressIndicator(app, context);
+      }
+    });
   }
 
   Widget widgetProvider(NotificationModel? value) {
@@ -65,5 +71,4 @@ class NotificationDashboardComponent
       return Text("Value for notification model is null");
     }
   }
-
 }

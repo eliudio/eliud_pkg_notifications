@@ -24,13 +24,11 @@ abstract class NotificationComponentEvent extends Equatable {
 class FetchNotificationComponent extends NotificationComponentEvent {
   final String? id;
 
-  FetchNotificationComponent({ this.id });
+  FetchNotificationComponent({this.id});
 }
 
 class NotificationComponentUpdated extends NotificationComponentEvent {
   final NotificationModel value;
 
-  NotificationComponentUpdated({ required this.value });
+  NotificationComponentUpdated({required this.value});
 }
-
-

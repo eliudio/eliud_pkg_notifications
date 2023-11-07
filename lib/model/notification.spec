@@ -75,7 +75,7 @@
       "fieldName": "status",
       "fieldType": "enum",
       "enumName": "NotificationStatus",
-      "enumValues" : [ "Closed", "Open" ]
+      "enumValues" : [ "closed", "open" ]
     }
   ],
   "groups": [
@@ -94,7 +94,7 @@
  ],
   "listFields": {
     "title": "value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.timestamp!.toString())) : Container()",
-    "subTitle": "value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID)) : Container()"
+    "subTitle": "Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID))"
   },
   "depends": ["eliud_core"]
 }

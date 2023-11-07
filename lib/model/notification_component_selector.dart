@@ -34,20 +34,20 @@ import 'notification_model.dart';
 
 class NotificationComponentSelector extends ComponentSelector {
   @override
-  Widget createSelectWidget(BuildContext context, AppModel app, int privilegeLevel, double height,
-      SelectComponent selected, editorConstructor) {
+  Widget createSelectWidget(BuildContext context, AppModel app,
+      int privilegeLevel, double height, SelectComponent selected, editor) {
     var appId = app.documentID;
     return BlocProvider<NotificationListBloc>(
-          create: (context) => NotificationListBloc(
-          eliudQuery: getComponentSelectorQuery(0, app.documentID),
-          notificationRepository:
-              notificationRepository(appId: appId)!,
-          )..add(LoadNotificationList()),
-      child: SelectNotificationWidget(app: app,
+      create: (context) => NotificationListBloc(
+        eliudQuery: getComponentSelectorQuery(0, app.documentID),
+        notificationRepository: notificationRepository(appId: appId)!,
+      )..add(LoadNotificationList()),
+      child: SelectNotificationWidget(
+          app: app,
           height: height,
           containerPrivilege: privilegeLevel,
           selected: selected,
-          editorConstructor: editorConstructor),
+          editorConstructor: editor),
     );
   }
 }
@@ -60,21 +60,21 @@ class SelectNotificationWidget extends StatefulWidget {
   final ComponentEditorConstructor editorConstructor;
 
   const SelectNotificationWidget(
-      {Key? key,
+      {super.key,
       required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
-      required this.editorConstructor})
-      : super(key: key);
+      required this.editorConstructor});
 
   @override
-  _SelectNotificationWidgetState createState() {
+  State<SelectNotificationWidget> createState() {
     return _SelectNotificationWidgetState();
   }
 }
 
-class _SelectNotificationWidgetState extends State<SelectNotificationWidget> with TickerProviderStateMixin {
+class _SelectNotificationWidgetState extends State<SelectNotificationWidget>
+    with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];
   final int _initialPrivilege = 0;
@@ -82,9 +82,9 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
 
   @override
   void initState() {
-    var _privilegeASize = _privilegeItems.length;
+    var privilegeASize = _privilegeItems.length;
     _privilegeTabController =
-        TabController(vsync: this, length: _privilegeASize);
+        TabController(vsync: this, length: privilegeASize);
     _privilegeTabController!.addListener(_handlePrivilegeTabSelection);
     _privilegeTabController!.index = _initialPrivilege;
 
@@ -102,14 +102,16 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
   void _handlePrivilegeTabSelection() {
     if ((_privilegeTabController != null) &&
         (_privilegeTabController!.indexIsChanging)) {
-        _currentPrivilege = _privilegeTabController!.index;
-        BlocProvider.of<NotificationListBloc>(context).add(
-            NotificationChangeQuery(newQuery: getComponentSelectorQuery(_currentPrivilege, widget.app.documentID)));
+      _currentPrivilege = _privilegeTabController!.index;
+      BlocProvider.of<NotificationListBloc>(context).add(
+          NotificationChangeQuery(
+              newQuery: getComponentSelectorQuery(
+                  _currentPrivilege, widget.app.documentID)));
     }
   }
 
   Widget theList(BuildContext context, List<NotificationModel?> values) {
-    var app = widget.app; 
+    var app = widget.app;
     return ListView.builder(
         shrinkWrap: true,
         physics: ScrollPhysics(),
@@ -137,11 +139,24 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
                     if (selectedValue == 1) {
                       widget.selected(value.documentID);
                     } else if (selectedValue == 2) {
-                      widget.editorConstructor.updateComponent(widget.app, context, value, (_, __) {});
+                      widget.editorConstructor.updateComponent(
+                          widget.app, context, value, (_, __) {});
                     }
                   }),
-              title: value.timestamp!= null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.timestamp!.toString())) : Container(),
-              subtitle: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID)) : Container(),
+              title: value.timestamp != null
+                  ? Center(
+                      child: StyleRegistry.registry()
+                          .styleWithApp(app)
+                          .frontEndStyle()
+                          .textStyle()
+                          .text(app, context, value.timestamp!.toString()))
+                  : Container(),
+              subtitle: Center(
+                  child: StyleRegistry.registry()
+                      .styleWithApp(app)
+                      .frontEndStyle()
+                      .textStyle()
+                      .text(app, context, value.documentID)),
             );
           } else {
             return Container();
@@ -157,7 +172,13 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
       var newPrivilegeItems = <Widget>[];
       int i = 0;
       for (var privilegeItem in _privilegeItems) {
-        newPrivilegeItems.add(Wrap(children: [(i <= widget.containerPrivilege) ? Icon(Icons.check) : Icon(Icons.close), Container(width: 2), text(widget.app, context, privilegeItem)]));
+        newPrivilegeItems.add(Wrap(children: [
+          (i <= widget.containerPrivilege)
+              ? Icon(Icons.check)
+              : Icon(Icons.close),
+          Container(width: 2),
+          text(widget.app, context, privilegeItem)
+        ]));
         i++;
       }
       children.add(tabBar2(widget.app, context,
@@ -171,16 +192,18 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
             )));
       } else {
         children.add(Container(
-            height: max(30, widget.height - 101),
-            ));
+          height: max(30, widget.height - 101),
+        ));
       }
       children.add(Column(children: [
         divider(widget.app, context),
         Center(
-            child: iconButton(widget.app, 
+            child: iconButton(
+          widget.app,
           context,
           onPressed: () {
-            widget.editorConstructor.createNewComponent(widget.app, context, (_, __) {});
+            widget.editorConstructor
+                .createNewComponent(widget.app, context, (_, __) {});
           },
           icon: Icon(Icons.add),
         ))
@@ -190,6 +213,3 @@ class _SelectNotificationWidgetState extends State<SelectNotificationWidget> wit
     });
   }
 }
-
-
-

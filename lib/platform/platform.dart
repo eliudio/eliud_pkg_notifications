@@ -6,27 +6,32 @@ import 'package:eliud_pkg_notifications/model/notification_model.dart';
 abstract class AbstractNotificationPlatform {
   static AbstractNotificationPlatform? platform;
 
-  Future<void> sendMessage(AppModel app, String memberId, String assigneeId, String message, {Action? postSendAction});
+  Future<void> sendMessage(
+      AppModel app, String memberId, String assigneeId, String message,
+      {Action? postSendAction});
 }
 
-typedef void Action(NotificationModel? notificationModel);
+typedef Action = void Function(NotificationModel? notificationModel);
 
 class NotificationPlatform extends AbstractNotificationPlatform {
-
-  Future<void> sendMessage(AppModel app, String memberId, String assigneeId, String message, {Action? postSendAction}) async {
-      await AbstractRepositorySingleton.singleton.notificationRepository(app.documentID)!.add(NotificationModel(
-        documentID: newRandomKey(),
-        appId: app.documentID,
-        description: message,
-        read: false,
-        status: NotificationStatus.Open,
-        assigneeId: assigneeId,
-        reporterId: memberId
-      )).then((value) {
-        if (postSendAction != null) {
-          postSendAction(value);
-        }
+  @override
+  Future<void> sendMessage(
+      AppModel app, String memberId, String assigneeId, String message,
+      {Action? postSendAction}) async {
+    await AbstractRepositorySingleton.singleton
+        .notificationRepository(app.documentID)!
+        .add(NotificationModel(
+            documentID: newRandomKey(),
+            appId: app.documentID,
+            description: message,
+            read: false,
+            status: NotificationStatus.open,
+            assigneeId: assigneeId,
+            reporterId: memberId))
+        .then((value) {
+      if (postSendAction != null) {
+        postSendAction(value);
       }
-      );
+    });
   }
 }

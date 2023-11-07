@@ -21,16 +21,16 @@ abstract class NotificationDashboardComponentEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchNotificationDashboardComponent extends NotificationDashboardComponentEvent {
+class FetchNotificationDashboardComponent
+    extends NotificationDashboardComponentEvent {
   final String? id;
 
-  FetchNotificationDashboardComponent({ this.id });
+  FetchNotificationDashboardComponent({this.id});
 }
 
-class NotificationDashboardComponentUpdated extends NotificationDashboardComponentEvent {
+class NotificationDashboardComponentUpdated
+    extends NotificationDashboardComponentEvent {
   final NotificationDashboardModel value;
 
-  NotificationDashboardComponentUpdated({ required this.value });
+  NotificationDashboardComponentUpdated({required this.value});
 }
-
-

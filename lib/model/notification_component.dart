@@ -13,7 +13,6 @@
 
 */
 
-
 import 'package:eliud_pkg_notifications/model/notification_component_bloc.dart';
 import 'package:eliud_pkg_notifications/model/notification_component_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_model.dart';
@@ -31,20 +30,23 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
   final AppModel app;
   final String notificationId;
 
-  AbstractNotificationComponent({Key? key, required this.app, required this.notificationId}): super(key: key);
+  AbstractNotificationComponent(
+      {super.key, required this.app, required this.notificationId});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<NotificationComponentBloc> (
-          create: (context) => NotificationComponentBloc(
-            notificationRepository: notificationRepository(appId: app.documentID)!)
+    return BlocProvider<NotificationComponentBloc>(
+      create: (context) => NotificationComponentBloc(
+          notificationRepository:
+              notificationRepository(appId: app.documentID)!)
         ..add(FetchNotificationComponent(id: notificationId)),
       child: _notificationBlockBuilder(context),
     );
   }
 
   Widget _notificationBlockBuilder(BuildContext context) {
-    return BlocBuilder<NotificationComponentBloc, NotificationComponentState>(builder: (context, state) {
+    return BlocBuilder<NotificationComponentBloc, NotificationComponentState>(
+        builder: (context, state) {
       if (state is NotificationComponentLoaded) {
         return yourWidget(context, state.value);
       } else if (state is NotificationComponentPermissionDenied) {
@@ -57,7 +59,11 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
         return AlertWidget(app: app, title: 'Error', content: state.message);
       } else {
         return Center(
-          child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().progressIndicatorStyle().progressIndicator(app, context),
+          child: StyleRegistry.registry()
+              .styleWithApp(app)
+              .frontEndStyle()
+              .progressIndicatorStyle()
+              .progressIndicator(app, context),
         );
       }
     });
@@ -65,4 +71,3 @@ abstract class AbstractNotificationComponent extends StatelessWidget {
 
   Widget yourWidget(BuildContext context, NotificationModel value);
 }
-

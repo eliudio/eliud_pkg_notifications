@@ -13,10 +13,10 @@ class MyNotificationListItem extends StatelessWidget {
   final NotificationModel value;
 
   MyNotificationListItem({
-    Key? key,
+    super.key,
     required this.app,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class MyNotificationListItem extends StatelessWidget {
         onDismissed: (_) {
           BlocProvider.of<NotificationListBloc>(context).add(
               UpdateNotificationList(
-                  value: value.copyWith(status: NotificationStatus.Closed)));
+                  value: value.copyWith(status: NotificationStatus.closed)));
         },
         child: _tile(app.documentID, value.reporterId));
   }
@@ -33,7 +33,7 @@ class MyNotificationListItem extends StatelessWidget {
   Widget _tile(String? appId, String? memberId) {
     var style = ((value.read == null) || value.read!)
         ? null
-        : new TextStyle(fontWeight: FontWeight.bold);
+        : TextStyle(fontWeight: FontWeight.bold);
     return FutureBuilder<MemberPublicInfoModel?>(
         future: memberPublicInfoRepository(appId: appId)!.get(memberId),
         builder: (BuildContext context2, AsyncSnapshot snapshot) {
@@ -51,39 +51,37 @@ class MyNotificationListItem extends StatelessWidget {
           return ListTile(
               onTap: () {},
               leading: avatar,
-              trailing: Text(formatFullPrecision(value.timestamp!), style: style),
-              title: Text("From: " + name!, style: style),
+              trailing:
+                  Text(formatFullPrecision(value.timestamp!), style: style),
+              title: Text("From: $name", style: style),
               subtitle: Text(
                 value.description!,
                 style: style,
               ));
-        }
-        );
+        });
   }
 
   Widget _avatar(MemberPublicInfoModel memberPublicInfo) {
-    var image;
+    NetworkImage? image;
     if (memberPublicInfo.photoURL != null) {
       image = NetworkImage(memberPublicInfo.photoURL!);
     }
     if (image != null) {
       return Container(
-          width: 60.0,
-          height: 60.0,
-          decoration: new BoxDecoration(
-            color: Colors.transparent,
-            borderRadius:
-            new BorderRadius.all(new Radius.circular(50.0)),
-            border: new Border.all(
-              color: Colors.red,
-              width: 2.0,
-            ),
+        width: 60.0,
+        height: 60.0,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+          border: Border.all(
+            color: Colors.red,
+            width: 2.0,
           ),
-          child: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: 60,
-              backgroundImage: image
-            ),
+        ),
+        child: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: 60,
+            backgroundImage: image),
       );
     } else {
       return _letterAvatar(memberPublicInfo.name![0]);

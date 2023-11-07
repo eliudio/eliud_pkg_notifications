@@ -13,7 +13,6 @@
 
 */
 
-
 import 'package:eliud_pkg_notifications/model/notification_dashboard_component_bloc.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_component_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_model.dart';
@@ -31,20 +30,23 @@ abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
   final AppModel app;
   final String notificationDashboardId;
 
-  AbstractNotificationDashboardComponent({Key? key, required this.app, required this.notificationDashboardId}): super(key: key);
+  AbstractNotificationDashboardComponent(
+      {super.key, required this.app, required this.notificationDashboardId});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<NotificationDashboardComponentBloc> (
-          create: (context) => NotificationDashboardComponentBloc(
-            notificationDashboardRepository: notificationDashboardRepository(appId: app.documentID)!)
+    return BlocProvider<NotificationDashboardComponentBloc>(
+      create: (context) => NotificationDashboardComponentBloc(
+          notificationDashboardRepository:
+              notificationDashboardRepository(appId: app.documentID)!)
         ..add(FetchNotificationDashboardComponent(id: notificationDashboardId)),
       child: _notificationDashboardBlockBuilder(context),
     );
   }
 
   Widget _notificationDashboardBlockBuilder(BuildContext context) {
-    return BlocBuilder<NotificationDashboardComponentBloc, NotificationDashboardComponentState>(builder: (context, state) {
+    return BlocBuilder<NotificationDashboardComponentBloc,
+        NotificationDashboardComponentState>(builder: (context, state) {
       if (state is NotificationDashboardComponentLoaded) {
         return yourWidget(context, state.value);
       } else if (state is NotificationDashboardComponentPermissionDenied) {
@@ -57,7 +59,11 @@ abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
         return AlertWidget(app: app, title: 'Error', content: state.message);
       } else {
         return Center(
-          child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().progressIndicatorStyle().progressIndicator(app, context),
+          child: StyleRegistry.registry()
+              .styleWithApp(app)
+              .frontEndStyle()
+              .progressIndicatorStyle()
+              .progressIndicator(app, context),
         );
       }
     });
@@ -65,4 +71,3 @@ abstract class AbstractNotificationDashboardComponent extends StatelessWidget {
 
   Widget yourWidget(BuildContext context, NotificationDashboardModel value);
 }
-

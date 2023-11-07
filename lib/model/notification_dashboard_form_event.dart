@@ -18,7 +18,6 @@ import 'package:meta/meta.dart';
 import 'package:eliud_core/model/model_export.dart';
 import 'package:eliud_pkg_notifications/model/model_export.dart';
 
-
 @immutable
 abstract class NotificationDashboardFormEvent extends Equatable {
   const NotificationDashboardFormEvent();
@@ -27,38 +26,41 @@ abstract class NotificationDashboardFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewNotificationDashboardFormEvent extends NotificationDashboardFormEvent {
-}
+class InitialiseNewNotificationDashboardFormEvent
+    extends NotificationDashboardFormEvent {}
 
-
-class InitialiseNotificationDashboardFormEvent extends NotificationDashboardFormEvent {
+class InitialiseNotificationDashboardFormEvent
+    extends NotificationDashboardFormEvent {
   final NotificationDashboardModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseNotificationDashboardFormEvent({this.value});
 }
 
-class InitialiseNotificationDashboardFormNoLoadEvent extends NotificationDashboardFormEvent {
+class InitialiseNotificationDashboardFormNoLoadEvent
+    extends NotificationDashboardFormEvent {
   final NotificationDashboardModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseNotificationDashboardFormNoLoadEvent({this.value});
 }
 
-class ChangedNotificationDashboardDocumentID extends NotificationDashboardFormEvent {
+class ChangedNotificationDashboardDocumentID
+    extends NotificationDashboardFormEvent {
   final String? value;
 
   ChangedNotificationDashboardDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedNotificationDashboardDocumentID{ value: $value }';
+  String toString() =>
+      'ChangedNotificationDashboardDocumentID{ value: $value }';
 }
 
 class ChangedNotificationDashboardAppId extends NotificationDashboardFormEvent {
@@ -67,33 +69,36 @@ class ChangedNotificationDashboardAppId extends NotificationDashboardFormEvent {
   ChangedNotificationDashboardAppId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedNotificationDashboardAppId{ value: $value }';
 }
 
-class ChangedNotificationDashboardDescription extends NotificationDashboardFormEvent {
+class ChangedNotificationDashboardDescription
+    extends NotificationDashboardFormEvent {
   final String? value;
 
   ChangedNotificationDashboardDescription({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedNotificationDashboardDescription{ value: $value }';
+  String toString() =>
+      'ChangedNotificationDashboardDescription{ value: $value }';
 }
 
-class ChangedNotificationDashboardConditions extends NotificationDashboardFormEvent {
+class ChangedNotificationDashboardConditions
+    extends NotificationDashboardFormEvent {
   final StorageConditionsModel? value;
 
   ChangedNotificationDashboardConditions({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedNotificationDashboardConditions{ value: $value }';
+  String toString() =>
+      'ChangedNotificationDashboardConditions{ value: $value }';
 }
-

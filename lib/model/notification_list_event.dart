@@ -30,10 +30,10 @@ class NewPage extends NotificationListEvent {}
 class AddNotificationList extends NotificationListEvent {
   final NotificationModel? value;
 
-  const AddNotificationList({ this.value });
+  const AddNotificationList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddNotificationList{ value: $value }';
@@ -42,10 +42,10 @@ class AddNotificationList extends NotificationListEvent {
 class UpdateNotificationList extends NotificationListEvent {
   final NotificationModel? value;
 
-  const UpdateNotificationList({ this.value });
+  const UpdateNotificationList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateNotificationList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateNotificationList extends NotificationListEvent {
 class DeleteNotificationList extends NotificationListEvent {
   final NotificationModel? value;
 
-  const DeleteNotificationList({ this.value });
+  const DeleteNotificationList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteNotificationList{ value: $value }';
@@ -67,24 +67,24 @@ class NotificationListUpdated extends NotificationListEvent {
   final List<NotificationModel?>? value;
   final bool? mightHaveMore;
 
-  const NotificationListUpdated({ this.value, this.mightHaveMore });
+  const NotificationListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'NotificationListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'NotificationListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class NotificationChangeQuery extends NotificationListEvent {
   final EliudQuery? newQuery;
 
-  const NotificationChangeQuery({ required this.newQuery });
+  const NotificationChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'NotificationChangeQuery{ value: $newQuery }';
 }
-

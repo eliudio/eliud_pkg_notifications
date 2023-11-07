@@ -20,24 +20,27 @@ import 'package:eliud_pkg_notifications/model/notification_component_event.dart'
 import 'package:eliud_pkg_notifications/model/notification_component_state.dart';
 import 'package:eliud_pkg_notifications/model/notification_repository.dart';
 
-class NotificationComponentBloc extends Bloc<NotificationComponentEvent, NotificationComponentState> {
+class NotificationComponentBloc
+    extends Bloc<NotificationComponentEvent, NotificationComponentState> {
   final NotificationRepository? notificationRepository;
   StreamSubscription? _notificationSubscription;
 
   void _mapLoadNotificationComponentUpdateToState(String documentId) {
     _notificationSubscription?.cancel();
-    _notificationSubscription = notificationRepository!.listenTo(documentId, (value) {
+    _notificationSubscription =
+        notificationRepository!.listenTo(documentId, (value) {
       if (value != null) {
         add(NotificationComponentUpdated(value: value));
       }
     });
   }
 
-  NotificationComponentBloc({ this.notificationRepository }): super(NotificationComponentUninitialized()) {
-    on <FetchNotificationComponent> ((event, emit) {
+  NotificationComponentBloc({this.notificationRepository})
+      : super(NotificationComponentUninitialized()) {
+    on<FetchNotificationComponent>((event, emit) {
       _mapLoadNotificationComponentUpdateToState(event.id!);
     });
-    on <NotificationComponentUpdated> ((event, emit) {
+    on<NotificationComponentUpdated>((event, emit) {
       emit(NotificationComponentLoaded(value: event.value));
     });
   }
@@ -47,6 +50,4 @@ class NotificationComponentBloc extends Bloc<NotificationComponentEvent, Notific
     _notificationSubscription?.cancel();
     return super.close();
   }
-
 }
-

@@ -23,24 +23,29 @@ abstract class NotificationDashboardComponentState extends Equatable {
   List<Object?> get props => [];
 }
 
-class NotificationDashboardComponentUninitialized extends NotificationDashboardComponentState {}
+class NotificationDashboardComponentUninitialized
+    extends NotificationDashboardComponentState {}
 
-class NotificationDashboardComponentError extends NotificationDashboardComponentState {
+class NotificationDashboardComponentError
+    extends NotificationDashboardComponentState {
   final String? message;
-  NotificationDashboardComponentError({ this.message });
+  NotificationDashboardComponentError({this.message});
 }
 
-class NotificationDashboardComponentPermissionDenied extends NotificationDashboardComponentState {
+class NotificationDashboardComponentPermissionDenied
+    extends NotificationDashboardComponentState {
   NotificationDashboardComponentPermissionDenied();
 }
 
-class NotificationDashboardComponentLoaded extends NotificationDashboardComponentState {
+class NotificationDashboardComponentLoaded
+    extends NotificationDashboardComponentState {
   final NotificationDashboardModel value;
 
-  const NotificationDashboardComponentLoaded({ required this.value });
+  const NotificationDashboardComponentLoaded({required this.value});
 
-  NotificationDashboardComponentLoaded copyWith({ NotificationDashboardModel? copyThis }) {
-    return NotificationDashboardComponentLoaded(value: copyThis ?? this.value);
+  NotificationDashboardComponentLoaded copyWith(
+      {NotificationDashboardModel? copyThis}) {
+    return NotificationDashboardComponentLoaded(value: copyThis ?? value);
   }
 
   @override
@@ -49,4 +54,3 @@ class NotificationDashboardComponentLoaded extends NotificationDashboardComponen
   @override
   String toString() => 'NotificationDashboardComponentLoaded { value: $value }';
 }
-

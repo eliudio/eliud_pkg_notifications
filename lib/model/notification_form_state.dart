@@ -41,9 +41,9 @@ class NotificationFormInitialized extends NotificationFormState {
   final NotificationModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
-  const NotificationFormInitialized({ this.value });
+  const NotificationFormInitialized({this.value});
 }
 
 // Menu has been initialised and hence a menu is available
@@ -51,9 +51,9 @@ abstract class NotificationFormError extends NotificationFormInitialized {
   final String? message;
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
-  const NotificationFormError({this.message, NotificationModel? value }) : super(value: value);
+  const NotificationFormError({this.message, super.value});
 
   @override
   String toString() {
@@ -63,11 +63,12 @@ abstract class NotificationFormError extends NotificationFormInitialized {
     }''';
   }
 }
-class DocumentIDNotificationFormError extends NotificationFormError { 
-  const DocumentIDNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+
+class DocumentIDNotificationFormError extends NotificationFormError {
+  const DocumentIDNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -78,12 +79,11 @@ class DocumentIDNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class TimestampNotificationFormError extends NotificationFormError { 
-  const TimestampNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class TimestampNotificationFormError extends NotificationFormError {
+  const TimestampNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -94,12 +94,11 @@ class TimestampNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class AppIdNotificationFormError extends NotificationFormError { 
-  const AppIdNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class AppIdNotificationFormError extends NotificationFormError {
+  const AppIdNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -110,12 +109,11 @@ class AppIdNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class DescriptionNotificationFormError extends NotificationFormError { 
-  const DescriptionNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class DescriptionNotificationFormError extends NotificationFormError {
+  const DescriptionNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -126,12 +124,11 @@ class DescriptionNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class ReadNotificationFormError extends NotificationFormError { 
-  const ReadNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class ReadNotificationFormError extends NotificationFormError {
+  const ReadNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -142,12 +139,11 @@ class ReadNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class ReporterIdNotificationFormError extends NotificationFormError { 
-  const ReporterIdNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class ReporterIdNotificationFormError extends NotificationFormError {
+  const ReporterIdNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -158,12 +154,11 @@ class ReporterIdNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class AssigneeIdNotificationFormError extends NotificationFormError { 
-  const AssigneeIdNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class AssigneeIdNotificationFormError extends NotificationFormError {
+  const AssigneeIdNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -174,12 +169,11 @@ class AssigneeIdNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class StatusNotificationFormError extends NotificationFormError { 
-  const StatusNotificationFormError({ String? message, NotificationModel? value }): super(message: message, value: value);
+class StatusNotificationFormError extends NotificationFormError {
+  const StatusNotificationFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -190,12 +184,11 @@ class StatusNotificationFormError extends NotificationFormError {
   }
 }
 
-
-class NotificationFormLoaded extends NotificationFormInitialized { 
-  const NotificationFormLoaded({ NotificationModel? value }): super(value: value);
+class NotificationFormLoaded extends NotificationFormInitialized {
+  const NotificationFormLoaded({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -205,12 +198,11 @@ class NotificationFormLoaded extends NotificationFormInitialized {
   }
 }
 
-
-class SubmittableNotificationForm extends NotificationFormInitialized { 
-  const SubmittableNotificationForm({ NotificationModel? value }): super(value: value);
+class SubmittableNotificationForm extends NotificationFormInitialized {
+  const SubmittableNotificationForm({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -219,5 +211,3 @@ class SubmittableNotificationForm extends NotificationFormInitialized {
     }''';
   }
 }
-
-

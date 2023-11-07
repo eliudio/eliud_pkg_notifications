@@ -20,24 +20,27 @@ import 'package:eliud_pkg_notifications/model/notification_dashboard_component_e
 import 'package:eliud_pkg_notifications/model/notification_dashboard_component_state.dart';
 import 'package:eliud_pkg_notifications/model/notification_dashboard_repository.dart';
 
-class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardComponentEvent, NotificationDashboardComponentState> {
+class NotificationDashboardComponentBloc extends Bloc<
+    NotificationDashboardComponentEvent, NotificationDashboardComponentState> {
   final NotificationDashboardRepository? notificationDashboardRepository;
   StreamSubscription? _notificationDashboardSubscription;
 
   void _mapLoadNotificationDashboardComponentUpdateToState(String documentId) {
     _notificationDashboardSubscription?.cancel();
-    _notificationDashboardSubscription = notificationDashboardRepository!.listenTo(documentId, (value) {
+    _notificationDashboardSubscription =
+        notificationDashboardRepository!.listenTo(documentId, (value) {
       if (value != null) {
         add(NotificationDashboardComponentUpdated(value: value));
       }
     });
   }
 
-  NotificationDashboardComponentBloc({ this.notificationDashboardRepository }): super(NotificationDashboardComponentUninitialized()) {
-    on <FetchNotificationDashboardComponent> ((event, emit) {
+  NotificationDashboardComponentBloc({this.notificationDashboardRepository})
+      : super(NotificationDashboardComponentUninitialized()) {
+    on<FetchNotificationDashboardComponent>((event, emit) {
       _mapLoadNotificationDashboardComponentUpdateToState(event.id!);
     });
-    on <NotificationDashboardComponentUpdated> ((event, emit) {
+    on<NotificationDashboardComponentUpdated>((event, emit) {
       emit(NotificationDashboardComponentLoaded(value: event.value));
     });
   }
@@ -47,6 +50,4 @@ class NotificationDashboardComponentBloc extends Bloc<NotificationDashboardCompo
     _notificationDashboardSubscription?.cancel();
     return super.close();
   }
-
 }
-

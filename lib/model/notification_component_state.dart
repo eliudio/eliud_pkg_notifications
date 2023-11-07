@@ -27,7 +27,7 @@ class NotificationComponentUninitialized extends NotificationComponentState {}
 
 class NotificationComponentError extends NotificationComponentState {
   final String? message;
-  NotificationComponentError({ this.message });
+  NotificationComponentError({this.message});
 }
 
 class NotificationComponentPermissionDenied extends NotificationComponentState {
@@ -37,10 +37,10 @@ class NotificationComponentPermissionDenied extends NotificationComponentState {
 class NotificationComponentLoaded extends NotificationComponentState {
   final NotificationModel value;
 
-  const NotificationComponentLoaded({ required this.value });
+  const NotificationComponentLoaded({required this.value});
 
-  NotificationComponentLoaded copyWith({ NotificationModel? copyThis }) {
-    return NotificationComponentLoaded(value: copyThis ?? this.value);
+  NotificationComponentLoaded copyWith({NotificationModel? copyThis}) {
+    return NotificationComponentLoaded(value: copyThis ?? value);
   }
 
   @override
@@ -49,4 +49,3 @@ class NotificationComponentLoaded extends NotificationComponentState {
   @override
   String toString() => 'NotificationComponentLoaded { value: $value }';
 }
-

@@ -25,13 +25,22 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
+/* 
+ * NotificationFirestore is the firestore implementation of NotificationRepository
+ */
 class NotificationFirestore implements NotificationRepository {
+  /* 
+   * transform a map into an entity
+   */
   @override
   NotificationEntity? fromMap(Object? o,
       {Map<String, String>? newDocumentIds}) {
     return NotificationEntity.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
+  /* 
+   * add an entity to the repository
+   */
   @override
   Future<NotificationEntity> addEntity(
       String documentID, NotificationEntity value) {
@@ -49,6 +58,9 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  /* 
+   * Update an entity
+   */
   @override
   Future<NotificationEntity> updateEntity(
       String documentID, NotificationEntity value) {
@@ -66,6 +78,9 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  /* 
+   * Add a model to the repository
+   */
   @override
   Future<NotificationModel> add(NotificationModel value) {
     return notificationCollection
@@ -87,11 +102,17 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  /* 
+   * Delete a model
+   */
   @override
   Future<void> delete(NotificationModel value) {
     return notificationCollection.doc(value.documentID).delete();
   }
 
+  /* 
+   * Update a model
+   */
   @override
   Future<NotificationModel> update(NotificationModel value) {
     return notificationCollection
@@ -124,6 +145,9 @@ class NotificationFirestore implements NotificationRepository {
         appId: appId);
   }
 
+  /* 
+   * Retrieve an entity from the repository with id
+   */
   @override
   Future<NotificationEntity?> getEntity(String? id,
       {Function(Exception)? onError}) async {
@@ -142,6 +166,9 @@ class NotificationFirestore implements NotificationRepository {
     return null;
   }
 
+  /* 
+   * Retrieve an model from the repository with id
+   */
   @override
   Future<NotificationModel?> get(String? id,
       {Function(Exception)? onError}) async {
@@ -160,6 +187,9 @@ class NotificationFirestore implements NotificationRepository {
     return null;
   }
 
+  /* 
+   * Listen to the repository using a query. Retrieve models
+   */
   @override
   StreamSubscription<List<NotificationModel?>> listen(
       NotificationModelTrigger trigger,
@@ -191,6 +221,9 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  /* 
+   * Listen to the repository using a query. Retrieve models and linked models
+   */
   @override
   StreamSubscription<List<NotificationModel?>> listenWithDetails(
       NotificationModelTrigger trigger,
@@ -222,6 +255,9 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  /* 
+   * Listen to 1 document in the repository
+   */
   @override
   StreamSubscription<NotificationModel?> listenTo(
       String documentId, NotificationChanged changed,
@@ -241,6 +277,9 @@ class NotificationFirestore implements NotificationRepository {
     return theStream;
   }
 
+  /* 
+   * Retrieve values/models from the repository
+   */
   @override
   Stream<List<NotificationModel?>> values(
       {String? orderBy,
@@ -270,6 +309,9 @@ class NotificationFirestore implements NotificationRepository {
     return values;
   }
 
+  /* 
+   * Retrieve values/models, including linked models, from the repository
+   */
   @override
   Stream<List<NotificationModel?>> valuesWithDetails(
       {String? orderBy,
@@ -299,6 +341,9 @@ class NotificationFirestore implements NotificationRepository {
     return values;
   }
 
+  /* 
+   * Retrieve values/models from the repository
+   */
   @override
   Future<List<NotificationModel?>> valuesList(
       {String? orderBy,
@@ -329,6 +374,9 @@ class NotificationFirestore implements NotificationRepository {
     return values;
   }
 
+  /* 
+   * Retrieve values/models, including linked models, from the repository
+   */
   @override
   Future<List<NotificationModel?>> valuesListWithDetails(
       {String? orderBy,
@@ -359,9 +407,15 @@ class NotificationFirestore implements NotificationRepository {
     return values;
   }
 
+  /* 
+   * Flush the repository
+   */
   @override
   void flush() {}
 
+  /* 
+   * Delete all entries in the repository
+   */
   @override
   Future<void> deleteAll() {
     return notificationCollection.get().then((snapshot) {
@@ -371,16 +425,25 @@ class NotificationFirestore implements NotificationRepository {
     });
   }
 
+  /* 
+   * Retrieve the subcollection of this repository
+   */
   @override
   dynamic getSubCollection(String documentId, String name) {
     return notificationCollection.doc(documentId).collection(name);
   }
 
+  /* 
+   * Retrieve a timestamp
+   */
   @override
   String? timeStampToString(dynamic timeStamp) {
     return firestoreTimeStampToString(timeStamp);
   }
 
+  /* 
+   * change 1 a fieldvalue for 1 document  
+   */
   @override
   Future<NotificationModel?> changeValue(
       String documentId, String fieldName, num changeByThisValue) {

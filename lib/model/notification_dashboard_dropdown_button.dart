@@ -33,6 +33,9 @@ typedef NotificationDashboardChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * NotificationDashboardDropdownButtonWidget is the drop down widget to allow to select an instance of NotificationDashboard
+ */
 class NotificationDashboardDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class NotificationDashboardDropdownButtonWidget extends StatefulWidget {
   final NotificationDashboardChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a NotificationDashboardDropdownButtonWidget
+   */
   NotificationDashboardDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class NotificationDashboardDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of NotificationDashboardDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return NotificationDashboardDropdownButtonWidgetState(value);
+    return _NotificationDashboardDropdownButtonWidgetState(value);
   }
 }
 
-class NotificationDashboardDropdownButtonWidgetState
+class _NotificationDashboardDropdownButtonWidgetState
     extends State<NotificationDashboardDropdownButtonWidget> {
   NotificationDashboardListBloc? bloc;
   String? value;
 
-  NotificationDashboardDropdownButtonWidgetState(this.value);
+  _NotificationDashboardDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class NotificationDashboardDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(NotificationDashboardModel value) {
+  List<Widget> _widgets(NotificationDashboardModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(value.description != null
@@ -130,7 +139,7 @@ class NotificationDashboardDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

@@ -25,8 +25,14 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
+/* 
+ * NotificationDashboardFirestore is the firestore implementation of NotificationDashboardRepository
+ */
 class NotificationDashboardFirestore
     implements NotificationDashboardRepository {
+  /* 
+   * transform a map into an entity
+   */
   @override
   NotificationDashboardEntity? fromMap(Object? o,
       {Map<String, String>? newDocumentIds}) {
@@ -34,6 +40,9 @@ class NotificationDashboardFirestore
         newDocumentIds: newDocumentIds);
   }
 
+  /* 
+   * add an entity to the repository
+   */
   @override
   Future<NotificationDashboardEntity> addEntity(
       String documentID, NotificationDashboardEntity value) {
@@ -43,6 +52,9 @@ class NotificationDashboardFirestore
         .then((_) => value);
   }
 
+  /* 
+   * Update an entity
+   */
   @override
   Future<NotificationDashboardEntity> updateEntity(
       String documentID, NotificationDashboardEntity value) {
@@ -52,6 +64,9 @@ class NotificationDashboardFirestore
         .then((_) => value);
   }
 
+  /* 
+   * Add a model to the repository
+   */
   @override
   Future<NotificationDashboardModel> add(NotificationDashboardModel value) {
     return notificationDashboardCollection
@@ -60,11 +75,17 @@ class NotificationDashboardFirestore
         .then((_) => value);
   }
 
+  /* 
+   * Delete a model
+   */
   @override
   Future<void> delete(NotificationDashboardModel value) {
     return notificationDashboardCollection.doc(value.documentID).delete();
   }
 
+  /* 
+   * Update a model
+   */
   @override
   Future<NotificationDashboardModel> update(NotificationDashboardModel value) {
     return notificationDashboardCollection
@@ -86,6 +107,9 @@ class NotificationDashboardFirestore
         appId: appId);
   }
 
+  /* 
+   * Retrieve an entity from the repository with id
+   */
   @override
   Future<NotificationDashboardEntity?> getEntity(String? id,
       {Function(Exception)? onError}) async {
@@ -104,6 +128,9 @@ class NotificationDashboardFirestore
     return null;
   }
 
+  /* 
+   * Retrieve an model from the repository with id
+   */
   @override
   Future<NotificationDashboardModel?> get(String? id,
       {Function(Exception)? onError}) async {
@@ -122,6 +149,9 @@ class NotificationDashboardFirestore
     return null;
   }
 
+  /* 
+   * Listen to the repository using a query. Retrieve models
+   */
   @override
   StreamSubscription<List<NotificationDashboardModel?>> listen(
       NotificationDashboardModelTrigger trigger,
@@ -153,6 +183,9 @@ class NotificationDashboardFirestore
     });
   }
 
+  /* 
+   * Listen to the repository using a query. Retrieve models and linked models
+   */
   @override
   StreamSubscription<List<NotificationDashboardModel?>> listenWithDetails(
       NotificationDashboardModelTrigger trigger,
@@ -184,6 +217,9 @@ class NotificationDashboardFirestore
     });
   }
 
+  /* 
+   * Listen to 1 document in the repository
+   */
   @override
   StreamSubscription<NotificationDashboardModel?> listenTo(
       String documentId, NotificationDashboardChanged changed,
@@ -205,6 +241,9 @@ class NotificationDashboardFirestore
     return theStream;
   }
 
+  /* 
+   * Retrieve values/models from the repository
+   */
   @override
   Stream<List<NotificationDashboardModel?>> values(
       {String? orderBy,
@@ -235,6 +274,9 @@ class NotificationDashboardFirestore
     return values;
   }
 
+  /* 
+   * Retrieve values/models, including linked models, from the repository
+   */
   @override
   Stream<List<NotificationDashboardModel?>> valuesWithDetails(
       {String? orderBy,
@@ -265,6 +307,9 @@ class NotificationDashboardFirestore
     return values;
   }
 
+  /* 
+   * Retrieve values/models from the repository
+   */
   @override
   Future<List<NotificationDashboardModel?>> valuesList(
       {String? orderBy,
@@ -296,6 +341,9 @@ class NotificationDashboardFirestore
     return values;
   }
 
+  /* 
+   * Retrieve values/models, including linked models, from the repository
+   */
   @override
   Future<List<NotificationDashboardModel?>> valuesListWithDetails(
       {String? orderBy,
@@ -327,9 +375,15 @@ class NotificationDashboardFirestore
     return values;
   }
 
+  /* 
+   * Flush the repository
+   */
   @override
   void flush() {}
 
+  /* 
+   * Delete all entries in the repository
+   */
   @override
   Future<void> deleteAll() {
     return notificationDashboardCollection.get().then((snapshot) {
@@ -339,16 +393,25 @@ class NotificationDashboardFirestore
     });
   }
 
+  /* 
+   * Retrieve the subcollection of this repository
+   */
   @override
   dynamic getSubCollection(String documentId, String name) {
     return notificationDashboardCollection.doc(documentId).collection(name);
   }
 
+  /* 
+   * Retrieve a timestamp
+   */
   @override
   String? timeStampToString(dynamic timeStamp) {
     return firestoreTimeStampToString(timeStamp);
   }
 
+  /* 
+   * change 1 a fieldvalue for 1 document  
+   */
   @override
   Future<NotificationDashboardModel?> changeValue(
       String documentId, String fieldName, num changeByThisValue) {

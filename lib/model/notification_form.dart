@@ -58,7 +58,7 @@ class NotificationForm extends StatelessWidget {
           appId,
           formAction: formAction,
         )..add(InitialiseNotificationFormEvent(value: value)),
-        child: MyNotificationForm(
+        child: _MyNotificationForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     }
@@ -68,7 +68,7 @@ class NotificationForm extends StatelessWidget {
           appId,
           formAction: formAction,
         )..add(InitialiseNotificationFormNoLoadEvent(value: value)),
-        child: MyNotificationForm(
+        child: _MyNotificationForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     } else {
@@ -87,26 +87,26 @@ class NotificationForm extends StatelessWidget {
             )..add((formAction == FormAction.updateAction
                 ? InitialiseNotificationFormEvent(value: value)
                 : InitialiseNewNotificationFormEvent())),
-            child: MyNotificationForm(
+            child: _MyNotificationForm(
                 app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
-class MyNotificationForm extends StatefulWidget {
+class _MyNotificationForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyNotificationForm({required this.app, this.formAction, this.submitAction});
+  _MyNotificationForm({required this.app, this.formAction, this.submitAction});
 
   @override
-  State<MyNotificationForm> createState() =>
+  State<_MyNotificationForm> createState() =>
       _MyNotificationFormState(formAction);
 }
 
-class _MyNotificationFormState extends State<MyNotificationForm> {
+class _MyNotificationFormState extends State<_MyNotificationForm> {
   final FormAction? formAction;
   late NotificationFormBloc _myFormBloc;
 

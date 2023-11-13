@@ -58,7 +58,7 @@ class NotificationDashboardForm extends StatelessWidget {
           appId,
           formAction: formAction,
         )..add(InitialiseNotificationDashboardFormEvent(value: value)),
-        child: MyNotificationDashboardForm(
+        child: _MyNotificationDashboardForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     }
@@ -68,7 +68,7 @@ class NotificationDashboardForm extends StatelessWidget {
           appId,
           formAction: formAction,
         )..add(InitialiseNotificationDashboardFormNoLoadEvent(value: value)),
-        child: MyNotificationDashboardForm(
+        child: _MyNotificationDashboardForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     } else {
@@ -87,28 +87,28 @@ class NotificationDashboardForm extends StatelessWidget {
             )..add((formAction == FormAction.updateAction
                 ? InitialiseNotificationDashboardFormEvent(value: value)
                 : InitialiseNewNotificationDashboardFormEvent())),
-            child: MyNotificationDashboardForm(
+            child: _MyNotificationDashboardForm(
                 app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
-class MyNotificationDashboardForm extends StatefulWidget {
+class _MyNotificationDashboardForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyNotificationDashboardForm(
+  _MyNotificationDashboardForm(
       {required this.app, this.formAction, this.submitAction});
 
   @override
-  State<MyNotificationDashboardForm> createState() =>
+  State<_MyNotificationDashboardForm> createState() =>
       _MyNotificationDashboardFormState(formAction);
 }
 
 class _MyNotificationDashboardFormState
-    extends State<MyNotificationDashboardForm> {
+    extends State<_MyNotificationDashboardForm> {
   final FormAction? formAction;
   late NotificationDashboardFormBloc _myFormBloc;
 

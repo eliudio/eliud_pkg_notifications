@@ -35,6 +35,9 @@ class NotificationDashboardComponentBloc extends Bloc<
     });
   }
 
+  /*
+   * Construct NotificationDashboardComponentBloc
+   */
   NotificationDashboardComponentBloc({this.notificationDashboardRepository})
       : super(NotificationDashboardComponentUninitialized()) {
     on<FetchNotificationDashboardComponent>((event, emit) {
@@ -45,6 +48,9 @@ class NotificationDashboardComponentBloc extends Bloc<
     });
   }
 
+  /*
+   * Close the NotificationDashboardComponentBloc
+   */
   @override
   Future<void> close() {
     _notificationDashboardSubscription?.cancel();

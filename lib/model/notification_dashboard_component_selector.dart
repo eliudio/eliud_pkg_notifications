@@ -31,7 +31,13 @@ import 'notification_dashboard_list_event.dart';
 import 'notification_dashboard_list_state.dart';
 import 'notification_dashboard_model.dart';
 
+/* 
+ * NotificationDashboardComponentSelector is a component selector for NotificationDashboard, allowing to select a NotificationDashboard component
+ */
 class NotificationDashboardComponentSelector extends ComponentSelector {
+  /* 
+   * createSelectWidget creates the widget
+   */
   @override
   Widget createSelectWidget(BuildContext context, AppModel app,
       int privilegeLevel, double height, SelectComponent selected, editor) {
@@ -42,7 +48,7 @@ class NotificationDashboardComponentSelector extends ComponentSelector {
         notificationDashboardRepository:
             notificationDashboardRepository(appId: appId)!,
       )..add(LoadNotificationDashboardList()),
-      child: SelectNotificationDashboardWidget(
+      child: _SelectNotificationDashboardWidget(
           app: app,
           height: height,
           containerPrivilege: privilegeLevel,
@@ -52,29 +58,31 @@ class NotificationDashboardComponentSelector extends ComponentSelector {
   }
 }
 
-class SelectNotificationDashboardWidget extends StatefulWidget {
+/* 
+ * _SelectNotificationDashboardWidget 
+ */
+class _SelectNotificationDashboardWidget extends StatefulWidget {
   final AppModel app;
   final double height;
   final SelectComponent selected;
   final int containerPrivilege;
   final ComponentEditorConstructor editorConstructor;
 
-  const SelectNotificationDashboardWidget(
-      {super.key,
-      required this.app,
+  const _SelectNotificationDashboardWidget(
+      {required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
       required this.editorConstructor});
 
   @override
-  State<SelectNotificationDashboardWidget> createState() {
+  State<_SelectNotificationDashboardWidget> createState() {
     return _SelectNotificationDashboardWidgetState();
   }
 }
 
 class _SelectNotificationDashboardWidgetState
-    extends State<SelectNotificationDashboardWidget>
+    extends State<_SelectNotificationDashboardWidget>
     with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];

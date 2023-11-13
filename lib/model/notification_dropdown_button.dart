@@ -33,6 +33,9 @@ typedef NotificationChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * NotificationDropdownButtonWidget is the drop down widget to allow to select an instance of Notification
+ */
 class NotificationDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class NotificationDropdownButtonWidget extends StatefulWidget {
   final NotificationChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a NotificationDropdownButtonWidget
+   */
   NotificationDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class NotificationDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of NotificationDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return NotificationDropdownButtonWidgetState(value);
+    return _NotificationDropdownButtonWidgetState(value);
   }
 }
 
-class NotificationDropdownButtonWidgetState
+class _NotificationDropdownButtonWidgetState
     extends State<NotificationDropdownButtonWidget> {
   NotificationListBloc? bloc;
   String? value;
 
-  NotificationDropdownButtonWidgetState(this.value);
+  _NotificationDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class NotificationDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(NotificationModel value) {
+  List<Widget> _widgets(NotificationModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(value.timestamp != null
@@ -134,7 +143,7 @@ class NotificationDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

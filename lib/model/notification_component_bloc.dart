@@ -35,6 +35,9 @@ class NotificationComponentBloc
     });
   }
 
+  /*
+   * Construct NotificationComponentBloc
+   */
   NotificationComponentBloc({this.notificationRepository})
       : super(NotificationComponentUninitialized()) {
     on<FetchNotificationComponent>((event, emit) {
@@ -45,6 +48,9 @@ class NotificationComponentBloc
     });
   }
 
+  /*
+   * Close the NotificationComponentBloc
+   */
   @override
   Future<void> close() {
     _notificationSubscription?.cancel();

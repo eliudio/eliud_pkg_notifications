@@ -32,7 +32,13 @@ import 'notification_list_event.dart';
 import 'notification_list_state.dart';
 import 'notification_model.dart';
 
+/* 
+ * NotificationComponentSelector is a component selector for Notification, allowing to select a Notification component
+ */
 class NotificationComponentSelector extends ComponentSelector {
+  /* 
+   * createSelectWidget creates the widget
+   */
   @override
   Widget createSelectWidget(BuildContext context, AppModel app,
       int privilegeLevel, double height, SelectComponent selected, editor) {
@@ -42,7 +48,7 @@ class NotificationComponentSelector extends ComponentSelector {
         eliudQuery: getComponentSelectorQuery(0, app.documentID),
         notificationRepository: notificationRepository(appId: appId)!,
       )..add(LoadNotificationList()),
-      child: SelectNotificationWidget(
+      child: _SelectNotificationWidget(
           app: app,
           height: height,
           containerPrivilege: privilegeLevel,
@@ -52,28 +58,30 @@ class NotificationComponentSelector extends ComponentSelector {
   }
 }
 
-class SelectNotificationWidget extends StatefulWidget {
+/* 
+ * _SelectNotificationWidget 
+ */
+class _SelectNotificationWidget extends StatefulWidget {
   final AppModel app;
   final double height;
   final SelectComponent selected;
   final int containerPrivilege;
   final ComponentEditorConstructor editorConstructor;
 
-  const SelectNotificationWidget(
-      {super.key,
-      required this.app,
+  const _SelectNotificationWidget(
+      {required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
       required this.editorConstructor});
 
   @override
-  State<SelectNotificationWidget> createState() {
+  State<_SelectNotificationWidget> createState() {
     return _SelectNotificationWidgetState();
   }
 }
 
-class _SelectNotificationWidgetState extends State<SelectNotificationWidget>
+class _SelectNotificationWidgetState extends State<_SelectNotificationWidget>
     with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];

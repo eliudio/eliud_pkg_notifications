@@ -1,7 +1,7 @@
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_core/model/member_public_info_model.dart';
-import 'package:eliud_core/tools/firestore/firestore_tools.dart';
+import 'package:eliud_core_model/tools/firestore/firestore_tools.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_bloc.dart';
 import 'package:eliud_pkg_notifications/model/notification_list_event.dart';
 import 'package:eliud_pkg_notifications/model/notification_model.dart';

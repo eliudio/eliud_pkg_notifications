@@ -15,7 +15,7 @@
 
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
-import 'package:eliud_core/tools/component/component_spec.dart';
+import 'package:eliud_core_model/tools/component/component_spec.dart';
 import 'abstract_repository_singleton.dart';
 
 import '../extensions/notification_dashboard_component.dart';
@@ -30,21 +30,21 @@ class ComponentRegistry {
    * Initialise the component registry
    */
   void init() {
-    Registry.registry()!.addInternalComponents('eliud_pkg_notifications', [
+    Apis.apis().addInternalComponents('eliud_pkg_notifications', [
       "notifications",
       "notificationDashboards",
     ]);
 
-    Registry.registry()!.register(
+    Apis.apis().register(
         componentName: "eliud_pkg_notifications_internalWidgets",
         componentConstructor: ListComponentFactory());
-    Registry.registry()!.addDropDownSupporter(
+    Apis.apis().addDropDownSupporter(
         "notificationDashboards", DropdownButtonComponentFactory());
-    Registry.registry()!.register(
+    Apis.apis().register(
         componentName: "notificationDashboards",
         componentConstructor:
             NotificationDashboardComponentConstructorDefault());
-    Registry.registry()!
+    Apis.apis()
         .addComponentSpec('eliud_pkg_notifications', 'notifications', [
       ComponentSpec(
           'notificationDashboards',
@@ -53,11 +53,11 @@ class ComponentRegistry {
           NotificationDashboardComponentEditorConstructor(),
           ({String? appId}) => notificationDashboardRepository(appId: appId)!),
     ]);
-    Registry.registry()!.registerRetrieveRepository(
+    Apis.apis().registerRetrieveRepository(
         'eliud_pkg_notifications',
         'notifications',
         ({String? appId}) => notificationRepository(appId: appId)!);
-    Registry.registry()!.registerRetrieveRepository(
+    Apis.apis().registerRetrieveRepository(
         'eliud_pkg_notifications',
         'notificationDashboards',
         ({String? appId}) => notificationDashboardRepository(appId: appId)!);

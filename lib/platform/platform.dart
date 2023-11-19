@@ -1,5 +1,5 @@
-import 'package:eliud_core/model/app_model.dart';
-import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_core_model/model/app_model.dart';
+import 'package:eliud_core_model/tools/etc/random.dart';
 import 'package:eliud_pkg_notifications/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_notifications/model/notification_model.dart';
 

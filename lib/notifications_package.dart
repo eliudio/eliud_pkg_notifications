@@ -1,20 +1,23 @@
 import 'dart:async';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/core/blocs/access/access_event.dart';
-import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/access/access_bloc.dart';
+import 'package:eliud_core/access/access_event.dart';
+import 'package:eliud_core_helpers/query/query_tools.dart';
+import 'package:eliud_core_main/apis/wizard_api/new_app_wizard_info.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
-import 'package:eliud_core/model/access_model.dart';
+import 'package:eliud_core_main/tools/etc/member_collection_info.dart';
+import 'package:eliud_core_model/model/access_model.dart';
 import 'package:eliud_core/package/package.dart';
+import 'package:eliud_pkg_notifications/editors/notification_dashboard_component_editor.dart';
+import 'package:eliud_pkg_notifications/extensions/notification_dashboard_component.dart';
 import 'package:eliud_pkg_notifications/wizards/notification_dashboard_dialog_wizard.dart';
-import 'model/abstract_repository_singleton.dart';
-import 'model/repository_singleton.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/model/member_model.dart';
-import 'package:eliud_core_model/tools/query/query_tools.dart';
+import 'package:eliud_pkg_notifications_model/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_notifications_model/model/component_registry.dart';
+import 'package:eliud_pkg_notifications_model/model/notification_model.dart';
+import 'package:eliud_pkg_notifications_model/model/repository_singleton.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_core_main/model/member_model.dart';
 import 'package:eliud_pkg_notifications/platform/platform.dart';
-import 'model/component_registry.dart';
-import 'model/notification_model.dart';
 
 import 'package:eliud_pkg_notifications/notifications_package_stub.dart'
     if (dart.library.io) 'notifications_mobile_package.dart'
@@ -91,7 +94,10 @@ abstract class NotificationsPackage extends Package {
 
   @override
   void init() {
-    ComponentRegistry().init();
+    ComponentRegistry().init(
+      NotificationDashboardComponentConstructorDefault(),
+      NotificationDashboardComponentEditorConstructor(),
+    );
 
     // wizards
     NewAppWizardRegistry.registry()

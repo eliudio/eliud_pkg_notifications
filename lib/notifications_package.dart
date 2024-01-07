@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:eliud_core/access/access_bloc.dart';
 import 'package:eliud_core/access/access_event.dart';
+import 'package:eliud_core_main/apis/apis.dart';
 import 'package:eliud_core_helpers/query/query_tools.dart';
+import 'package:eliud_core_main/apis/apis.dart';
 import 'package:eliud_core_main/apis/wizard_api/new_app_wizard_info.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
@@ -100,7 +102,7 @@ abstract class NotificationsPackage extends Package {
     );
 
     // wizards
-    NewAppWizardRegistry.registry()
+    Apis.apis().getWizardApi()
         .register(NotificationDashboardDialogDWizard());
 
     // initialise the repository
